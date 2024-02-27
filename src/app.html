@@ -5,9 +5,15 @@
         <title>CourseMinder</title>
         <link rel="icon" href="%sveltekit.assets%/favicon.png" />
         <meta name="viewport" content="width=device-width" />
+        <style>
+            .custom-div {
+                display: contents;
+            }
+        </style>
         %sveltekit.head%
     </head>
     <body data-sveltekit-preload-data="hover" data-theme="CourseMinder">
         <div class="h-full overflow-hidden">%sveltekit.body%</div>
+        <div class="custom-div h-full overflow-hidden">%sveltekit.body%</div>
     </body>
 </html>
