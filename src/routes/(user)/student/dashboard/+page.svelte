@@ -21,21 +21,30 @@
         </div>
         <!-- Card for Your Progress -->
         <div class="card row-span-3 flex flex-col items-center gap-10 p-4 shadow variant-filled-primary">
-            <div class="font-bold uppercase text-xl">Your Progress</div>
-            <ProgressRadial
-                {value}
-                stroke={100}
-                meter="stroke-secondary-500"
-                track="stroke-surface-800/30"
-                fill="fill-secondary-900"
-                font={100}
-                width="w-60"
-            ></ProgressRadial>
-            <div class=" text-lg text-center">You are {value}% complete in your course.</div>
+            <div class="font-bold uppercase text-xl">Your Course Progress</div>
+            <div class="relative w-72 h-72 mx-auto">
+                <ProgressRadial
+                    {value}
+                    stroke={100}
+                    meter="stroke-secondary-500"
+                    track="stroke-surface-800/30"
+                    fill="fill-secondary-900"
+                    font={100}
+                    width="w-full h-full"
+                ></ProgressRadial>
+                <div class="absolute inset-0 flex items-center justify-center flex-col">
+                    <div class="text-5xl text-center text-secondary-900 font-semibold">
+                        {value}%
+                    </div>
+                    <div class="text-xl text-center">
+                        complete
+                    </div>
+                </div>
+            </div>
         </div>
         <!-- Card for Current Standing -->
         <div class="card row-span-1 flex flex-col items-center gap-5 pt-3 shadow variant-filled-primary">
-            <div class="font-bold uppercase text-xl">Current Standing</div>
+            <div class="font-bold uppercase text-xl">Your Current Standing</div>
             <div class="text-4xl">Cum Laude</div>
         </div>
     </section>
