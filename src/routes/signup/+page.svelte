@@ -37,6 +37,7 @@
             <option>Civil Engineering</option>
           </select>
           </div>
+          <br>
         <div class="relative">
           <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
             <svg class="w-4 h-4 text-gray-800 dark:text-gray" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
@@ -44,8 +45,9 @@
               </svg>
               
           </div>
-          <input type="name" id="name" class="bg-green-50 text-green-900 text-sm rounded-lg block w-full ps-10 p-2.5  dark:bg-green-100 dark:border-green-600 dark:placeholder-gray-400 dark:text-green dark:focus:ring-green-500 dark:focus:border-green-500" placeholder="Full Name" bind:value={name}>
+          <input type="text" id="email-address-icon" class="bg-green-50 border border-green-300 text-green-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full ps-10 p-2.5  dark:bg-green-100 dark:border-green-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-green-500 dark:focus:border-green-500" placeholder="Full Name"  bind:value={name}>
         </div>
+        <br>
         <div class="relative">
             <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
               <svg class="w-4 h-4 text-gray-800 dark:text-gray" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
@@ -54,15 +56,16 @@
                 </svg>
                 
             </div>
-            <input type="studentnumber" id="studentnumber" class="bg-green-50 text-green-900 text-sm rounded-lg block w-full ps-10 p-2.5  dark:bg-green-100 dark:border-green-600 dark:placeholder-gray-400 dark:text-green dark:focus:ring-green-500 dark:focus:border-green-500" placeholder="Student Number" bind:value={studentnumber}>
+            <input type="text" id="email-address-icon" class="bg-green-50 border border-green-300 text-green-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full ps-10 p-2.5  dark:bg-green-100 dark:border-green-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-green-500 dark:focus:border-green-500" placeholder="Student Number" bind:value={studentnumber}>
           </div>
+        <br>
         <div class="relative">
           <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
             <svg class="w-4 h-4 text-gray-800 dark:text-gray" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
                 <path fill-rule="evenodd" d="M8 10V7a4 4 0 1 1 8 0v3h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7c0-1.1.9-2 2-2h1Zm2-3a2 2 0 1 1 4 0v3h-4V7Zm2 6c.6 0 1 .4 1 1v3a1 1 0 1 1-2 0v-3c0-.6.4-1 1-1Z" clip-rule="evenodd"/>
               </svg>
           </div>
-          <input type="password" id="password" class="bg-green-50 text-green-900 text-sm rounded-lg block w-full ps-10 p-2.5  dark:bg-green-100 dark:border-green-600 dark:placeholder-gray-400 dark:text-green dark:focus:ring-green-500 dark:focus:border-green-500" placeholder="Password" bind:value={password}>
+          <input type="text" id="email-address-icon" class="bg-green-50 border border-green-300 text-green-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full ps-10 p-2.5  dark:bg-green-100 dark:border-green-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-green-500 dark:focus:border-green-500" placeholder="Password"  bind:value={password}>
         </div>
           
         <p class="TTCommons-Regular-14">
@@ -123,7 +126,7 @@
 
   .SignUpRightContainer {
     width: 325px;
-    height: 400px;
+    height: 500px;
     display: flex;
     margin: 0 auto;
     align-items: top;
