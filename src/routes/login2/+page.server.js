@@ -14,8 +14,8 @@ export const actions = {
     
         return{
             email,
-            message: "Email or Password is not valid."
-        }
+            message: "Student Number or Password is not valid",
+        };
        
     },
 };
