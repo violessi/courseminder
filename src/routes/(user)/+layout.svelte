@@ -9,7 +9,7 @@
 </script>
 
 <!-- Refer to the Skeleton Documentation to know what the following components are for. -->
-<AppShell>
+<AppShell class="bg-surface-500">
     <AppRail
         slot="sidebarLeft"
         width="w-28"
