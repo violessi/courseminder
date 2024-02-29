@@ -17,12 +17,12 @@
             <form method = "POST" class = "inputform">
                 <div>
             
-                <input class = "form" type = "email" name = "email" placeholder = "Student Number" value = {form?.email || ""}>
+                <input class = "form1" type = "email" name = "email" placeholder = "Student Number" value = {form?.email || ""}>
                 </div>
                 <br>
                 <div>
             
-                <input class = "form" type = "password" name = "password" placeholder = "Password" />
+                <input class = "form2" type = "password" name = "password" placeholder = "Password" />
                 </div>
                 <br>
                 <br>
@@ -76,7 +76,7 @@
     .loginform {
         padding: 1rem;
         background: #9FE3AC;
-        height: 350px;
+        height: 400px;
         width: 600px;
         margin-top: 50px;
         margin-right: auto;
@@ -105,9 +105,24 @@
         justify-content: center;
     }
 
-    .form {
+    .form1 {
         font-family: Arial;
         color: black;
+        background: url('./src/lib/assets/user icon.png');
+        background-color: gray;
+        background-size: contain;
+        background-repeat: no-repeat;
+        padding-left: 45px;
+    }
+
+    .form2 {
+        font-family: Arial;
+        color: black;
+        background: url('./src/lib/assets/lock icon.png');
+        background-color: gray;
+        background-size: contain;
+        background-repeat: no-repeat;
+        padding-left: 45px;
     }
 
     .red {
