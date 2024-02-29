@@ -70,7 +70,7 @@
           
         <p class="TTCommons-Regular-14">
         <br>
-        Already have an account? <a class="hyperlink" href="/login"
+        Already have an account? <a class="hyperlink" href="/login2"
             >Login here.</a>
         </p>
         <br>
