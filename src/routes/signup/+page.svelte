@@ -1,12 +1,25 @@
 <script>
+    let degree = '';
+    let name = '';
+    let studentnumber = '';
+    let password = '';
 
+    const handleSubmit = () => {
+        const user = {
+            degree,
+            name,
+            studentnumber,
+            password,
+        };
+        localStorage.setItem('user', JSON.stringify(user));
+    };
 </script>
 
 <div class = "background">
   <div class = "pageicon">
   </div>
   <div class = "SignUpContainer">
-    <form class="max-w-sm mx-auto">
+    <form class="max-w-sm mx-auto" on:submit|preventDefault={handleSubmit}>
       <div class = "CreateAccountShape">
         <p class = "TTCommons-Regular-14">
           CREATE ACCOUNT
@@ -19,7 +32,7 @@
                 <path fill-rule="evenodd" d="M10 2a3 3 0 0 0-3 3v1H5a3 3 0 0 0-3 3v2.4l1.4.7a7.7 7.7 0 0 0 .7.3 21 21 0 0 0 16.4-.3l1.5-.7V9a3 3 0 0 0-3-3h-2V5a3 3 0 0 0-3-3h-4Zm5 4V5c0-.6-.4-1-1-1h-4a1 1 0 0 0-1 1v1h6Zm6.4 7.9.6-.3V19a3 3 0 0 1-3 3H5a3 3 0 0 1-3-3v-5.4l.6.3a10 10 0 0 0 .7.3 23 23 0 0 0 18-.3h.1L21 13l.4.9ZM12 10a1 1 0 1 0 0 2 1 1 0 1 0 0-2Z" clip-rule="evenodd"/>
               </svg>
           </div>
-          <select id="degree" class="bg-green-50 text-green-900 text-sm rounded-lg block w-full ps-10 p-2.5  dark:bg-green-100 dark:border-green-600 dark:placeholder-gray-400 dark:text-green dark:focus:ring-green-500 dark:focus:border-green-500" placeholder ="Degree Program">
+          <select id="degree" class="bg-green-50 text-green-900 text-sm rounded-lg block w-full ps-10 p-2.5  dark:bg-green-100 dark:border-green-600 dark:placeholder-gray-400 dark:text-green dark:focus:ring-green-500 dark:focus:border-green-500" placeholder ="Degree Program" bind:value={degree}>
             <option>Computer Science</option>
             <option>Civil Engineering</option>
           </select>
@@ -31,7 +44,7 @@
               </svg>
               
           </div>
-          <input type="name" id="name" class="bg-green-50 text-green-900 text-sm rounded-lg block w-full ps-10 p-2.5  dark:bg-green-100 dark:border-green-600 dark:placeholder-gray-400 dark:text-green dark:focus:ring-green-500 dark:focus:border-green-500" placeholder="Full Name">
+          <input type="name" id="name" class="bg-green-50 text-green-900 text-sm rounded-lg block w-full ps-10 p-2.5  dark:bg-green-100 dark:border-green-600 dark:placeholder-gray-400 dark:text-green dark:focus:ring-green-500 dark:focus:border-green-500" placeholder="Full Name" bind:value={name}>
         </div>
         <div class="relative">
             <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
@@ -41,7 +54,7 @@
                 </svg>
                 
             </div>
-            <input type="studentnumber" id="studentnumber" class="bg-green-50 text-green-900 text-sm rounded-lg block w-full ps-10 p-2.5  dark:bg-green-100 dark:border-green-600 dark:placeholder-gray-400 dark:text-green dark:focus:ring-green-500 dark:focus:border-green-500" placeholder="Student Number">
+            <input type="studentnumber" id="studentnumber" class="bg-green-50 text-green-900 text-sm rounded-lg block w-full ps-10 p-2.5  dark:bg-green-100 dark:border-green-600 dark:placeholder-gray-400 dark:text-green dark:focus:ring-green-500 dark:focus:border-green-500" placeholder="Student Number" bind:value={studentnumber}>
           </div>
         <div class="relative">
           <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
@@ -49,7 +62,7 @@
                 <path fill-rule="evenodd" d="M8 10V7a4 4 0 1 1 8 0v3h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7c0-1.1.9-2 2-2h1Zm2-3a2 2 0 1 1 4 0v3h-4V7Zm2 6c.6 0 1 .4 1 1v3a1 1 0 1 1-2 0v-3c0-.6.4-1 1-1Z" clip-rule="evenodd"/>
               </svg>
           </div>
-          <input type="password" id="password" class="bg-green-50 text-green-900 text-sm rounded-lg block w-full ps-10 p-2.5  dark:bg-green-100 dark:border-green-600 dark:placeholder-gray-400 dark:text-green dark:focus:ring-green-500 dark:focus:border-green-500" placeholder="Password">
+          <input type="password" id="password" class="bg-green-50 text-green-900 text-sm rounded-lg block w-full ps-10 p-2.5  dark:bg-green-100 dark:border-green-600 dark:placeholder-gray-400 dark:text-green dark:focus:ring-green-500 dark:focus:border-green-500" placeholder="Password" bind:value={password}>
         </div>
           
         <p class="TTCommons-Regular-14">
