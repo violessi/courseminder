@@ -25,6 +25,12 @@
                 <input class = "form2" type = "password" name = "password" placeholder = "Password" />
                 </div>
                 <br>
+                <p class = "TTCommons-Regular-14">
+                    Don't have an account? <a
+                    class="hyperlink"
+                    href="/signup">Sign Up</a
+                >
+                </p>
                 <br>
                 <button class = "LoginButton">Login</button>
             </form>
@@ -76,7 +82,7 @@
     .loginform {
         padding: 1rem;
         background: #9FE3AC;
-        height: 400px;
+        height: 425px;
         width: 600px;
         margin-top: 50px;
         margin-right: auto;
@@ -128,5 +134,16 @@
     .red {
         color: red;
         text-align: center;
+    }
+
+    .TTCommons-Regular-14 {
+        font-family: Arial;
+        font-size: 14px;
+        color: black;
+        letter-spacing: -0.04em;
+    }
+
+    .hyperlink {
+        color: #226004;
     }
 </style>
