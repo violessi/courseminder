@@ -15,13 +15,13 @@
     }
 
     .background{
-        background-image: url('./src/lib/assets/bg.png');
+        background-image: url('$lib/assets/bg.png');
         background-repeat: no-repeat;
         background-size: cover;
         background-attachment: fixed;
     }
     .black-film {
-    background: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.5);
     }
 
     .button-student{

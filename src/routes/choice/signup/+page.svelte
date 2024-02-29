@@ -15,7 +15,7 @@ font-style: normal;
 }
 
 .background{
-    background-image: url('./src/lib/assets/bg.png');
+    background-image: url('$lib/assets/bg.png');
     background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed;
