@@ -1,17 +1,27 @@
 <script>
+    import { goto } from '$app/navigation';
+
     let degree = '';
     let name = '';
     let studentnumber = '';
     let password = '';
 
     const handleSubmit = () => {
-        const user = {
-            degree,
-            name,
-            studentnumber,
-            password,
-        };
-        localStorage.setItem('user', JSON.stringify(user));
+        // Check if all fields are filled
+        if (degree && name && studentnumber && password) {
+            const user = {
+                degree,
+                name,
+                studentnumber,
+                password,
+            };
+            localStorage.setItem('user', JSON.stringify(user));
+            goto('../student/dashboard');
+        } else {
+            // Handle the case when not all fields are filled
+            // You can show an error message or do something else
+            console.log('Please fill all fields');
+        }
     };
 </script>
 
@@ -32,10 +42,11 @@
                 <path fill-rule="evenodd" d="M10 2a3 3 0 0 0-3 3v1H5a3 3 0 0 0-3 3v2.4l1.4.7a7.7 7.7 0 0 0 .7.3 21 21 0 0 0 16.4-.3l1.5-.7V9a3 3 0 0 0-3-3h-2V5a3 3 0 0 0-3-3h-4Zm5 4V5c0-.6-.4-1-1-1h-4a1 1 0 0 0-1 1v1h6Zm6.4 7.9.6-.3V19a3 3 0 0 1-3 3H5a3 3 0 0 1-3-3v-5.4l.6.3a10 10 0 0 0 .7.3 23 23 0 0 0 18-.3h.1L21 13l.4.9ZM12 10a1 1 0 1 0 0 2 1 1 0 1 0 0-2Z" clip-rule="evenodd"/>
               </svg>
           </div>
-          <select id="degree" class="bg-green-50 text-green-900 text-sm rounded-lg block w-full ps-10 p-2.5  dark:bg-green-100 dark:border-green-600 dark:placeholder-gray-400 dark:text-green dark:focus:ring-green-500 dark:focus:border-green-500" placeholder ="Degree Program" bind:value={degree}>
+          <select id="degree" class="bg-green-50 text-green-900 text-sm rounded-lg block w-full ps-10 p-2.5  dark:bg-green-100 dark:border-green-600 dark:placeholder-gray-400 dark:text-green dark:focus:ring-green-500 dark:focus:border-green-500" bind:value={degree}>
+            <option disabled selected value="">Degree Program</option>
             <option>Computer Science</option>
             <option>Civil Engineering</option>
-          </select>
+        </select>
           </div>
           <br>
         <div class="relative">

@@ -65,7 +65,7 @@
         <div class= "flex flex-col items-center justify-center h-screen">
             <p class="text-6xl font-moul mb-10">Are you a</p> 
             <div class="flex space-x-4 mt-4 mb-28">
-                <a href="/student/login" class="button-student font-moul ">Student</a>
+                <a href="../../../login2" class="button-student font-moul ">Student</a>
                 <span class="font-moul text-6xl mt-7">or</span>
                 <a href="/faculty/login" class="button-faculty font-moul ">Faculty</a>
             </div>

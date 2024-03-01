@@ -32,7 +32,7 @@
             <span class="text-sm">Grades</span>
         </AppRailAnchor>
 
-        <AppRailAnchor href="/" slot="trail">
+        <AppRailAnchor href="../../" slot="trail">
             <IconLogout2 slot="lead" size={36} />
             <span class="text-sm">Log-out</span>
         </AppRailAnchor>
