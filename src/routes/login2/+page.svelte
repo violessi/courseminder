@@ -1,5 +1,5 @@
 <script>
-    import icon2 from '$lib/assets/icon2.png';
+    import icon2 from '$lib/assets/icon2.webp';
 
     export let form = null;
 </script>
@@ -69,7 +69,7 @@
         background-color: rgba(0, 0, 0, 0.5);
     }
     .container-fluid {
-        background-image: url('$lib/assets/bg.png');
+        background-image: url('$lib/assets/bg.webp');
         background-size: cover;
         background-repeat: no-repeat;
         height: 100%;
@@ -102,7 +102,7 @@
         width: 125px;
         height: 125px;
         border-radius: 50%;
-        background-image: url('$lib/assets/user-icon.png');
+        background-image: url('$lib/assets/user-icon.webp');
         background-color: #507858;
         background-size: contain;
         background-repeat: no-repeat;
@@ -116,7 +116,7 @@
     .form1 {
         font-family: Arial;
         color: black;
-        background: url('$lib/assets/user-icon.png');
+        background: url('$lib/assets/user-icon.webp');
         background-color: gray;
         background-size: contain;
         background-repeat: no-repeat;
@@ -126,7 +126,7 @@
     .form2 {
         font-family: Arial;
         color: black;
-        background: url('$lib/assets/lock-icon.png');
+        background: url('$lib/assets/lock-icon.webp');
         background-color: gray;
         background-size: contain;
         background-repeat: no-repeat;

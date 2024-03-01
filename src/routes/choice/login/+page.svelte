@@ -1,5 +1,5 @@
 <script>
-    import icon2 from '$lib/assets/icon2.png';
+    import icon2 from '$lib/assets/icon2.webp';
 </script>
 
 <body class="background">
@@ -31,7 +31,7 @@
     }
 
     .background {
-        background-image: url('$lib/assets/bg.png');
+        background-image: url('$lib/assets/bg.webp');
         background-repeat: no-repeat;
         background-size: cover;
         background-attachment: fixed;

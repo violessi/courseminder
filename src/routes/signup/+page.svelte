@@ -1,6 +1,6 @@
 <script>
     import { goto } from '$app/navigation';
-    import icon2 from '$lib/assets/icon2.png';
+    import icon2 from '$lib/assets/icon2.webp';
 
     let degree = '';
     let name = '';
@@ -160,7 +160,7 @@
 
 <style>
     .background {
-        background-image: url('$lib/assets/bg.png');
+        background-image: url('$lib/assets/bg.webp');
         background-size: cover;
         background-repeat: no-repeat;
         height: 100%;
@@ -211,7 +211,7 @@
         margin: 0 auto;
         align-items: top;
         text-align: center;
-        background-image: url('$lib/assets/girl.png');
+        background-image: url('$lib/assets/girl.webp');
         background-position: 100%;
         background-size: contain;
         background-repeat: no-repeat;

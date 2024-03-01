@@ -1,7 +1,7 @@
 <script lang="ts">
-    import {AppRail, AppRailAnchor, AppShell } from '@skeletonlabs/skeleton';
+    import { AppRail, AppRailAnchor, AppShell } from '@skeletonlabs/skeleton';
     import { IconCalendarWeek, IconFileAnalytics, IconLayoutDashboard, IconLogout2 } from '@tabler/icons-svelte';
-    import icon from '$lib/assets/icon.png';
+    import icon from '$lib/assets/icon.webp';
     import { page } from '$app/stores';
 </script>
 
