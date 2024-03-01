@@ -1,41 +1,46 @@
 <script>
+    import icon2 from '$lib/assets/icon2.png';
+
     export let form;
     console.log(form);
 </script>
 
-<div class = "container-fluid">
-    <div class = "pageicon">
-    </div>
-    <div class = "loginform">
-        <div class = "logo">
-        </div>
-        <br>
+<body class="container-fluid">
+    <div class="black-film h-full">
+        <p>&nbsp</p>
+        <img src={icon2} alt="Icon" class="w-20 h-11 ml-4" />
+        <p class="font-michroma mt-0 text-[9px] ml-4">CourseMinder</p>
+        <div class="loginform">
+            <div class="logo"></div>
+            <br />
             {#if form?.message}
-            <p class = "red"> {form.message}</p>
-            <br>
+                <p class="red">{form.message}</p>
+                <br />
             {/if}
-            <form method = "POST" class = "inputform">
+            <form method="POST" class="inputform">
                 <div>
-            
-                <input class = "form1" type = "email" name = "email" placeholder = "Student Number" value = {form?.email || ""}>
+                    <input
+                        class="form1"
+                        type="email"
+                        name="email"
+                        placeholder="Student Number"
+                        value={form?.email || ''}
+                    />
                 </div>
-                <br>
+                <br />
                 <div>
-            
-                <input class = "form2" type = "password" name = "password" placeholder = "Password" />
+                    <input class="form2" type="password" name="password" placeholder="Password" />
                 </div>
-                <br>
-                <p class = "TTCommons-Regular-14">
-                    Don't have an account? <a
-                    class="hyperlink"
-                    href="/signup">Sign Up</a
-                >
+                <br />
+                <p class="TTCommons-Regular-14">
+                    Don't have an account? <a class="hyperlink" href="/signup">Sign Up</a>
                 </p>
-                <br>
-                <button class = "LoginButton">Login</button>
+                <br />
+                <button class="LoginButton">Login</button>
             </form>
-    </div>  
-</div>
+        </div>
+    </div>
+</body>
 
 <style>
     .LoginButton {
@@ -55,33 +60,31 @@
         width: 75%;
         font-size: 40px;
         text-align: center;
-        vertical-align: middle;
         display: block;
         margin: 0 auto;
 
         justify-content: center;
-        
     }
 
+    .black-film {
+        background-color: rgba(0, 0, 0, 0.5);
+    }
     .container-fluid {
-        border: 2px solid black;
-        background-image: url('./src/lib/assets/bg.jpg');
+        background-image: url('$lib/assets/bg.png');
         background-size: cover;
         background-repeat: no-repeat;
         height: 100%;
     }
 
-    .pageicon {
-        width: 100px;
-        height: 100px;
-        background-image: url('./src/lib/assets/icon.png');
-        background-size: contain;
-        background-repeat: no-repeat;
+    .font-michroma {
+        font-family: 'Michroma', sans-serif;
+        font-weight: 400;
+        font-style: normal;
     }
 
     .loginform {
         padding: 1rem;
-        background: #9FE3AC;
+        background: #9fe3ac;
         height: 425px;
         width: 600px;
         margin-top: 50px;
@@ -100,7 +103,7 @@
         width: 125px;
         height: 125px;
         border-radius: 50%;
-        background-image: url('./src/lib/assets/user icon.png');
+        background-image: url('$lib/assets/user-icon.png');
         background-color: #507858;
         background-size: contain;
         background-repeat: no-repeat;
@@ -114,7 +117,7 @@
     .form1 {
         font-family: Arial;
         color: black;
-        background: url('./src/lib/assets/user icon.png');
+        background: url('$lib/assets/user-icon.png');
         background-color: gray;
         background-size: contain;
         background-repeat: no-repeat;
@@ -124,7 +127,7 @@
     .form2 {
         font-family: Arial;
         color: black;
-        background: url('./src/lib/assets/lock icon.png');
+        background: url('$lib/assets/lock-icon.png');
         background-color: gray;
         background-size: contain;
         background-repeat: no-repeat;
