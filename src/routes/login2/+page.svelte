@@ -1,8 +1,7 @@
 <script>
     import icon2 from '$lib/assets/icon2.png';
 
-    export let form;
-    console.log(form);
+    export let form = null;
 </script>
 
 <body class="container-fluid">

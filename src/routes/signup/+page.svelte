@@ -7,9 +7,8 @@
     let studentnumber = '';
     let password = '';
     let errorMessage = '';
-    let valid = true;
 
-    const handleSubmit = () => {
+    function handleSubmit() {
         // Check if all fields are filled
         if (degree && name && studentnumber && password) {
             const user = {
@@ -20,13 +19,11 @@
             };
             localStorage.setItem('user', JSON.stringify(user));
             goto('../student/dashboard');
-        } else {
-            // Handle the case when not all fields are filled
-            // You can show an error message or do something else
-            valid = false;
-            errorMessage = 'Please fill-up all fields.';
         }
-    };
+        // Handle the case when not all fields are filled
+        // You can show an error message or do something else
+        else errorMessage = 'Please fill-up all fields.';
+    }
 </script>
 
 <body class="background">

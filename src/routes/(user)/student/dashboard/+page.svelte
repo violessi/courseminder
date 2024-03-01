@@ -1,6 +1,6 @@
 <script>
     import { ProgressRadial } from '@skeletonlabs/skeleton';
-    let value = 10; // %
+    const value = 10; // %
 </script>
 
 <div class="h-full flex flex-col p-10 gap-10">
@@ -36,9 +36,7 @@
                     <div class="text-5xl text-center text-secondary-900 font-semibold">
                         {value}%
                     </div>
-                    <div class="text-xl text-center">
-                        complete
-                    </div>
+                    <div class="text-xl text-center">complete</div>
                 </div>
             </div>
         </div>

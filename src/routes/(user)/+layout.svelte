@@ -1,11 +1,8 @@
 <script lang="ts">
-    import { AppBar, AppRail, AppRailAnchor, AppShell } from '@skeletonlabs/skeleton';
+    import {AppRail, AppRailAnchor, AppShell } from '@skeletonlabs/skeleton';
     import { IconCalendarWeek, IconFileAnalytics, IconLayoutDashboard, IconLogout2 } from '@tabler/icons-svelte';
     import icon from '$lib/assets/icon.png';
     import { page } from '$app/stores';
-
-    const course: string = 'BS Computer Science';
-    const studentNumber: string = '2020-12345';
 </script>
 
 <!-- Refer to the Skeleton Documentation to know what the following components are for. -->
