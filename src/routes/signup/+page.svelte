@@ -1,6 +1,26 @@
-<script>
+<script lang="ts">
     import { goto } from '$app/navigation';
     import icon2 from '$lib/assets/icon2.png';
+    import { initializeApp } from "firebase/app";
+    import { getDatabase, ref, set } from "firebase/database"
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    const firebaseConfig = {
+    apiKey: "AIzaSyCmwpRzGyoeD-Xuh6Cuh1Agbsxw31Uekhk",
+    authDomain: "courseminder-dev.firebaseapp.com",
+    databaseURL: "https://courseminder-dev-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "courseminder-dev",
+    storageBucket: "courseminder-dev.appspot.com",
+    messagingSenderId: "274860730108",
+    appId: "1:274860730108:web:b7f706a51ee7a79dbd1979",
+    measurementId: "G-1T6H3BFHRR"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
 
     let degree = '';
     let name = '';
@@ -9,16 +29,20 @@
     let errorMessage = '';
     let valid = true;
 
+    function writeStudentData(studentnumber: string, name: string, degree: string, password: string) {
+        const db = getDatabase(app);
+        const reference = ref(db, 'students/' + studentnumber);
+        set(reference, {
+            studentid: studentnumber,
+            name: name,
+            degree: degree,
+            password: password
+        });
+    }
     const handleSubmit = () => {
         // Check if all fields are filled
         if (degree && name && studentnumber && password) {
-            const user = {
-                degree,
-                name,
-                studentnumber,
-                password,
-            };
-            localStorage.setItem('user', JSON.stringify(user));
+            writeStudentData(studentnumber, name, degree, password);
             goto('../student/dashboard');
         } else {
             // Handle the case when not all fields are filled
@@ -133,7 +157,7 @@
                         </svg>
                     </div>
                     <input
-                        type="text"
+                        type="password"
                         id="email-address-icon"
                         class="bg-green-50 border border-green-300 text-green-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full ps-10 p-2.5 dark:bg-green-100 dark:border-green-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-green-500 dark:focus:border-green-500"
                         placeholder="Password"

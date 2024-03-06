@@ -57,6 +57,7 @@
   "type": "module",
   "dependencies": {
     "@tabler/icons-svelte": "^2.47.0",
+    "firebase": "^10.8.1",
     "pocketbase": "^0.21.1",
     "svelte-spa-router": "^4.0.1",
     "userbase-js": "^2.8.0",
