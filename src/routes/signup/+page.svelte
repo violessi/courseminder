@@ -2,7 +2,7 @@
     import { goto } from '$app/navigation';
     import icon2 from '$lib/assets/icon2.png';
     import { initializeApp } from "firebase/app";
-    import { getDatabase, ref, set } from "firebase/database"
+    import { getDatabase, ref, set, get } from "firebase/database"
     // TODO: Add SDKs for Firebase products that you want to use
     // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -29,21 +29,31 @@
     let errorMessage = '';
     let valid = true;
 
-    function writeStudentData(studentnumber: string, name: string, degree: string, password: string) {
+    async function writeStudentData(studentnumber: string, name: string, degree: string, password: string) {
         const db = getDatabase(app);
         const reference = ref(db, 'students/' + studentnumber);
-        set(reference, {
-            studentid: studentnumber,
-            name: name,
-            degree: degree,
-            password: password
-        });
+
+        // Check if the student already exists
+        const snapshot = await get(reference);
+        if (snapshot.exists()) {
+            // The student already exists, handle this case as needed
+            errorMessage = 'A student with this number already exists.';
+            valid = false;
+        } else {
+            // The student doesn't exist, write the data
+            set(reference, {
+                studentid: studentnumber,
+                name: name,
+                degree: degree,
+                password: password
+            });
+            goto('../student/dashboard');
+        }
     }
     const handleSubmit = () => {
         // Check if all fields are filled
         if (degree && name && studentnumber && password) {
             writeStudentData(studentnumber, name, degree, password);
-            goto('../student/dashboard');
         } else {
             // Handle the case when not all fields are filled
             // You can show an error message or do something else
