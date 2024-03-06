@@ -1,8 +1,43 @@
-<script>
+<script lang="ts">
     import icon2 from '$lib/assets/icon2.png';
+    import { initializeApp } from "firebase/app";
+    import { getDatabase, ref, set, get } from "firebase/database"
+    import { goto } from '$app/navigation';
 
-    export let form;
-    console.log(form);
+
+    const firebaseConfig = {
+    apiKey: "AIzaSyCmwpRzGyoeD-Xuh6Cuh1Agbsxw31Uekhk",
+    authDomain: "courseminder-dev.firebaseapp.com",
+    databaseURL: "https://courseminder-dev-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "courseminder-dev",
+    storageBucket: "courseminder-dev.appspot.com",
+    messagingSenderId: "274860730108",
+    appId: "1:274860730108:web:b7f706a51ee7a79dbd1979",
+    measurementId: "G-1T6H3BFHRR"
+    };
+
+    // Initialize Firebase and get database
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    let studentnumber = '';
+    let password = '';
+    let errorMessage = '';
+
+    async function checkLogin(studentnumber : string, password : string) {
+        const reference = ref(db, 'students/' + studentnumber);
+        const snapshot = await get(reference);
+        if (snapshot.child("password").val() === password) {
+            goto('../student/dashboard');
+        } else {
+            console.log(studentnumber);
+            console.log(password);
+            errorMessage = "Student Number or Password is not valid.";
+        }
+    }
+    const handleSubmit = () => {
+        checkLogin(studentnumber, password);
+    };
 </script>
 
 <body class="container-fluid">
@@ -13,29 +48,29 @@
         <div class="loginform">
             <div class="logo"></div>
             <br />
-            {#if form?.message}
-                <p class="red">{form.message}</p>
-                <br />
-            {/if}
-            <form method="POST" class="inputform">
+            <form method="POST" class="inputform" on:submit|preventDefault={handleSubmit}>
                 <div>
                     <input
                         class="form1"
-                        type="email"
-                        name="email"
+                        type="text"
                         placeholder="Student Number"
-                        value={form?.email || ''}
+                        bind:value={studentnumber}
                     />
                 </div>
                 <br />
                 <div>
-                    <input class="form2" type="password" name="password" placeholder="Password" />
+                    <input 
+                        class="form2" 
+                        type="password" 
+                        placeholder="Password"
+                        bind:value={password}
+                     />
                 </div>
+                <div class="error">{errorMessage}</div>
                 <br />
                 <p class="TTCommons-Regular-14">
                     Don't have an account? <a class="hyperlink" href="/signup">Sign Up</a>
                 </p>
-                <br />
                 <button class="LoginButton">Login</button>
             </form>
         </div>
@@ -134,7 +169,7 @@
         padding-left: 45px;
     }
 
-    .red {
+    .error {
         color: red;
         text-align: center;
     }
