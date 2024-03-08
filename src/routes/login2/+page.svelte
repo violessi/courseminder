@@ -3,7 +3,7 @@
     import { initializeApp } from "firebase/app";
     import { getDatabase, ref, set, get } from "firebase/database"
     import { goto } from '$app/navigation';
-    import { studentId } from '../(user)/[studentnumber]/stores';
+    import { studentId } from '../(user)/student/stores';
 
     const firebaseConfig = {
     apiKey: "AIzaSyCmwpRzGyoeD-Xuh6Cuh1Agbsxw31Uekhk",
@@ -31,7 +31,7 @@
         const reference = ref(db, 'students/' + studentnumber);
         const snapshot = await get(reference);
         if (snapshot.child("password").val() === password) {
-            goto(`../${studentnumber}/dashboard`);
+            goto(`../student/dashboard`);
         } else {
             console.log(studentnumber);
             console.log(password);

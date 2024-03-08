@@ -3,7 +3,7 @@
     import icon2 from '$lib/assets/icon2.png';
     import { initializeApp } from "firebase/app";
     import { getDatabase, ref, set, get } from "firebase/database"
-    import { studentId, studentDegree} from "../(user)/[studentnumber]/stores"
+    import { studentId, studentDegree} from "../(user)/student/stores"
 
     const firebaseConfig = {
     apiKey: "AIzaSyCmwpRzGyoeD-Xuh6Cuh1Agbsxw31Uekhk",
@@ -46,7 +46,7 @@
             });
             studentId.set(studentnumber);
             studentDegree.set(degree);
-            goto(`../${studentnumber}/dashboard`);
+            goto(`../student/dashboard`);
         }
     }
     const handleSubmit = () => {
