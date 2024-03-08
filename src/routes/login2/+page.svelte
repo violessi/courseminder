@@ -3,7 +3,7 @@
     import { initializeApp } from "firebase/app";
     import { getDatabase, ref, set, get } from "firebase/database"
     import { goto } from '$app/navigation';
-
+    import { studentId } from '../(user)/[studentnumber]/stores';
 
     const firebaseConfig = {
     apiKey: "AIzaSyCmwpRzGyoeD-Xuh6Cuh1Agbsxw31Uekhk",
@@ -25,6 +25,9 @@
     let errorMessage = '';
 
     async function checkLogin(studentnumber : string, password : string) {
+        // Store student data in global variable
+        studentId.set(studentnumber)
+        
         const reference = ref(db, 'students/' + studentnumber);
         const snapshot = await get(reference);
         if (snapshot.child("password").val() === password) {
