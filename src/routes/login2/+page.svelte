@@ -28,7 +28,7 @@
         const reference = ref(db, 'students/' + studentnumber);
         const snapshot = await get(reference);
         if (snapshot.child("password").val() === password) {
-            goto('../student/dashboard');
+            goto(`../${studentnumber}/dashboard`);
         } else {
             console.log(studentnumber);
             console.log(password);

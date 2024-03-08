@@ -43,7 +43,7 @@
                 degree: degree,
                 password: password
             });
-            goto('../student/dashboard');
+            goto(`../${studentnumber}/dashboard`);
         }
     }
     const handleSubmit = () => {
