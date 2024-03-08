@@ -3,7 +3,7 @@
     import { initializeApp } from "firebase/app";
     import { getDatabase, ref, set, get } from "firebase/database"
     import { goto } from '$app/navigation';
-    import { studentId } from '../(user)/student/stores';
+    import { studentDegree, studentId } from '../(user)/student/stores';
 
     const firebaseConfig = {
     apiKey: "AIzaSyCmwpRzGyoeD-Xuh6Cuh1Agbsxw31Uekhk",
@@ -24,12 +24,13 @@
     let password = '';
     let errorMessage = '';
 
-    async function checkLogin(studentnumber : string, password : string) {
-        // Store student data in global variable
-        studentId.set(studentnumber)
-        
+    async function checkLogin(studentnumber : string, password : string) {        
         const reference = ref(db, 'students/' + studentnumber);
         const snapshot = await get(reference);
+
+        // Store student data in global variable
+        studentId.set(studentnumber)
+        studentDegree.set(snapshot.child("degree").val())
         if (snapshot.child("password").val() === password) {
             goto(`../student/dashboard`);
         } else {

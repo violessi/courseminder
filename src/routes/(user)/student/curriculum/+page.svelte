@@ -53,7 +53,7 @@
 <body>
     <div>
         {#each courses as course (course)}
-            <button class="bg-secondary-500">{course}</button>
+            <button class="bg-secondary-500 rounded-lg flex-row grid-cols-5 p-1">{course}</button>
         {/each}
     </div>
 </body>
