@@ -1,7 +1,7 @@
 <script lang="ts">
     import { initializeApp } from "firebase/app";
     import { getDatabase, ref, set, get } from "firebase/database"
-    import { studentId, studentDegree } from "../stores"
+    import { studentId, studentDegree } from "../stores.ts"
 
     const firebaseConfig = {
     apiKey: "AIzaSyCmwpRzGyoeD-Xuh6Cuh1Agbsxw31Uekhk",
@@ -51,9 +51,9 @@
 
 </script>
 <body>
-    <div>
+    <div class="flex-row grid grid-cols-4 p-2 grid-rows-5 gap-4 content-center" >
         {#each courses as course (course)}
-            <button class="bg-secondary-500 rounded-lg flex-row grid-cols-5 p-1">{course}</button>
+            <a href="/{course}"><button class="bg-secondary-500 rounded-lg p-1.5 text-sm">{course}</button></a>
         {/each}
     </div>
 </body>
