@@ -49,11 +49,49 @@
                     'CE Elective 2', 'Arts 1', 'Philo 1', 'Soc Sci 2', 'PI 100'];
     }
 
+    let showPopup = false;
+    let selectedCourse = '';
+    let courseTitle = 'Introduction to Data Science'
+    let courseDescription = 'Lorem ipsum dolor sit amet. Sit rerum nemo quo facilis facere et quis aperiam hic illo quas. Qui maiores expedita et sint voluptas sit tempora laboriosam. Eum nemo voluptatum est dolorem eveniet a galisum ratione. Et sint dicta sit quae officia ut tempora perferendis eum molestiae dolores qui rerum sint ut quis assumenda in aperiam esse.';
+    let numUnits = '3.0';
+    let prerequisites = 'CS 20, CS 21';
+    let corequisites = 'None';
+
+    function showCoursePopup(course : string) {
+        selectedCourse = course;
+        showPopup = true;
+    }
+
+    function closePopup() {
+        showPopup = false;
+    }
+
+    function makeCourseDirectory() {
+        const courseRef = ref(db, ``);
+        set(courseRef, courses);
+    }
+
 </script>
 <body>
-    <div class="flex-row grid grid-cols-4 p-2 grid-rows-5 gap-4 content-center" >
+    <div class="flex-row grid grid-cols-4 p-2 grid-rows-5 gap-4 content-center">
         {#each courses as course (course)}
-            <a href="/{course}"><button class="bg-secondary-500 rounded-lg p-1.5 text-sm">{course}</button></a>
+            <button on:click={() => showCoursePopup(course)} class="bg-secondary-500 rounded-lg p-1.5 text-sm">{course}</button>
         {/each}
     </div>
+    
+    {#if showPopup}
+        <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+            <div class="bg-white p-4 rounded left-7 w-1/2 items-center justify-center">
+                <h2 class="text-emerald-900 text-xl font-bold mb-2"> {selectedCourse}</h2>
+                <div class="flex-column">
+                    <p class="text-emerald-900"><strong>Course Title:</strong> {courseTitle}</p>
+                    <p class="text-emerald-900"><strong>Course Description:</strong> {courseDescription}</p>
+                    <p class="text-emerald-900"><strong>Number of Units:</strong> {numUnits}</p>
+                    <p class="text-emerald-900"><strong>Prerequisites:</strong> {prerequisites}</p>
+                    <p class="text-emerald-900"><strong>Corequisites:</strong> {corequisites}</p>
+                </div>
+                <button on:click={closePopup} class="bg-red-500 text-white rounded px-2 py-1">Close</button>
+            </div>
+        </div>
+    {/if}
 </body>
