@@ -8,6 +8,8 @@
     export let padding = '';
 </script>
 
-<div class={`${background} ${text} ${flex} ${items} ${height} ${width} ${padding} shadow`}>
+<div
+    class={`${background} ${text} ${flex} ${items} ${height} ${width} ${padding} shadow rounded-xl border border-tertiary-300`}
+>
     <slot />
 </div>
