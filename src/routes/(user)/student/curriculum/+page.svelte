@@ -1,6 +1,6 @@
 <script lang="ts">
     import { initializeApp } from "firebase/app";
-    import { getDatabase, ref, set, get } from "firebase/database"
+    import { getDatabase, ref, push, get, child, set, query, equalTo, orderByValue, orderByKey } from "firebase/database"
     import { studentId, studentDegree } from "../stores"
 
     const firebaseConfig = {
@@ -51,25 +51,94 @@
 
     let showPopup = false;
     let selectedCourse = '';
-    let courseTitle = 'Introduction to Data Science'
-    let courseDescription = 'Lorem ipsum dolor sit amet. Sit rerum nemo quo facilis facere et quis aperiam hic illo quas. Qui maiores expedita et sint voluptas sit tempora laboriosam. Eum nemo voluptatum est dolorem eveniet a galisum ratione. Et sint dicta sit quae officia ut tempora perferendis eum molestiae dolores qui rerum sint ut quis assumenda in aperiam esse.';
-    let numUnits = '3.0';
-    let prerequisites = 'CS 20, CS 21';
-    let corequisites = 'None';
+    let courseTitle = ''
+    let courseDescription = '';
+    let numUnits = '';
+    let prerequisites = '';
+    let corequisites = '';
 
-    function showCoursePopup(course : string) {
+    async function getCourseKey(course : string) {
+        console.log(course);
+        const q = query(ref(db, 'courseMap'), orderByValue(), equalTo(course));
+        const snapshot = await get(q);
+        if (snapshot.exists()) {
+            let courseKey;
+            snapshot.forEach((childSnapshot) => {
+                console.log('Child found');
+                courseKey = childSnapshot.key;
+            });
+            console.log(courseKey);
+            return courseKey;
+        } else {
+            console.log('No matching courses.');
+        }
+    }
+
+    async function getCourseData(courseKey : string | undefined) {
+        if (courseKey === null){
+            console.log('courseKey is null');
+            return
+        }
+        const courseRef = ref(db, 'courses/' + courseKey);
+        const snapshot = await get(courseRef);
+        if (snapshot.exists()) {
+            let courseData = snapshot.val();
+            selectedCourse = courseData.course;
+            courseTitle = courseData.title;
+            courseDescription = courseData.desc;
+            numUnits = courseData.numUnits;
+            prerequisites = courseData.prereq;
+            corequisites = courseData.coreq;
+        } else {
+            console.log('No data available');
+        }
+    }
+    
+
+    async function showCoursePopup(course : string) {
         selectedCourse = course;
         showPopup = true;
+        let courseKey : string | undefined = await getCourseKey(course);
+        getCourseData(courseKey);
     }
 
     function closePopup() {
         showPopup = false;
     }
 
-    function makeCourseDirectory() {
-        const courseRef = ref(db, ``);
-        set(courseRef, courses);
+    async function makeCourseDirectory() {
+        const courseRef = ref(db, `courses`);
+        for (let i = 0; i < courses.length; i++) {
+            const snapshot = await get(child(courseRef, courses[i]));
+            let courseKey;
+            if (!snapshot.exists()) {
+                let courseData = {
+                    course: courses[i],
+                    title: courseTitle,
+                    desc: courseDescription,
+                    numUnits: numUnits,
+                    prereq: prerequisites,
+                    coreq: corequisites
+                };
+                const newCourseRef = push(courseRef, courseData);
+                courseKey = newCourseRef.key;
+                const mapRef = ref(db, 'courseMap/' + courseKey);
+                set(mapRef, courses[i]);
+
+            }
+        }
     }
+
+    // makeCourseDirectory();
+
+    async function deleteCollection(collectionPath : string) {
+        const courseref = ref(db, collectionPath);
+        await set(courseref, null);
+    }
+
+    // deleteCollection('courses');
+    // deleteCollection('courseMap')
+
 
 </script>
 <body>
