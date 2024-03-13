@@ -1,12 +1,20 @@
 <script lang="ts">
     import GradeCard from '$lib/components/GradeCard.svelte';
-    import { IconPlus } from '@tabler/icons-svelte';
+    // import { IconPlus } from '@tabler/icons-svelte';
     import AddSem from '$lib/components/AddSem.svelte';
     import { SemesterStore } from '$lib/stores/SemesterStores';
     import { Modal, getModalStore } from '@skeletonlabs/skeleton';
     import type { ModalSettings, ModalComponent, ModalStore } from '@skeletonlabs/skeleton';
 
     const modalStore = getModalStore();
+
+    const newSem = {
+        id: $SemesterStore.length,
+        sem: '',
+        year: '',
+        units: 0,
+        gwa: 0.0,
+    };
 
     let totUnits: number = 0;
     let GWA: number = 0.0;
@@ -49,8 +57,8 @@
 <div class="h-full m-10 space-y-10">
     <div class="flex justify-between">
         <div class="text-tertiary-900 font-bold text-4xl">View Grades</div>
-        <button type="button" class="btn bg-secondary-400 text-white rounded-xl" on:click={() => inputSem()}>
-            <IconPlus />
+        <button type="button" class="btn bg-secondary-400 text-white rounded-xl" on:click={() => addSem(newSem)}>
+            <!-- <IconPlus /> -->
             <span class="text-lg">Add Semester</span>
         </button>
     </div>
