@@ -26,6 +26,22 @@ function initStore() {
         return res;
     }
 
+    function computeGWA(id: string) {
+        update((store) => {
+            const sem = getSem(id);
+            const totalUnits = sem.subjects.reduce((acc, cur) => Number(acc) + Number(cur.units), 0);
+            const totalGrade = sem.subjects.reduce(
+                (acc, cur) => Number(acc) + Number(cur.grade) * Number(cur.units),
+                0,
+            );
+            sem.details.units = totalUnits;
+            const res = totalGrade / totalUnits;
+            res.toFixed(4);
+            sem.details.gwa = res;
+            return store;
+        });
+    }
+
     function addsubject(id: string, subject: Subjects[0]) {
         update((store) => {
             const sem = getSem(id);
@@ -41,6 +57,7 @@ function initStore() {
         add,
         getSem,
         addsubject,
+        computeGWA,
     };
 }
 

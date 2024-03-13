@@ -14,12 +14,13 @@
 
     // Form Data
     const formData = {
-        semester: '' as SemType,
-        year: '',
+        className: null,
+        grade: null,
+        units: null,
     };
 
     let message = '';
-    let regex = /[0-9]+-[0-9]+/i;
+    let gradesArray = ['1.0', '1.25', '1.5', '1.75', '2.0', '2.25', '2.5', '2.75', '3.0', '4.0', '5.0'];
 
     // We've created a custom submit function to pass the response and close the modal.
     function onFormSubmit(): void {
@@ -28,12 +29,12 @@
     }
 
     const handleSubmit = (e: Event) => {
-        if (!formData.semester || !formData.year) {
+        if (!formData.className || !formData.grade || !formData.units) {
             e.preventDefault();
             message = 'Please fill out all fields.';
-        } else if (!regex.test(formData.year)) {
+        } else if (!gradesArray.includes(formData.grade)) {
             e.preventDefault();
-            message = 'Invalid academic year. Please use the format "YYYY-YYYY".';
+            message = 'Invalid grade. Please follow the format of the UP Grading System.';
         } else {
             onFormSubmit();
         }
@@ -53,30 +54,36 @@
         <header class={cHeader}>{$modalStore[0].title ?? '(title missing)'}</header>
         <!-- Enable for debugging: -->
         <div class={cForm}>
-            <div class="flex place-items-center">
-                <div class="w-1/4">Semester:</div>
-                <ListBox
-                    class="flex items-center justify-self-start"
-                    background=""
-                    spacing="space-y-0"
-                    regionDefault="text-center"
-                >
-                    <ListBoxItem bind:group={formData.semester} name="1st" value={SemType.first}
-                        >{SemType.first}</ListBoxItem
-                    >
-                    <ListBoxItem bind:group={formData.semester} name="2nd" value={SemType.second}
-                        >{SemType.second}</ListBoxItem
-                    >
-                    <ListBoxItem bind:group={formData.semester} name="Midyear" value={SemType.midyear}
-                        >{SemType.midyear}</ListBoxItem
-                    >
-                </ListBox>
-            </div>
-
             <form class="modal-form">
                 <label class="label flex place-items-center gap-5">
-                    <div class="w-1/4">Academic Year:</div>
-                    <input class="input" type="text" bind:value={formData.year} required placeholder="YYYY-YYYY" />
+                    <div class="w-1/4">Class Name:</div>
+                    <input
+                        class="input"
+                        type="text"
+                        bind:value={formData.className}
+                        required
+                        placeholder="Enter class name..."
+                    />
+                </label>
+                <label class="label flex place-items-center gap-5">
+                    <div class="w-1/4">Grade:</div>
+                    <input
+                        class="input"
+                        type="text"
+                        bind:value={formData.grade}
+                        required
+                        placeholder="Enter class grade..."
+                    />
+                </label>
+                <label class="label flex place-items-center gap-5">
+                    <div class="w-1/4">Units:</div>
+                    <input
+                        class="input"
+                        type="text"
+                        bind:value={formData.units}
+                        required
+                        placeholder="Enter class units..."
+                    />
                 </label>
             </form>
         </div>

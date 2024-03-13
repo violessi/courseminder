@@ -1,4 +1,4 @@
-import { type Output, array, enum_, nullable, number, object, safeInteger, string } from 'valibot';
+import { type Output, array, enum_, nullable, number, object, safeInteger, string, toUpperCase } from 'valibot';
 
 export enum SemType {
     first = '1st Semester',
@@ -16,7 +16,7 @@ export type SemDetails = Output<typeof SemDetails>;
 
 export const Subjects = array(
     object({
-        className: string(),
+        className: string([toUpperCase()]),
         grade: number(),
         units: number([safeInteger()]),
     }),

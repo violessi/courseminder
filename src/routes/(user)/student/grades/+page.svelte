@@ -2,30 +2,54 @@
     import GradeCard from '$lib/components/GradeCard.svelte';
     import { SemesterStore } from '$lib/stores/SemesterStores';
     import { SemDetails, SemType } from '$lib/models/types';
-    import { pick, safeParse, string } from 'valibot';
+    import { Modal, getModalStore } from '@skeletonlabs/skeleton';
+    import type { ModalSettings, ModalComponent, ModalStore } from '@skeletonlabs/skeleton';
+    import AddSem from '$lib/components/AddSem.svelte';
+
+    const modalStore = getModalStore();
 
     let totUnits: number = 0;
     let GWA: number = 0.0;
 
     const latinHonors: string =
-        GWA <= 1.2 ? 'Summa Cum Laude' : GWA <= 1.45 ? 'Magna Cum Laude' : GWA <= 1.75 ? 'Cum Laude' : 'None';
+        GWA === 0
+            ? 'None'
+            : GWA <= 1.2
+              ? 'Summa Cum Laude'
+              : GWA <= 1.45
+                ? 'Magna Cum Laude'
+                : GWA <= 1.75
+                  ? 'Cum Laude'
+                  : 'None';
 
-    function addSem(): void {
+    function addSem(sem: SemType, year: string): void {
         const data = {
-            sem: SemType.first,
-            year: '2021-2022',
+            sem: sem,
+            year: year,
         };
-
         SemesterStore.add(data);
     }
 
     $: data = $SemesterStore;
+
+    function inputSem(): void {
+        const c: ModalComponent = { ref: AddSem };
+        const modal: ModalSettings = {
+            type: 'component',
+            component: c,
+            title: 'Add New Semester',
+            response: (r) => {
+                addSem(r.semester, r.year);
+            },
+        };
+        modalStore.trigger(modal);
+    }
 </script>
 
 <div class="h-full m-10 space-y-10">
     <div class="flex justify-between">
         <div class="text-tertiary-900 font-bold text-4xl">View Grades</div>
-        <button type="button" class="btn bg-secondary-400 text-white rounded-xl" on:click={() => addSem()}>
+        <button type="button" class="btn bg-secondary-400 text-white rounded-xl" on:click={() => inputSem()}>
             <!-- <IconPlus /> -->
             <span class="text-lg">Add Semester</span>
         </button>
