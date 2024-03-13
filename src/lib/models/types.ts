@@ -1,21 +1,32 @@
-import { type Output, array, number, object, safeInteger, string } from 'valibot';
+import { type Output, array, enum_, nullable, number, object, safeInteger, string } from 'valibot';
 
-export const Semester = array(
-    object({
-        id: number([safeInteger()]),
-        sem: string(),
-        year: string(),
-        gwa: number(),
-        units: number(),
-    }),
-);
-export type Semester = Output<typeof Semester>;
+export enum SemType {
+    first = '1st Semester',
+    second = '2nd Semester',
+    midyear = 'Midyear',
+}
 
-export const Grade = array(
+export const SemDetails = object({
+    sem: enum_(SemType),
+    year: string(),
+    gwa: nullable(number()),
+    units: nullable(number([safeInteger()])),
+});
+export type SemDetails = Output<typeof SemDetails>;
+
+export const Subjects = array(
     object({
         className: string(),
         grade: number(),
-        units: number(),
+        units: number([safeInteger()]),
     }),
 );
-export type Grade = Output<typeof Grade>;
+export type Subjects = Output<typeof Subjects>;
+
+export const Semester = object({
+    id: string(),
+    details: SemDetails,
+    subjects: Subjects,
+});
+
+export type Semester = Output<typeof Semester>;

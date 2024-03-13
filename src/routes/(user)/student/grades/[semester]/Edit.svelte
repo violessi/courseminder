@@ -1,4 +1,4 @@
-<script lang="ts">
+<!-- <script lang="ts">
     import { createEventDispatcher, onMount } from 'svelte';
 
     export let value = '';
@@ -57,4 +57,4 @@
         text-align: inherit;
         box-shadow: none;
     }
-</style>
+</style> -->

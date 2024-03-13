@@ -1,13 +1,16 @@
-<script>
-    import { SemesterStore } from '$lib/stores/SemesterStores';
+<script lang="ts">
+    import { Semester } from '$lib/models/types';
 
-    let num = $SemesterStore[0];
-    console.log(num);
+    export let data: Semester;
+    $: ({ id, details } = data);
+    $: ({ sem, year, units, gwa } = details);
 </script>
 
 <a
     class="block card card-hover p-5 variant-filled-primary shadow-md border border-tertiary-300"
-    href="/student/grades/edit"
+    href="/student/grades/{id}"
 >
-    <slot />
+    <div class="">{sem ?? '--'}, AY {year ?? '----'}</div>
+    <div class="">{units ?? 0} units</div>
+    <div class="font-bold text-xl pt-2">GWA: {gwa ?? 0}</div>
 </a>

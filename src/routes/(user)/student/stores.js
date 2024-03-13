@@ -1,4 +1,4 @@
-import { writable } from 'svelte/store'
+import { writable } from 'svelte/store';
 
-export const studentId = writable('')
-export const studentDegree = writable('')
+export const studentId = writable('');
+export const studentDegree = writable('');
