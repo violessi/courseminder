@@ -2,7 +2,7 @@
     import icon2 from '$lib/assets/icon2.png';
 </script>
 
-<body class="background">
+<div class="background">
     <div class="black-film">
         <p>&nbsp</p>
         <img src={icon2} alt="Icon" class="w-20 h-11 ml-4" />
@@ -16,7 +16,7 @@
             </div>
         </div>
     </div>
-</body>
+</div>
 
 <style>
     .font-michroma {

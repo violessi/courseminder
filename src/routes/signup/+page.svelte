@@ -1,19 +1,19 @@
 <script lang="ts">
+    import { getDatabase, ref, set, get } from 'firebase/database';
+    import { studentId, studentDegree } from '../(user)/student/stores';
     import { goto } from '$app/navigation';
     import icon2 from '$lib/assets/icon2.png';
-    import { initializeApp } from "firebase/app";
-    import { getDatabase, ref, set, get } from "firebase/database"
-    import { studentId, studentDegree} from "../(user)/student/stores"
+    import { initializeApp } from 'firebase/app';
 
     const firebaseConfig = {
-    apiKey: "AIzaSyCmwpRzGyoeD-Xuh6Cuh1Agbsxw31Uekhk",
-    authDomain: "courseminder-dev.firebaseapp.com",
-    databaseURL: "https://courseminder-dev-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "courseminder-dev",
-    storageBucket: "courseminder-dev.appspot.com",
-    messagingSenderId: "274860730108",
-    appId: "1:274860730108:web:b7f706a51ee7a79dbd1979",
-    measurementId: "G-1T6H3BFHRR"
+        apiKey: 'AIzaSyCmwpRzGyoeD-Xuh6Cuh1Agbsxw31Uekhk',
+        authDomain: 'courseminder-dev.firebaseapp.com',
+        databaseURL: 'https://courseminder-dev-default-rtdb.asia-southeast1.firebasedatabase.app',
+        projectId: 'courseminder-dev',
+        storageBucket: 'courseminder-dev.appspot.com',
+        messagingSenderId: '274860730108',
+        appId: '1:274860730108:web:b7f706a51ee7a79dbd1979',
+        measurementId: 'G-1T6H3BFHRR',
     };
 
     // Initialize Firebase
@@ -24,7 +24,6 @@
     let studentnumber = '';
     let password = '';
     let errorMessage = '';
-    let valid = true;
 
     async function writeStudentData(studentnumber: string, name: string, degree: string, password: string) {
         const db = getDatabase(app);
@@ -35,14 +34,13 @@
         if (snapshot.exists()) {
             // The student already exists, handle this case as needed
             errorMessage = 'A student with this number already exists.';
-            valid = false;
         } else {
             // The student doesn't exist, write the data
             set(reference, {
                 studentid: studentnumber,
                 name: name,
                 degree: degree,
-                password: password
+                password: password,
             });
             studentId.set(studentnumber);
             studentDegree.set(degree);
@@ -56,13 +54,12 @@
         } else {
             // Handle the case when not all fields are filled
             // You can show an error message or do something else
-            valid = false;
             errorMessage = 'Please fill-up all fields.';
         }
     };
 </script>
 
-<body class="background">
+<div class="background">
     <div class="black-film h-full">
         <p>&nbsp</p>
         <img src={icon2} alt="Icon" class="w-20 h-11 ml-4" />
@@ -192,7 +189,7 @@
             </div>
         </div>
     </div>
-</body>
+</div>
 
 <style>
     .background {
