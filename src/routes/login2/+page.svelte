@@ -36,7 +36,7 @@
                     Don't have an account? <a class="hyperlink" href="/signup">Sign Up</a>
                 </p>
                 <br />
-                <button class="LoginButton">Login</button>
+                <button class="LoginButton">LOGIN</button>
             </form>
         </div>
     </div>
@@ -48,7 +48,7 @@
 
         cursor: pointer;
 
-        font-family: Arial Bold;
+        font-family: "Russo One", sans-serif;
         font-weight: 600;
         border-radius: 5px;
         box-shadow: none;
