@@ -1,19 +1,19 @@
 <script lang="ts">
     import icon2 from '$lib/assets/icon2.png';
-    import { initializeApp } from "firebase/app";
-    import { getDatabase, ref, set, get } from "firebase/database"
+    import { initializeApp } from 'firebase/app';
+    import { getDatabase, ref, set, get } from 'firebase/database';
     import { goto } from '$app/navigation';
     import { studentDegree, studentId } from '$lib/stores/CurriculumStores';
 
     const firebaseConfig = {
-    apiKey: "AIzaSyCmwpRzGyoeD-Xuh6Cuh1Agbsxw31Uekhk",
-    authDomain: "courseminder-dev.firebaseapp.com",
-    databaseURL: "https://courseminder-dev-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "courseminder-dev",
-    storageBucket: "courseminder-dev.appspot.com",
-    messagingSenderId: "274860730108",
-    appId: "1:274860730108:web:b7f706a51ee7a79dbd1979",
-    measurementId: "G-1T6H3BFHRR"
+        apiKey: 'AIzaSyCmwpRzGyoeD-Xuh6Cuh1Agbsxw31Uekhk',
+        authDomain: 'courseminder-dev.firebaseapp.com',
+        databaseURL: 'https://courseminder-dev-default-rtdb.asia-southeast1.firebasedatabase.app',
+        projectId: 'courseminder-dev',
+        storageBucket: 'courseminder-dev.appspot.com',
+        messagingSenderId: '274860730108',
+        appId: '1:274860730108:web:b7f706a51ee7a79dbd1979',
+        measurementId: 'G-1T6H3BFHRR',
     };
 
     // Initialize Firebase and get database
@@ -24,19 +24,19 @@
     let password = '';
     let errorMessage = '';
 
-    async function checkLogin(studentnumber : string, password : string) {        
+    async function checkLogin(studentnumber: string, password: string) {
         const reference = ref(db, 'students/' + studentnumber);
         const snapshot = await get(reference);
 
         // Store student data in global variable
-        studentId.set(studentnumber)
-        studentDegree.set(snapshot.child("degree").val())
-        if (snapshot.child("password").val() === password) {
+        studentId.set(studentnumber);
+        studentDegree.set(snapshot.child('degree').val());
+        if (snapshot.child('password').val() === password) {
             goto(`../student/dashboard`);
         } else {
             console.log(studentnumber);
             console.log(password);
-            errorMessage = "Student Number or Password is not valid.";
+            errorMessage = 'Student Number or Password is not valid.';
         }
     }
     const handleSubmit = () => {
@@ -44,7 +44,7 @@
     };
 </script>
 
-<body class="container-fluid">
+<div class="container-fluid">
     <div class="black-film h-full">
         <p>&nbsp</p>
         <img src={icon2} alt="Icon" class="w-20 h-11 ml-4" />
@@ -54,21 +54,11 @@
             <br />
             <form method="POST" class="inputform" on:submit|preventDefault={handleSubmit}>
                 <div>
-                    <input
-                        class="form1"
-                        type="text"
-                        placeholder="Student Number"
-                        bind:value={studentnumber}
-                    />
+                    <input class="form1" type="text" placeholder="Student Number" bind:value={studentnumber} />
                 </div>
                 <br />
                 <div>
-                    <input 
-                        class="form2" 
-                        type="password" 
-                        placeholder="Password"
-                        bind:value={password}
-                     />
+                    <input class="form2" type="password" placeholder="Password" bind:value={password} />
                 </div>
                 <div class="error">{errorMessage}</div>
                 <br />
@@ -79,7 +69,7 @@
             </form>
         </div>
     </div>
-</body>
+</div>
 
 <style>
     .LoginButton {

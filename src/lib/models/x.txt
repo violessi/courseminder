@@ -1,0 +1,44 @@
+[
+    {
+        id : 1st:2021-2022,
+        semdetails : {
+            sem : "1st",
+            year : "2021",
+            gwa : 1.0,
+            units : 1,
+        },
+        subjects : [
+            {
+                className : "CMSC 11",
+                grade : 1.0,
+                units : 1,
+            },
+            {
+                className : "CMSC 12",
+                grade : 1.0,
+                units : 1,
+            },
+        ],
+    },
+    {
+        semdetails : {
+            id : 1st:2021-2022,
+            sem : "1st",
+            year : "2021",
+            gwa : 1.0,
+            units : 1,
+        },
+        subjects : [
+            {
+                className : "CMSC 11",
+                grade : 1.0,
+                units : 1,
+            },
+            {
+                className : "CMSC 12",
+                grade : 1.0,
+                units : 1,
+            },
+        ],
+    },
+]
