@@ -1,6 +1,6 @@
 <script lang="ts">
     import { AppBar, AppRail, AppRailAnchor, AppShell } from '@skeletonlabs/skeleton';
-    import { IconCalendarWeek, IconFileAnalytics, IconLayoutDashboard, IconLogout2 } from '@tabler/icons-svelte';
+    import { IconChartBar, IconLayoutDashboard, IconLogout2 } from '@tabler/icons-svelte';
     import icon from '$lib/assets/icon.png';
     import { page } from '$app/stores';
 
@@ -25,7 +25,7 @@
             <span class="text-sm">Dashboard</span>
         </AppRailAnchor>
         <AppRailAnchor href="/faculty/statistics" selected={$page.url.pathname === '/faculty/statistics'}>
-            <IconCalendarWeek slot="lead" size={36} />
+            <IconChartBar slot="lead" size={36} />
             <span class="text-sm">Statistics</span>
         </AppRailAnchor>
 
