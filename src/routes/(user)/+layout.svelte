@@ -1,9 +1,9 @@
 <script lang="ts">
     import { AppBar, AppRail, AppRailAnchor, AppShell } from '@skeletonlabs/skeleton';
-    import { studentId } from './student/stores';
+    import { studentId } from '$lib/stores/CurriculumStores';
     import * as SemStore from '$lib/stores/SemesterStores';
     import { page } from '$app/stores';
-    import icon from '$lib/assets/icon.svg';
+    import icon from '$lib/assets/icon.png';
 
     // initialize sem store
     SemStore.init();
