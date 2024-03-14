@@ -1,5 +1,6 @@
 <script>
-    import icon2 from '$lib/assets/icon2.webp';
+    import icon2 from '$lib/assets/icon2.png';
+    // import icon from '$lib/assets/icon.png';
 </script>
 
 <body class="background">
@@ -29,7 +30,7 @@
         font-style: normal;
     }
     .background {
-        background-image: url('$lib/assets/bg.webp');
+        background-image: url('$lib/assets/bg.png');
         background-repeat: no-repeat;
         background-size: cover;
         background-attachment: fixed;

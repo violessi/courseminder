@@ -1,7 +1,8 @@
 <script>
-    import icon2 from '$lib/assets/icon2.webp';
+    import icon2 from '$lib/assets/icon2.png';
 
-    export let form = null;
+    export let form;
+    console.log(form);
 </script>
 
 <body class="container-fluid">
@@ -35,7 +36,7 @@
                     Don't have an account? <a class="hyperlink" href="/signup">Sign Up</a>
                 </p>
                 <br />
-                <button class="LoginButton">Login</button>
+                <button class="LoginButton">LOGIN</button>
             </form>
         </div>
     </div>
@@ -47,7 +48,7 @@
 
         cursor: pointer;
 
-        font-family: Arial Bold;
+        font-family: "Russo One", sans-serif;
         font-weight: 600;
         border-radius: 5px;
         box-shadow: none;
@@ -69,7 +70,7 @@
         background-color: rgba(0, 0, 0, 0.5);
     }
     .container-fluid {
-        background-image: url('$lib/assets/bg.webp');
+        background-image: url('$lib/assets/bg.png');
         background-size: cover;
         background-repeat: no-repeat;
         height: 100%;
@@ -102,7 +103,7 @@
         width: 125px;
         height: 125px;
         border-radius: 50%;
-        background-image: url('$lib/assets/user-icon.webp');
+        background-image: url('$lib/assets/user-icon.png');
         background-color: #507858;
         background-size: contain;
         background-repeat: no-repeat;
@@ -116,7 +117,7 @@
     .form1 {
         font-family: Arial;
         color: black;
-        background: url('$lib/assets/user-icon.webp');
+        background: url('$lib/assets/user-icon.png');
         background-color: gray;
         background-size: contain;
         background-repeat: no-repeat;
@@ -126,7 +127,7 @@
     .form2 {
         font-family: Arial;
         color: black;
-        background: url('$lib/assets/lock-icon.webp');
+        background: url('$lib/assets/lock-icon.png');
         background-color: gray;
         background-size: contain;
         background-repeat: no-repeat;

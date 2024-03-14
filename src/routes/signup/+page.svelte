@@ -1,14 +1,15 @@
 <script>
     import { goto } from '$app/navigation';
-    import icon2 from '$lib/assets/icon2.webp';
+    import icon2 from '$lib/assets/icon2.png';
 
     let degree = '';
     let name = '';
     let studentnumber = '';
     let password = '';
     let errorMessage = '';
+    let valid = true;
 
-    function handleSubmit() {
+    const handleSubmit = () => {
         // Check if all fields are filled
         if (degree && name && studentnumber && password) {
             const user = {
@@ -19,11 +20,13 @@
             };
             localStorage.setItem('user', JSON.stringify(user));
             goto('../student/dashboard');
+        } else {
+            // Handle the case when not all fields are filled
+            // You can show an error message or do something else
+            valid = false;
+            errorMessage = 'Please fill-up all fields.';
         }
-        // Handle the case when not all fields are filled
-        // You can show an error message or do something else
-        else errorMessage = 'Please fill-up all fields.';
-    }
+    };
 </script>
 
 <body class="background">
@@ -160,7 +163,7 @@
 
 <style>
     .background {
-        background-image: url('$lib/assets/bg.webp');
+        background-image: url('$lib/assets/bg.png');
         background-size: cover;
         background-repeat: no-repeat;
         height: 100%;
@@ -211,7 +214,7 @@
         margin: 0 auto;
         align-items: top;
         text-align: center;
-        background-image: url('$lib/assets/girl.webp');
+        background-image: url('$lib/assets/girl.png');
         background-position: 100%;
         background-size: contain;
         background-repeat: no-repeat;
