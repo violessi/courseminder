@@ -1,8 +1,3 @@
-// import { writable } from 'svelte/store'
-
-// export const studentId = writable('')
-// export const studentDegree = writable('')
-
 import { type Writable, writable } from 'svelte/store';
 
 function persist(key : string, initialValue : string) {

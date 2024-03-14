@@ -3,7 +3,7 @@
     import icon2 from '$lib/assets/icon2.png';
     import { initializeApp } from "firebase/app";
     import { getDatabase, ref, set, get } from "firebase/database"
-    import { studentId, studentDegree} from "../(user)/student/stores"
+    import { studentId, studentDegree} from '$lib/stores/CurriculumStores';
 
     const firebaseConfig = {
     apiKey: "AIzaSyCmwpRzGyoeD-Xuh6Cuh1Agbsxw31Uekhk",

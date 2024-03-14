@@ -3,7 +3,7 @@
     import { IconCalendarWeek, IconFileAnalytics, IconLayoutDashboard, IconLogout2 } from '@tabler/icons-svelte';
     import icon from '$lib/assets/icon.png';
     import { page } from '$app/stores';
-    import { studentId } from './student/stores';
+    import { studentId } from '$lib/stores/CurriculumStores';
 
     const course: string = 'BS Computer Science';
     let studentNumber: string = '';

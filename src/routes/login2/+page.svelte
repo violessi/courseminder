@@ -3,7 +3,7 @@
     import { initializeApp } from "firebase/app";
     import { getDatabase, ref, set, get } from "firebase/database"
     import { goto } from '$app/navigation';
-    import { studentDegree, studentId } from '../(user)/student/stores';
+    import { studentDegree, studentId } from '$lib/stores/CurriculumStores';
 
     const firebaseConfig = {
     apiKey: "AIzaSyCmwpRzGyoeD-Xuh6Cuh1Agbsxw31Uekhk",

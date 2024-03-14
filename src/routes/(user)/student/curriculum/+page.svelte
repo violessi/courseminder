@@ -1,7 +1,7 @@
 <script lang="ts">
     import { initializeApp } from "firebase/app";
     import { getDatabase, ref, push, get, child, set, query, equalTo, orderByValue, orderByKey } from "firebase/database"
-    import { studentId, studentDegree } from "../stores"
+    import { studentId, studentDegree } from '$lib/stores/CurriculumStores';
 
     const firebaseConfig = {
     apiKey: "AIzaSyCmwpRzGyoeD-Xuh6Cuh1Agbsxw31Uekhk",
