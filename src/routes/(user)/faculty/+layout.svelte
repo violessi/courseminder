@@ -10,14 +10,14 @@
 
 
 <!-- Refer to the Skeleton Documentation to know what the following components are for. -->
-<AppShell class="bg-surface-500">
+<AppShell class="bg-primary-100">
     <AppRail
         slot="sidebarLeft"
         width="w-28"
         gap="gap-5"
         regionLead="flex justify-center items-center p-2"
-        background="bg-secondary-500 text-slate-400/45"
-        active="bg-tertiary-500/50 text-white"
+        background="bg-primary-50 text-slate-400/45"
+        active="bg-primary-200/50 text-white"
     >
         <img src={icon} alt="Icon" slot="lead" class="size-24" />
         <AppRailAnchor href="/faculty/dashboard" selected={$page.url.pathname === '/faculty/dashboard'}>
