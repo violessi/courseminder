@@ -26,14 +26,35 @@ function initStore() {
         return getStore(store).find((s) => s.id === id);
     }
 
+    function computeGWA(subjects: Subject[]) {
+        let totalUnits = 0;
+        let totalGrade = 0;
+        for (const subj of subjects) {
+            totalUnits += subj.units;
+            totalGrade += subj.grade * subj.units;
+        }
+        const gwa = totalGrade / totalUnits;
+        return gwa;
+    }
+
+    function computeUnits(subjects: Subject[]) {
+        let totalUnits = 0;
+        for (const subj of subjects) totalUnits += subj.units;
+        return totalUnits;
+    }
+
     function addSubject({ className, grade, units }: Subject, id: string) {
         update((store) => {
             const sem = store.find((s) => s.id === id);
             if (typeof sem === 'undefined') throw new Error('Semester not found');
 
             // check if subject already exists
+            // const subj = sem.subjects.find((s) => s.className.toLowerCase === className.toLowerCase);
+            // if (typeof subj !== 'undefined') throw new Error('Subject already exists');
 
             sem.subjects.push({ className, grade, units });
+            sem.details.gwa = computeGWA(sem.subjects);
+            sem.details.units = computeUnits(sem.subjects);
             return store;
         });
     }
@@ -45,6 +66,8 @@ function initStore() {
         addSem,
         addSubject,
         getSem,
+        computeGWA,
+        computeUnits,
     };
 }
 

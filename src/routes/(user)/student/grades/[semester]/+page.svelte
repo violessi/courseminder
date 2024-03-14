@@ -13,6 +13,21 @@
     const semStore = SemStore.get();
     const semId = $page.params.semester;
 
+    function computeHonor(gwa: number) {
+        if (gwa === 0) return 'None';
+        if (details.gwa) {
+            if (details.gwa <= 1.45) {
+                return 'University';
+            } else if (details.gwa <= 1.75) {
+                return 'College';
+            } else {
+                return 'None';
+            }
+        }
+    }
+
+    $: scholarship = computeHonor(details.gwa ?? 0);
+
     function getTable(subjects: Subject[]): TableSource {
         return {
             head: ['Class', 'Grade', 'Units'],
@@ -82,6 +97,7 @@
                 <div class="flex justify-between">
                     <div class="text-tertiary-900 font-bold text-4xl">GWA: {details.gwa ?? 0}</div>
                     <div class="text-tertiary-900 font-bold text-4xl">Units: {details.units ?? 0}</div>
+                    <div class="text-tertiary-900 font-bold text-4xl">Honorable <br /> Scholarship: {scholarship}</div>
                 </div>
             </div>
         </div>

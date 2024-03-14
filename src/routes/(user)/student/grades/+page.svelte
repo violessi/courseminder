@@ -23,13 +23,25 @@
         return totalGrade / totalUnits;
     }
 
+    function computeUnits() {
+        let totalUnits = 0;
+        $semStore.forEach((sem) => {
+            const subjs = sem.subjects;
+            subjs.forEach((subj) => {
+                totalUnits += subj.units;
+            });
+        });
+        return totalUnits;
+    }
+
     function computeHonor(gwa: number) {
-        if (gwa >= 1.2 && gwa <= 1.45) {
-            return 'Cum Laude';
-        } else if (gwa >= 1.46 && gwa <= 1.75) {
-            return 'Magna Cum Laude';
-        } else if (gwa >= 1.76) {
+        if (gwa === 0) return 'None';
+        else if (gwa <= 1.2) {
             return 'Summa Cum Laude';
+        } else if (gwa <= 1.45) {
+            return 'Magna Cum Laude';
+        } else if (gwa <= 1.75) {
+            return 'Cum Laude';
         } else {
             return 'None';
         }
@@ -48,7 +60,7 @@
         modalStore.trigger(modal);
     }
 
-    $: totalUnits = $semStore.reduce((acc, curr) => acc + (curr.details.units ?? 0), 0);
+    $: totalUnits = computeUnits();
     $: GWA = computeGWA();
     $: honor = computeHonor(GWA);
 

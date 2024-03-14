@@ -20,6 +20,14 @@
         e.preventDefault();
 
         const res = safeParse(AddSem, formData);
+        if (!formData.year.match(/\d{4}-\d{4}/)) {
+            message = 'Invalid year format. Please follow the YYYY-YYYY format.';
+            return;
+        }
+        if (!formData.sem || !formData.year) {
+            message = 'Please fill out all fields.';
+            return;
+        }
         if (res.success && $modalStore[0].response) {
             $modalStore[0].response(res.output);
             modalStore.close();
@@ -57,6 +65,9 @@
                 </label>
             </form>
         </div>
+        {#if message}
+            <div class="text-error-200 text-center">{message}</div>
+        {/if}
 
         <footer class="modal-footer {parent.regionFooter}">
             <button class="btn {parent.buttonNeutral}" on:click={modalStore.close}>{parent.buttonTextCancel}</button>
