@@ -1,6 +1,6 @@
 <script lang="ts">
     import { getDatabase, ref, set, get } from 'firebase/database';
-    import { studentId, studentDegree } from '../(user)/student/stores';
+    import { studentId, studentDegree } from '$lib/stores/CurriculumStores';
     import { goto } from '$app/navigation';
     import icon2 from '$lib/assets/icon2.png';
     import { initializeApp } from 'firebase/app';
