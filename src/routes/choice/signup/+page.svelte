@@ -12,7 +12,7 @@
             <div class="flex space-x-4 mt-4 mb-28">
                 <a href="../../../signup" class="button-student font-moul">Student</a>
                 <span class="font-moul text-6xl mt-7">or</span>
-                <a href="/faculty/signup" class="button-faculty font-moul">Faculty</a>
+                <a href="/facultysignup" class="button-faculty font-moul">Faculty</a>
             </div>
         </div>
     </div>
