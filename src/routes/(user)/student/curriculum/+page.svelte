@@ -241,7 +241,7 @@
 
 
 </script>
-<body>
+<div>
     <div class="flex-row grid grid-cols-4 p-2 grid-rows-5 gap-4 content-center">
         {#each courses as course (course)}
             <button on:click={() => showCoursePopup(course)} class="bg-secondary-500 rounded-lg p-1.5 text-sm">{course}</button>
@@ -263,4 +263,4 @@
             </div>
         </div>
     {/if}
-</body>
+</div>
