@@ -78,7 +78,7 @@
 
         cursor: pointer;
 
-        font-family: "Russo One", sans-serif;
+        font-family: 'Russo One', sans-serif;
         font-weight: 600;
         border-radius: 5px;
         box-shadow: none;

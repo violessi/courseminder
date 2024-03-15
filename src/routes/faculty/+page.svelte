@@ -18,13 +18,7 @@
             {/if}
             <form method="POST" class="inputform">
                 <div>
-                    <input
-                        class="form1"
-                        type="email"
-                        name="email"
-                        placeholder="Email"
-                        value={form?.email || ''}
-                    />
+                    <input class="form1" type="email" name="email" placeholder="Email" value={form?.email || ''} />
                 </div>
                 <br />
                 <div>
@@ -47,7 +41,7 @@
 
         cursor: pointer;
 
-        font-family: "Russo One", sans-serif;
+        font-family: 'Russo One', sans-serif;
         font-weight: 600;
         border-radius: 5px;
         box-shadow: none;
@@ -117,7 +111,6 @@
         background-size: contain;
         background-repeat: no-repeat;
         padding-left: 45px;
-        
     }
     .form2 {
         font-family: Arial;

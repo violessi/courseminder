@@ -174,7 +174,7 @@
     }
 
     .hyperlink {
-        color: #F495AC;
+        color: #f495ac;
     }
 
     .error {
@@ -227,7 +227,7 @@
 
         cursor: pointer;
 
-        font-family: "Russo One", sans-serif;
+        font-family: 'Russo One', sans-serif;
         font-weight: 600;
         border-radius: 5px;
         box-shadow: none;
@@ -246,7 +246,7 @@
     }
 
     .CreateAccountShape {
-        background-color: #F16E8E;
+        background-color: #f16e8e;
         border-radius: 25px;
         height: 50px;
         justify-content: center;

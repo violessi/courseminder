@@ -296,6 +296,7 @@
     // deleteCollection('courses');
     // deleteCollection('courseMap')
 </script>
+
 <div>
     <div class="flex-row grid grid-cols-4 p-2 grid-rows-5 gap-4 content-center">
         {#each courses as course (course)}

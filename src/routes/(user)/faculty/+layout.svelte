@@ -8,7 +8,6 @@
     const studentNumber: string = '2020-12345';
 </script>
 
-
 <!-- Refer to the Skeleton Documentation to know what the following components are for. -->
 <AppShell class="bg-primary-100">
     <AppRail
