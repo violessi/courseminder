@@ -1,10 +1,12 @@
 <script lang="ts">
     import * as SemStore from '$lib/stores/SemesterStores';
     import { type ModalSettings, getModalStore } from '@skeletonlabs/skeleton';
-    import { AddSem as AddSemType } from '$lib/models/types';
     import { computeGWA, computeHonor, computeUnits } from '$lib/functions/helper';
+    import { AddSem as AddSemType } from '$lib/models/types';
+    import Button from '$lib/components/Button.svelte';
     import GradeCard from '$lib/components/GradeCard.svelte';
     import Tag from './Tag.svelte';
+    import { safeParse } from 'valibot';
 
     const modalStore = getModalStore();
     const semStore = SemStore.get();
@@ -14,7 +16,8 @@
         component: 'addsem',
         title: 'Add New Semester',
         response: (r: AddSemType) => {
-            semStore.addSemester(r);
+            const res = safeParse(AddSemType, r);
+            if (res.success) semStore.addSemester(res.output);
         },
     };
 
@@ -25,13 +28,11 @@
 
 <div class="h-full m-10 space-y-10">
     <div class="flex justify-between">
-        <div class="text-tertiary-900 font-bold text-4xl">View Grades</div>
-        <button type="button" class="btn bg-secondary-400 text-lg" on:click={() => modalStore.trigger(modal)}>
-            Add Semester
-        </button>
+        <div class="title-default">View Grades</div>
+        <Button on:click={() => modalStore.trigger(modal)}>Add Semester</Button>
     </div>
 
-    <div class="bg-surface-300 py-6 rounded-xl flex justify-around border border-tertiary-300">
+    <div class="bg-surface-300 rounded-xl flex card-section justify-around">
         <Tag label="Total Units" value={`${totalUnits} units`} />
         <Tag label="GWA" value={GWA} />
         <Tag label="Latin Honors" value={honor} />

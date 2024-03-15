@@ -1,7 +1,6 @@
 <script lang="ts">
     import * as SemStore from '$lib/stores/SemesterStores';
     import {
-        type ModalComponent,
         type ModalSettings,
         Table,
         type TableSource,
@@ -9,12 +8,22 @@
         tableMapperValues,
     } from '@skeletonlabs/skeleton';
     import { type Semester, Subject } from '$lib/models/types';
-    import AddGrade from '$lib/components/AddGrade.svelte';
+    import { Button } from '$lib/components';
+    import { computeHonor } from '$lib/functions/helper';
     import { page } from '$app/stores';
 
     const modalStore = getModalStore();
     const semStore = SemStore.get();
     const semId = $page.params.semester;
+
+    const modal: ModalSettings = {
+        type: 'component',
+        component: 'addgrade',
+        title: 'Add New Class',
+        response: (r: Subject) => {
+            semStore.addSubject(r, semId);
+        },
+    };
 
     function getTable(subjects: Subject[]): TableSource {
         return {
@@ -25,80 +34,38 @@
     }
 
     function update(_: Semester[]) {
-        const semId = $page.params.semester;
-        const sem = semStore.getSem(semId);
-        if (!sem) throw new Error('Semester not found');
-
-        const { details, subjects } = sem;
+        const { details, subjects } = semStore.getSem(semId);
         const table = getTable(subjects);
-        return {
-            details,
-            table,
-        };
+        return { ...details, table };
     }
-    $: ({ details, table } = update($semStore));
 
-    function computeHonor(gwa: number) {
-        if (gwa === 0) return 'None';
-        if (!details.gwa) return 'None';
-        if (details.gwa <= 1.45) {
-            return 'University';
-        } else if (details.gwa <= 1.75) {
-            return 'College';
-        }
-        return 'None';
-    }
-    $: scholarship = computeHonor(details.gwa ?? 0);
-
-    function inputGrade(): void {
-        const c: ModalComponent = { ref: AddGrade };
-        const modal: ModalSettings = {
-            type: 'component',
-            component: c,
-            title: 'Add New Class',
-            response: (r: Subject) => {
-                semStore.addSubject(r, semId);
-            },
-        };
-        modalStore.trigger(modal);
-    }
+    $: ({ gwa, units, sem, table } = update($semStore));
+    $: scholarship = computeHonor(gwa ?? 0);
 </script>
 
 <div class="h-full m-10 space-y-10">
-    <div class="flex justify-between">
-        <div class="text-tertiary-900 font-bold text-4xl">{details.sem}</div>
-        <div class="text-tertiary-900 font-bold text-4xl">AY {details.year}</div>
+    <div class="flex justify-between title-default">
+        <div>{sem}</div>
+        <div>AY {sem}</div>
     </div>
 
-    <div class="gap-10">
-        <div
-            class="bg-primary-300 px-10 py-6 space-x-7 rounded-xl font-bold border border-tertiary-300 grid grid-cols-3 gap-5"
-        >
-            <button
-                type="button"
-                class="btn bg-primary-500 text-secondary-500 rounded-xl border border-tertiary-300 col-start-3 justify-self-end"
-                on:click={() => inputGrade()}
-            >
-                <!-- <IconPlus /> -->
-                <span class="text-lg">Add Class</span>
-            </button>
-            <div class="col-span-3">
-                {#if table.body.length > 0}
-                    <Table source={table} />
-                {:else}
-                    <div class="text-tertiary-900 font-bold text-4xl">No Subjects</div>
-                {/if}
-            </div>
-        </div>
+    <div class="justify-end flex -mb-6">
+        <Button on:click={() => modalStore.trigger(modal)}>Add Class</Button>
+    </div>
 
-        <div>
-            <div class="card variant-filled-primary *: border border-tertiary-300 px-10 py-6 space-x-7 rounded-xl">
-                <div class="flex justify-between">
-                    <div class="text-tertiary-900 font-bold text-4xl">GWA: {details.gwa?.toFixed(4) ?? 0}</div>
-                    <div class="text-tertiary-900 font-bold text-4xl">Units: {details.units ?? 0}</div>
-                    <div class="text-tertiary-900 font-bold text-4xl">Honorable <br /> Scholarship: {scholarship}</div>
-                </div>
-            </div>
+    <div class="bg-primary-300 justify-around card-section">
+        {#if table.body.length > 0}
+            <Table source={table} />
+        {:else}
+            <div class="title-default">No Subjects</div>
+        {/if}
+    </div>
+
+    <div class="variant-filled-primary card-section">
+        <div class="flex justify-between title-default">
+            <div>GWA: {gwa?.toFixed(4) ?? 0}</div>
+            <div>Units: {units ?? 0}</div>
+            <div>Latin Honor: {scholarship}</div>
         </div>
     </div>
 </div>

@@ -21,25 +21,21 @@ function initStore() {
 
     function addSemester({ sem, year }: AddSem) {
         const id = `${sem} ${year}`;
-        const details = {
-            sem,
-            year,
-            gwa: null,
-            units: null,
-        };
+        const details = { sem, year, gwa: null, units: null };
         const newSemester: Semester = { id, details, subjects: [] };
         update((store) => [...store, newSemester]);
     }
 
-    function getSem(id: string) {
-        return getStore(store).find((sem) => sem.id === id);
+    function getSem(id: string): Semester {
+        const sem = getStore(store).find((sem) => sem.id === id);
+        assert(typeof sem !== 'undefined', 'Semester not found');
+        return sem;
     }
 
     function addSubject(subject: Subject, id: string) {
         update((store) => {
             const sem = store.find((s) => s.id === id);
             assert(typeof sem !== 'undefined', 'Semester not found');
-
             sem.subjects.push(subject);
             sem.details.gwa = computeSemGWA(sem.subjects);
             sem.details.units = computeSemUnits(sem.subjects);
