@@ -1,8 +1,8 @@
 <script>
-    import icon2 from '$lib/assets/icon2.webp';
+    import icon2 from '$lib/assets/icon2.png';
 </script>
 
-<body class="background">
+<div class="background">
     <div class="black-film">
         <p>&nbsp</p>
         <img src={icon2} alt="Icon" class="w-20 h-11 ml-4 mb-0" />
@@ -12,11 +12,11 @@
             <div class="flex space-x-4 mt-4 mb-28">
                 <a href="../../../login2" class="button-student font-moul">Student</a>
                 <span class="font-moul text-6xl mt-7">or</span>
-                <a href="/faculty/login" class="button-faculty font-moul">Faculty</a>
+                <a href="../../faculty" class="button-faculty font-moul">Faculty</a>
             </div>
         </div>
     </div>
-</body>
+</div>
 
 <style>
     .font-michroma {
@@ -31,7 +31,7 @@
     }
 
     .background {
-        background-image: url('$lib/assets/bg.webp');
+        background-image: url('$lib/assets/bg.png');
         background-repeat: no-repeat;
         background-size: cover;
         background-attachment: fixed;

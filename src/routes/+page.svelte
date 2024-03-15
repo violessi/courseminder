@@ -1,8 +1,9 @@
 <script>
-    import icon2 from '$lib/assets/icon2.webp';
+    import icon2 from '$lib/assets/icon2.png';
+    // import icon from '$lib/assets/icon.png';
 </script>
 
-<body class="background">
+<div class="background">
     <div class="flex flex-col items-center justify-center h-screen">
         <img src={icon2} alt="CourseMinder Logo" class="w-80 h-48 me-6" />
         <h1 class="text-2xl font-michroma">CourseMinder</h1>
@@ -14,7 +15,7 @@
         </div>
         <!-- <a href="/student/dashboard" class="btn text-black variant-filled-primary">Student Dashboard</a> -->
     </div>
-</body>
+</div>
 
 <style>
     .font-michroma {
@@ -29,7 +30,7 @@
         font-style: normal;
     }
     .background {
-        background-image: url('$lib/assets/bg.webp');
+        background-image: url('$lib/assets/bg.png');
         background-repeat: no-repeat;
         background-size: cover;
         background-attachment: fixed;

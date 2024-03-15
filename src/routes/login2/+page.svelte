@@ -1,10 +1,50 @@
-<script>
-    import icon2 from '$lib/assets/icon2.webp';
+<script lang="ts">
+    import icon2 from '$lib/assets/icon2.png';
+    import { initializeApp } from 'firebase/app';
+    import { getDatabase, ref, set, get } from 'firebase/database';
+    import { goto } from '$app/navigation';
+    import { studentDegree, studentId } from '$lib/stores/CurriculumStores';
 
-    export let form = null;
+    const firebaseConfig = {
+        apiKey: 'AIzaSyCmwpRzGyoeD-Xuh6Cuh1Agbsxw31Uekhk',
+        authDomain: 'courseminder-dev.firebaseapp.com',
+        databaseURL: 'https://courseminder-dev-default-rtdb.asia-southeast1.firebasedatabase.app',
+        projectId: 'courseminder-dev',
+        storageBucket: 'courseminder-dev.appspot.com',
+        messagingSenderId: '274860730108',
+        appId: '1:274860730108:web:b7f706a51ee7a79dbd1979',
+        measurementId: 'G-1T6H3BFHRR',
+    };
+
+    // Initialize Firebase and get database
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    let studentnumber = '';
+    let password = '';
+    let errorMessage = '';
+
+    async function checkLogin(studentnumber: string, password: string) {
+        const reference = ref(db, 'students/' + studentnumber);
+        const snapshot = await get(reference);
+
+        // Store student data in global variable
+        studentId.set(studentnumber);
+        studentDegree.set(snapshot.child('degree').val());
+        if (snapshot.child('password').val() === password) {
+            goto(`../student/dashboard`);
+        } else {
+            console.log(studentnumber);
+            console.log(password);
+            errorMessage = 'Student Number or Password is not valid.';
+        }
+    }
+    const handleSubmit = () => {
+        checkLogin(studentnumber, password);
+    };
 </script>
 
-<body class="container-fluid">
+<div class="container-fluid">
     <div class="black-film h-full">
         <p>&nbsp</p>
         <img src={icon2} alt="Icon" class="w-20 h-11 ml-4" />
@@ -12,34 +52,25 @@
         <div class="loginform">
             <div class="logo"></div>
             <br />
-            {#if form?.message}
-                <p class="red">{form.message}</p>
-                <br />
-            {/if}
-            <form method="POST" class="inputform">
+            <form method="POST" class="inputform" on:submit|preventDefault={handleSubmit}>
                 <div>
-                    <input
-                        class="form1"
-                        type="email"
-                        name="email"
-                        placeholder="Student Number"
-                        value={form?.email || ''}
-                    />
+                    <input class="form1" type="text" placeholder="Student Number" bind:value={studentnumber} />
                 </div>
                 <br />
                 <div>
-                    <input class="form2" type="password" name="password" placeholder="Password" />
+                    <input class="form2" type="password" placeholder="Password" bind:value={password} />
                 </div>
+                <div class="error">{errorMessage}</div>
                 <br />
                 <p class="TTCommons-Regular-14">
                     Don't have an account? <a class="hyperlink" href="/signup">Sign Up</a>
                 </p>
                 <br />
-                <button class="LoginButton">Login</button>
+                <button class="LoginButton">LOGIN</button>
             </form>
         </div>
     </div>
-</body>
+</div>
 
 <style>
     .LoginButton {
@@ -47,7 +78,7 @@
 
         cursor: pointer;
 
-        font-family: Arial Bold;
+        font-family: "Russo One", sans-serif;
         font-weight: 600;
         border-radius: 5px;
         box-shadow: none;
@@ -69,7 +100,7 @@
         background-color: rgba(0, 0, 0, 0.5);
     }
     .container-fluid {
-        background-image: url('$lib/assets/bg.webp');
+        background-image: url('$lib/assets/bg.png');
         background-size: cover;
         background-repeat: no-repeat;
         height: 100%;
@@ -102,7 +133,7 @@
         width: 125px;
         height: 125px;
         border-radius: 50%;
-        background-image: url('$lib/assets/user-icon.webp');
+        background-image: url('$lib/assets/user-icon.png');
         background-color: #507858;
         background-size: contain;
         background-repeat: no-repeat;
@@ -116,7 +147,7 @@
     .form1 {
         font-family: Arial;
         color: black;
-        background: url('$lib/assets/user-icon.webp');
+        background: url('$lib/assets/user-icon.png');
         background-color: gray;
         background-size: contain;
         background-repeat: no-repeat;
@@ -126,14 +157,14 @@
     .form2 {
         font-family: Arial;
         color: black;
-        background: url('$lib/assets/lock-icon.webp');
+        background: url('$lib/assets/lock-icon.png');
         background-color: gray;
         background-size: contain;
         background-repeat: no-repeat;
         padding-left: 45px;
     }
 
-    .red {
+    .error {
         color: red;
         text-align: center;
     }
