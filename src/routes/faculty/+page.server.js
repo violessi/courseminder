@@ -11,11 +11,11 @@ export const actions = {
             cookies.set("access", "true", {path: '/', sameSite: "strict"});
             throw redirect(302, "/faculty/dashboard");
         }
-
+    
         return{
             email,
             message: "Email or Password is not valid",
         };
-
+       
     },
 };

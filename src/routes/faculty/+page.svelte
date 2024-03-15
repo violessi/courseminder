@@ -44,7 +44,9 @@
 <style>
     .LoginButton {
         background-color: #861933;
+
         cursor: pointer;
+
         font-family: "Russo One", sans-serif;
         font-weight: 600;
         border-radius: 5px;
@@ -58,9 +60,12 @@
         text-align: center;
         display: block;
         margin: 0 auto;
+
         justify-content: center;
+
         /* margin-top: 50px; */
     }
+
     .black-film {
         background-color: rgba(0, 0, 0, 0.5);
     }
@@ -133,6 +138,7 @@
         color: black;
         letter-spacing: -0.04em;
     }
+
     .hyperlink {
         color: #861933;
     }
