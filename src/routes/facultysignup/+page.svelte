@@ -133,7 +133,7 @@
                         </svg>
                     </div>
                     <input
-                        type="text"
+                        type="password"
                         id="email-address-icon"
                         class="bg-pink-50 border border-pink-300 text-pink-900 text-sm rounded-lg focus:ring-pink-500 focus:border-pink-500 block w-full ps-10 p-2.5 dark:bg-pink-100 dark:border-pink-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-pink-500 dark:focus:border-pink-500"
                         placeholder="Password"
