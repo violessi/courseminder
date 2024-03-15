@@ -1,10 +1,9 @@
 <script lang="ts">
-    import GradeCard from '$lib/components/GradeCard.svelte';
     import * as SemStore from '$lib/stores/SemesterStores';
-    import { AddSem as AddSemType } from '$lib/models/types';
-    import { Modal, getModalStore } from '@skeletonlabs/skeleton';
-    import type { ModalSettings, ModalComponent, ModalStore } from '@skeletonlabs/skeleton';
+    import { type ModalComponent, type ModalSettings, getModalStore } from '@skeletonlabs/skeleton';
     import AddSem from '$lib/components/AddSem.svelte';
+    import { AddSem as AddSemType } from '$lib/models/types';
+    import GradeCard from '$lib/components/GradeCard.svelte';
 
     const modalStore = getModalStore();
     const semStore = SemStore.get();
@@ -42,9 +41,8 @@
             return 'Magna Cum Laude';
         } else if (gwa <= 1.75) {
             return 'Cum Laude';
-        } else {
-            return 'None';
         }
+        return 'None';
     }
 
     function inputSem(): void {
@@ -63,8 +61,6 @@
     $: totalUnits = computeUnits();
     $: GWA = computeGWA();
     $: honor = computeHonor(GWA);
-
-    $: console.log($semStore);
 </script>
 
 <div class="h-full m-10 space-y-10">

@@ -7,9 +7,8 @@
     let email = '';
     let password = '';
     let errorMessage = '';
-    let valid = true;
 
-    const handleSubmit = () => {
+    function handleSubmit() {
         // Check if all fields are filled
         if (department && name && email && password) {
             const facultyuser = {
@@ -23,10 +22,9 @@
         } else {
             // Handle the case when not all fields are filled
             // You can show an error message or do something else
-            valid = false;
             errorMessage = 'Please fill-up all fields.';
         }
-    };
+    }
 </script>
 
 <body class="background">

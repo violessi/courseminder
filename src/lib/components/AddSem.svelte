@@ -1,8 +1,7 @@
 <script lang="ts">
     import { AddSem, SemType } from '$lib/models/types';
-    import { ListBox, ListBoxItem } from '@skeletonlabs/skeleton';
+    import { ListBox, ListBoxItem, getModalStore } from '@skeletonlabs/skeleton';
     import type { SvelteComponent } from 'svelte';
-    import { getModalStore } from '@skeletonlabs/skeleton';
     import { safeParse } from 'valibot';
 
     // eslint-disable-next-line init-declarations

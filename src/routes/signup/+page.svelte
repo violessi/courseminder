@@ -1,6 +1,6 @@
 <script lang="ts">
-    import { getDatabase, ref, set, get } from 'firebase/database';
-    import { studentId, studentDegree } from '$lib/stores/CurriculumStores';
+    import { get, getDatabase, ref, set } from 'firebase/database';
+    import { studentDegree, studentId } from '$lib/stores/CurriculumStores';
     import { goto } from '$app/navigation';
     import icon2 from '$lib/assets/icon2.png';
     import { initializeApp } from 'firebase/app';
@@ -27,7 +27,7 @@
 
     async function writeStudentData(studentnumber: string, name: string, degree: string, password: string) {
         const db = getDatabase(app);
-        const reference = ref(db, 'students/' + studentnumber);
+        const reference = ref(db, `students/${studentnumber}`);
 
         // Check if the student already exists
         const snapshot = await get(reference);
@@ -47,7 +47,7 @@
             goto(`../student/dashboard`);
         }
     }
-    const handleSubmit = () => {
+    function handleSubmit() {
         // Check if all fields are filled
         if (degree && name && studentnumber && password) {
             writeStudentData(studentnumber, name, degree, password);
@@ -56,7 +56,7 @@
             // You can show an error message or do something else
             errorMessage = 'Please fill-up all fields.';
         }
-    };
+    }
 </script>
 
 <div class="background">

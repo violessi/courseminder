@@ -1,32 +1,20 @@
 <script lang="ts">
-    // import { IconPlus } from '@tabler/icons-svelte';
-    import { Table, tableMapperValues } from '@skeletonlabs/skeleton';
     import * as SemStore from '$lib/stores/SemesterStores';
-    import type { TableSource } from '@skeletonlabs/skeleton';
-    import { page } from '$app/stores';
-    import { Modal, getModalStore } from '@skeletonlabs/skeleton';
-    import type { ModalSettings, ModalComponent, ModalStore } from '@skeletonlabs/skeleton';
+    import {
+        type ModalComponent,
+        type ModalSettings,
+        Table,
+        type TableSource,
+        getModalStore,
+        tableMapperValues,
+    } from '@skeletonlabs/skeleton';
+    import { type Semester, Subject } from '$lib/models/types';
     import AddGrade from '$lib/components/AddGrade.svelte';
-    import { Subject, Semester } from '$lib/models/types';
+    import { page } from '$app/stores';
 
     const modalStore = getModalStore();
     const semStore = SemStore.get();
     const semId = $page.params.semester;
-
-    function computeHonor(gwa: number) {
-        if (gwa === 0) return 'None';
-        if (details.gwa) {
-            if (details.gwa <= 1.45) {
-                return 'University';
-            } else if (details.gwa <= 1.75) {
-                return 'College';
-            } else {
-                return 'None';
-            }
-        }
-    }
-
-    $: scholarship = computeHonor(details.gwa ?? 0);
 
     function getTable(subjects: Subject[]): TableSource {
         return {
@@ -36,8 +24,7 @@
         };
     }
 
-    // fetch data
-    function update(_: any) {
+    function update(_: Semester[]) {
         const semId = $page.params.semester;
         const sem = semStore.getSem(semId);
         if (!sem) throw new Error('Semester not found');
@@ -50,6 +37,18 @@
         };
     }
     $: ({ details, table } = update($semStore));
+
+    function computeHonor(gwa: number) {
+        if (gwa === 0) return 'None';
+        if (!details.gwa) return 'None';
+        if (details.gwa <= 1.45) {
+            return 'University';
+        } else if (details.gwa <= 1.75) {
+            return 'College';
+        }
+        return 'None';
+    }
+    $: scholarship = computeHonor(details.gwa ?? 0);
 
     function inputGrade(): void {
         const c: ModalComponent = { ref: AddGrade };

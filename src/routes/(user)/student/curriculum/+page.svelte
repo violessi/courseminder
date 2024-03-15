@@ -1,18 +1,7 @@
 <script lang="ts">
+    import { equalTo, get, getDatabase, orderByValue, query, ref } from 'firebase/database';
     import { initializeApp } from 'firebase/app';
-    import {
-        getDatabase,
-        ref,
-        push,
-        get,
-        child,
-        set,
-        query,
-        equalTo,
-        orderByValue,
-        orderByKey,
-    } from 'firebase/database';
-    import { studentId, studentDegree } from '$lib/stores/CurriculumStores';
+    import { studentDegree } from '$lib/stores/CurriculumStores';
 
     const firebaseConfig = {
         apiKey: 'AIzaSyCmwpRzGyoeD-Xuh6Cuh1Agbsxw31Uekhk',
@@ -29,10 +18,11 @@
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
-    let studentnumber;
-    studentId.subscribe((value) => {
-        studentnumber = value;
-    });
+    // NOTE: currently unused
+    // let studentnumber;
+    // studentId.subscribe((value) => {
+    //     studentnumber = value;
+    // });
 
     let degree;
     studentDegree.subscribe((value) => {
@@ -149,63 +139,6 @@
             'Soc Sci 2',
             'PI 100',
         ];
-    } else if (degree === 'Civil Engineering') {
-        courses = [
-            'Physics 71',
-            'Physics 71.1',
-            'Chem 16',
-            'Chem 16.1',
-            'Math 21',
-            'Eng 13',
-            'Speech 30',
-            'Physics 72',
-            'Physics 72.1',
-            'ES 1',
-            'CE 29',
-            'Math 22',
-            'GE 10',
-            'CE 1',
-            'CE 41',
-            'CE 11',
-            'Math 23',
-            'CE 24',
-            'GE 12',
-            'ES 101',
-            'NSTP 1',
-            'CE 22',
-            'CE 31',
-            'CE 130',
-            'CE 17',
-            'CE 25',
-            'ES 102',
-            'NSTP 2',
-            'CE 123',
-            'CE 115',
-            'CE 141',
-            'CE 18',
-            'CE 151',
-            'CE 162',
-            'CE 124',
-            'CE 132',
-            'CE 116',
-            'CE 142',
-            'CE 152',
-            'CE 163',
-            'CE 190',
-            'CE 195',
-            'CE 199',
-            'CE Elective 1',
-            'Kas 1',
-            'Fil 40',
-            'DRMAPS',
-            'GE Elective',
-            'CE 196',
-            'CE Elective 2',
-            'Arts 1',
-            'Philo 1',
-            'Soc Sci 2',
-            'PI 100',
-        ];
     }
 
     let showPopup = false;
@@ -217,7 +150,6 @@
     let corequisites = '';
 
     async function getCourseKey(course: string) {
-        console.log(course);
         const q = query(ref(db, 'courseMap'), orderByValue(), equalTo(course));
         const snapshot = await get(q);
         if (snapshot.exists()) {
@@ -226,11 +158,9 @@
                 console.log('Child found');
                 courseKey = childSnapshot.key;
             });
-            console.log(courseKey);
             return courseKey;
-        } else {
-            console.log('No matching courses.');
         }
+        console.log('No matching courses.');
     }
 
     async function getCourseData(courseKey: string | undefined) {
@@ -238,16 +168,11 @@
             console.log('courseKey is null');
             return;
         }
-        const courseRef = ref(db, 'courses/' + courseKey);
+        const courseRef = ref(db, `courses/${courseKey}`);
         const snapshot = await get(courseRef);
         if (snapshot.exists()) {
-            let courseData = snapshot.val();
-            selectedCourse = courseData.course;
-            courseTitle = courseData.title;
-            courseDescription = courseData.desc;
-            numUnits = courseData.numUnits;
-            prerequisites = courseData.prereq;
-            corequisites = courseData.coreq;
+            const courseData = snapshot.val();
+            ({ selectedCourse, courseTitle, courseDescription, numUnits, prerequisites, corequisites } = courseData);
         } else {
             console.log('No data available');
         }
@@ -256,7 +181,7 @@
     async function showCoursePopup(course: string) {
         selectedCourse = course;
         showPopup = true;
-        let courseKey: string | undefined = await getCourseKey(course);
+        const courseKey: string | undefined = await getCourseKey(course);
         getCourseData(courseKey);
     }
 
@@ -264,37 +189,34 @@
         showPopup = false;
     }
 
-    async function makeCourseDirectory() {
-        const courseRef = ref(db, `courses`);
-        for (let i = 0; i < courses.length; i++) {
-            const snapshot = await get(child(courseRef, courses[i]));
-            let courseKey;
-            if (!snapshot.exists()) {
-                let courseData = {
-                    course: courses[i],
-                    title: courseTitle,
-                    desc: courseDescription,
-                    numUnits: numUnits,
-                    prereq: prerequisites,
-                    coreq: corequisites,
-                };
-                const newCourseRef = push(courseRef, courseData);
-                courseKey = newCourseRef.key;
-                const mapRef = ref(db, 'courseMap/' + courseKey);
-                set(mapRef, courses[i]);
-            }
-        }
-    }
+    // NOTE: currently unused
+    // async function makeCourseDirectory() {
+    //     const courseRef = ref(db, `courses`);
+    //     for (let i = 0; i < courses.length; i++) {
+    //         const snapshot = await get(child(courseRef, courses[i]));
+    //         let courseKey;
+    //         if (!snapshot.exists()) {
+    //             let courseData = {
+    //                 course: courses[i],
+    //                 title: courseTitle,
+    //                 desc: courseDescription,
+    //                 numUnits: numUnits,
+    //                 prereq: prerequisites,
+    //                 coreq: corequisites,
+    //             };
+    //             const newCourseRef = push(courseRef, courseData);
+    //             courseKey = newCourseRef.key;
+    //             const mapRef = ref(db, 'courseMap/' + courseKey);
+    //             set(mapRef, courses[i]);
+    //         }
+    //     }
+    // }
 
-    // makeCourseDirectory();
-
-    async function deleteCollection(collectionPath: string) {
-        const courseref = ref(db, collectionPath);
-        await set(courseref, null);
-    }
-
-    // deleteCollection('courses');
-    // deleteCollection('courseMap')
+    // NOTE: currently unused
+    // async function deleteCollection(collectionPath: string) {
+    //     const courseref = ref(db, collectionPath);
+    //     await set(courseref, null);
+    // }
 </script>
 
 <div>

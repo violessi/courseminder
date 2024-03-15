@@ -14,6 +14,7 @@
         "lint-svelte": "svelte-check --tsconfig ./tsconfig.json",
         "format-fix": "prettier --write .",
         "format-check": "prettier --check .",
+        "checkall": "pnpm sync && pnpm lint-all && pnpm format-fix",
         "sync": "svelte-kit sync"
     },
     "devDependencies": {

@@ -1,7 +1,7 @@
 <script>
-    import { ProgressRadial } from '@skeletonlabs/skeleton';
     import Card from '$lib/components/Card.svelte';
-    let value = 10; // %
+    import { ProgressRadial } from '@skeletonlabs/skeleton';
+    const value = 10;
 </script>
 
 <div class="h-full flex flex-col p-10 gap-10">
