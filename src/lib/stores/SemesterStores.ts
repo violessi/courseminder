@@ -1,61 +1,48 @@
 import { AddSem, Semester, Subject } from '$lib/models/types';
 import { getContext, hasContext, setContext } from 'svelte';
 import { get as getStore, writable } from 'svelte/store';
+import assert from '$lib/assert';
 
-const SEMESTER = Symbol('semester');
+function computeSemGWA(subjects: Subject[]): number {
+    const totalUnits = subjects.reduce((acc, subj) => acc + subj.units, 0);
+    const totalGrade = subjects.reduce((acc, subj) => acc + subj.grade * subj.units, 0);
+
+    if (totalUnits === 0) return 0;
+    return totalGrade / totalUnits;
+}
+
+function computeSemUnits(subjects: Subject[]) {
+    return subjects.reduce((acc, subj) => acc + subj.units, 0);
+}
 
 function initStore() {
     const store = writable<Semester[]>([]);
     const { subscribe, set, update } = store;
 
-    function addSem({ sem, year }: AddSem) {
-        const obg = {
-            id: `${sem} ${year}`,
-            details: {
-                sem,
-                year,
-                gwa: null,
-                units: null,
-            },
-            subjects: [],
-        } satisfies Semester;
-        update((store) => [...store, obg]);
+    function addSemester({ sem, year }: AddSem) {
+        const id = `${sem} ${year}`;
+        const details = {
+            sem,
+            year,
+            gwa: null,
+            units: null,
+        };
+        const newSemester: Semester = { id, details, subjects: [] };
+        update((store) => [...store, newSemester]);
     }
 
     function getSem(id: string) {
-        return getStore(store).find((s) => s.id === id);
+        return getStore(store).find((sem) => sem.id === id);
     }
 
-    function computeGWA(subjects: Subject[]) {
-        let totalUnits = 0;
-        let totalGrade = 0;
-        for (const subj of subjects) {
-            totalUnits += subj.units;
-            totalGrade += subj.grade * subj.units;
-        }
-        if (totalUnits === 0) return 0;
-        const gwa = totalGrade / totalUnits;
-        return gwa ?? 0;
-    }
-
-    function computeUnits(subjects: Subject[]) {
-        let totalUnits = 0;
-        for (const subj of subjects) totalUnits += subj.units;
-        return totalUnits ?? 0;
-    }
-
-    function addSubject({ className, grade, units }: Subject, id: string) {
+    function addSubject(subject: Subject, id: string) {
         update((store) => {
             const sem = store.find((s) => s.id === id);
-            if (typeof sem === 'undefined') throw new Error('Semester not found');
+            assert(typeof sem !== 'undefined', 'Semester not found');
 
-            // check if subject already exists
-            // const subj = sem.subjects.find((s) => s.className.toLowerCase === className.toLowerCase);
-            // if (typeof subj !== 'undefined') throw new Error('Subject already exists');
-
-            sem.subjects.push({ className, grade, units });
-            sem.details.gwa = computeGWA(sem.subjects);
-            sem.details.units = computeUnits(sem.subjects);
+            sem.subjects.push(subject);
+            sem.details.gwa = computeSemGWA(sem.subjects);
+            sem.details.units = computeSemUnits(sem.subjects);
             return store;
         });
     }
@@ -63,16 +50,14 @@ function initStore() {
     return {
         subscribe,
         set,
-        update,
-        addSem,
+        addSemester,
         addSubject,
         getSem,
-        computeGWA,
-        computeUnits,
     };
 }
 
 type Store = ReturnType<typeof initStore>;
+const SEMESTER = Symbol('semester');
 
 export function init() {
     setContext(SEMESTER, initStore() satisfies Store);

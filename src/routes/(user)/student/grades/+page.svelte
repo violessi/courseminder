@@ -52,7 +52,7 @@
             component: c,
             title: 'Add New Semester',
             response: (r: AddSemType) => {
-                semStore.addSem(r);
+                semStore.addSemester(r);
             },
         };
         modalStore.trigger(modal);
