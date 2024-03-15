@@ -20,7 +20,7 @@
         e.preventDefault();
 
         const res = safeParse(AddSem, formData);
-        if (!formData.year.match(/\d{4}-\d{4}/)) {
+        if (!formData.year.match(/^\d{4}-\d{4}$/)) {
             message = 'Invalid year format. Please follow the YYYY-YYYY format.';
             return;
         }

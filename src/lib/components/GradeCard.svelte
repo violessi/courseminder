@@ -12,5 +12,5 @@
 >
     <div class="">{sem ?? '--'}, AY {year ?? '----'}</div>
     <div class="">{units ?? 0} units</div>
-    <div class="font-bold text-xl pt-2">GWA: {gwa ?? 0}</div>
+    <div class="font-bold text-xl pt-2">GWA: {gwa?.toFixed(4) ?? 0}</div>
 </a>

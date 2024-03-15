@@ -11,7 +11,7 @@
 
     // Form Data
     const formData: Subject = {
-        className: 'null',
+        className: 'CS 140',
         grade: 0,
         units: 0,
     };
@@ -20,16 +20,14 @@
     const gradesArray = [1.0, 1.25, 1.5, 1.75, 2.0, 2.25, 2.5, 2.75, 3.0, 4.0, 5.0];
 
     function handleSubmit(e: Event) {
+        const res = safeParse(Subject, formData);
         if (!formData.className || !formData.grade || !formData.units) {
             e.preventDefault();
             message = 'Please fill out all fields.';
         } else if (!gradesArray.includes(formData.grade)) {
             e.preventDefault();
             message = 'Invalid grade. Please follow the UP Grading System format.';
-        }
-
-        const res = safeParse(Subject, formData);
-        if (res.success) {
+        } else if (res.success) {
             if ($modalStore[0].response) $modalStore[0].response(formData);
             modalStore.close();
         } else {
@@ -68,6 +66,9 @@
                     <input
                         class="input"
                         type="number"
+                        step="0.25"
+                        min="1"
+                        max="5"
                         bind:value={formData.grade}
                         required
                         placeholder="Enter class grade..."
@@ -78,6 +79,7 @@
                     <input
                         class="input"
                         type="number"
+                        min="1"
                         bind:value={formData.units}
                         required
                         placeholder="Enter class units..."

@@ -33,14 +33,15 @@ function initStore() {
             totalUnits += subj.units;
             totalGrade += subj.grade * subj.units;
         }
+        if (totalUnits === 0) return 0;
         const gwa = totalGrade / totalUnits;
-        return gwa;
+        return gwa ?? 0;
     }
 
     function computeUnits(subjects: Subject[]) {
         let totalUnits = 0;
         for (const subj of subjects) totalUnits += subj.units;
-        return totalUnits;
+        return totalUnits ?? 0;
     }
 
     function addSubject({ className, grade, units }: Subject, id: string) {

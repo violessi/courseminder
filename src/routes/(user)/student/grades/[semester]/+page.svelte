@@ -95,7 +95,7 @@
         <div>
             <div class="card variant-filled-primary *: border border-tertiary-300 px-10 py-6 space-x-7 rounded-xl">
                 <div class="flex justify-between">
-                    <div class="text-tertiary-900 font-bold text-4xl">GWA: {details.gwa ?? 0}</div>
+                    <div class="text-tertiary-900 font-bold text-4xl">GWA: {details.gwa?.toFixed(4) ?? 0}</div>
                     <div class="text-tertiary-900 font-bold text-4xl">Units: {details.units ?? 0}</div>
                     <div class="text-tertiary-900 font-bold text-4xl">Honorable <br /> Scholarship: {scholarship}</div>
                 </div>
