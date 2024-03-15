@@ -32,7 +32,7 @@
                 </div>
                 <br />
                 <p class="TTCommons-Regular-14">
-                    Don't have an account? <a class="hyperlink" href="/signup">Sign Up</a>
+                    Don't have an account? <a class="hyperlink" href="/facultysignup">Sign Up</a>
                 </p>
                 <br />
                 <button class="LoginButton">LOGIN</button>
