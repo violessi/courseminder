@@ -43,9 +43,16 @@ export function computeUnits(sems: Semester[]): number {
  * @param {number} gwa - The Grade Weighted Average (GWA).
  * @returns {string} The academic honor.
  */
-export function computeHonor(gwa: number): string {
+export function computeHonor(gwa: number, string = ''): string {
     if (gwa === 0) return 'None';
-    else if (gwa <= 1.2) return 'Summa Cum Laude';
+
+    if (string === 'sem') {
+        if (gwa <= 1.45) return 'University';
+        else if (gwa <= 1.75) return 'College';
+        return 'None';
+    }
+
+    if (gwa <= 1.2) return 'Summa Cum Laude';
     else if (gwa <= 1.45) return 'Magna Cum Laude';
     else if (gwa <= 1.75) return 'Cum Laude';
     return 'None';

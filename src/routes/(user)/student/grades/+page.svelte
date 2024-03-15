@@ -32,10 +32,10 @@
         <Button on:click={() => modalStore.trigger(modal)}>Add Semester</Button>
     </div>
 
-    <div class="bg-surface-300 rounded-xl flex card-section justify-around">
+    <div class="bg-surface-300 rounded-xl flex card-section justify-center gap-32">
         <Tag label="Total Units" value={`${totalUnits} units`} />
         <Tag label="GWA" value={GWA} />
-        <Tag label="Latin Honors" value={honor} />
+        <Tag label="Latin Honor" value={honor} />
     </div>
 
     <div class="grid grid-cols-4 grid-flow-row-dense gap-10">

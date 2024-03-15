@@ -40,7 +40,7 @@
     }
 
     $: ({ gwa, units, sem, table } = update($semStore));
-    $: scholarship = computeHonor(gwa ?? 0);
+    $: scholarship = computeHonor(gwa ?? 0, 'sem');
 </script>
 
 <div class="h-full m-10 space-y-10">
@@ -63,9 +63,9 @@
 
     <div class="variant-filled-primary card-section">
         <div class="flex justify-between title-default">
-            <div>GWA: {gwa?.toFixed(4) ?? 0}</div>
+            <div>GWA: {parseFloat(gwa?.toFixed(4) ?? '0')}</div>
             <div>Units: {units ?? 0}</div>
-            <div>Latin Honor: {scholarship}</div>
+            <div>Scholarship: {scholarship}</div>
         </div>
     </div>
 </div>
