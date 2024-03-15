@@ -1,35 +1,65 @@
-<script>
+<script lang="ts">
+    import { getDatabase, ref, set, get } from 'firebase/database';
+    import { studentId, studentDegree } from '$lib/stores/CurriculumStores';
     import { goto } from '$app/navigation';
     import icon2 from '$lib/assets/icon2.png';
+    import { initializeApp } from 'firebase/app';
+
+    const firebaseConfig = {
+        apiKey: 'AIzaSyCmwpRzGyoeD-Xuh6Cuh1Agbsxw31Uekhk',
+        authDomain: 'courseminder-dev.firebaseapp.com',
+        databaseURL: 'https://courseminder-dev-default-rtdb.asia-southeast1.firebasedatabase.app',
+        projectId: 'courseminder-dev',
+        storageBucket: 'courseminder-dev.appspot.com',
+        messagingSenderId: '274860730108',
+        appId: '1:274860730108:web:b7f706a51ee7a79dbd1979',
+        measurementId: 'G-1T6H3BFHRR',
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
 
     let degree = '';
     let name = '';
     let studentnumber = '';
     let password = '';
     let errorMessage = '';
-    let valid = true;
 
+    async function writeStudentData(studentnumber: string, name: string, degree: string, password: string) {
+        const db = getDatabase(app);
+        const reference = ref(db, 'students/' + studentnumber);
+
+        // Check if the student already exists
+        const snapshot = await get(reference);
+        if (snapshot.exists()) {
+            // The student already exists, handle this case as needed
+            errorMessage = 'A student with this number already exists.';
+        } else {
+            // The student doesn't exist, write the data
+            set(reference, {
+                studentid: studentnumber,
+                name: name,
+                degree: degree,
+                password: password,
+            });
+            studentId.set(studentnumber);
+            studentDegree.set(degree);
+            goto(`../student/dashboard`);
+        }
+    }
     const handleSubmit = () => {
         // Check if all fields are filled
         if (degree && name && studentnumber && password) {
-            const user = {
-                degree,
-                name,
-                studentnumber,
-                password,
-            };
-            localStorage.setItem('user', JSON.stringify(user));
-            goto('../student/dashboard');
+            writeStudentData(studentnumber, name, degree, password);
         } else {
             // Handle the case when not all fields are filled
             // You can show an error message or do something else
-            valid = false;
             errorMessage = 'Please fill-up all fields.';
         }
     };
 </script>
 
-<body class="background">
+<div class="background">
     <div class="black-film h-full">
         <p>&nbsp</p>
         <img src={icon2} alt="Icon" class="w-20 h-11 ml-4" />
@@ -133,7 +163,7 @@
                         </svg>
                     </div>
                     <input
-                        type="text"
+                        type="password"
                         id="email-address-icon"
                         class="bg-green-50 border border-green-300 text-green-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full ps-10 p-2.5 dark:bg-green-100 dark:border-green-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-green-500 dark:focus:border-green-500"
                         placeholder="Password"
@@ -159,7 +189,7 @@
             </div>
         </div>
     </div>
-</body>
+</div>
 
 <style>
     .background {
