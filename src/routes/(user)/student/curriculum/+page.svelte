@@ -1,8 +1,8 @@
 <script lang="ts">
+    import { getCourseData, getCourseKey } from '$lib/firebase/database';
     import { COURSES } from '$lib/data/courses';
     import { Course } from '$lib/models/types';
     import { studentDegree } from '$lib/stores/CurriculumStores';
-    import { getCourseData, getCourseKey } from '$lib/firebase/database';
 
     // FIXME: we need to initialize firebase at the root level
     import { initFirebase } from '$lib/firebase/client';
