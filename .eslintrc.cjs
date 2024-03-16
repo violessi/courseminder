@@ -46,7 +46,6 @@ module.exports = {
         'dot-notation': 'error',
         eqeqeq: 'error',
         'func-style': ['error', 'declaration'],
-        'init-declarations': 'warn',
         'logical-assignment-operators': 'error',
         'new-cap': 'error',
         'no-alert': 'warn',
