@@ -4,8 +4,19 @@ import { get as getStore, writable } from 'svelte/store';
 import { initializeApp } from 'firebase/app'
 import { getDatabase, ref, get as getData, set as setData } from 'firebase/database';
 import { studentId } from '$lib/stores/CurriculumStores';
+import assert from '$lib/assert';
 
-const SEMESTER = Symbol('semester');
+function computeSemGWA(subjects: Subject[]): number {
+    const totalUnits = subjects.reduce((acc, subj) => acc + subj.units, 0);
+    const totalGrade = subjects.reduce((acc, subj) => acc + subj.grade * subj.units, 0);
+
+    if (totalUnits === 0) return 0;
+    return totalGrade / totalUnits;
+}
+
+function computeSemUnits(subjects: Subject[]) {
+    return subjects.reduce((acc, subj) => acc + subj.units, 0);
+}
 
 let studentnumber = '';
 studentId.subscribe((value) => {
@@ -54,18 +65,11 @@ function initStore() {
         // console.log(data);
         set(data);
     });
-
-    function addSem({ sem, year }: AddSem) {
-        const obg = {
-            id: `${sem} ${year}`,
-            details: {
-                sem,
-                year,
-                gwa: null,
-                units: null,
-            },
-            subjects: [],
-        } satisfies Semester;
+        
+    function addSemester({ sem, year }: AddSem) {
+        const id = `${sem} ${year}`;
+        const details = { sem, year, gwa: null, units: null };
+        const newSemester: Semester = { id, details, subjects: [] };
 
         // Update database and store
         const semId = parseSemester(sem, year);
@@ -75,46 +79,25 @@ function initStore() {
                 console.log('Semester already exists');
             }
             else {
-                update((store) => [...store, obg]);
+                update((store) => [...store, newSemester]);
                 setData(reference, obg);
             }
         });
     }
 
-    function getSem(id: string) {
-        return getStore(store).find((s) => s.id === id);
+    function getSem(id: string): Semester {
+        const sem = getStore(store).find((sem) => sem.id === id);
+        assert(typeof sem !== 'undefined', 'Semester not found');
+        return sem;
     }
 
-    function computeGWA(subjects: Subject[]) {
-        let totalUnits = 0;
-        let totalGrade = 0;
-        for (const subj of subjects) {
-            totalUnits += subj.units;
-            totalGrade += subj.grade * subj.units;
-        }
-        if (totalUnits === 0) return 0;
-        const gwa = totalGrade / totalUnits;
-        return gwa ?? 0;
-    }
-
-    function computeUnits(subjects: Subject[]) {
-        let totalUnits = 0;
-        for (const subj of subjects) totalUnits += subj.units;
-        return totalUnits ?? 0;
-    }
-
-    function addSubject({ className, grade, units }: Subject, id: string) {
+    function addSubject(subject: Subject, id: string) {
         update((store) => {
             const sem = store.find((s) => s.id === id);
-            if (typeof sem === 'undefined') throw new Error('Semester not found');
-
-            // check if subject already exists
-            // const subj = sem.subjects.find((s) => s.className.toLowerCase === className.toLowerCase);
-            // if (typeof subj !== 'undefined') throw new Error('Subject already exists');
-
-            sem.subjects.push({ className, grade, units });
-            sem.details.gwa = computeGWA(sem.subjects);
-            sem.details.units = computeUnits(sem.subjects);
+            assert(typeof sem !== 'undefined', 'Semester not found');
+            sem.subjects.push(subject);
+            sem.details.gwa = computeSemGWA(sem.subjects);
+            sem.details.units = computeSemUnits(sem.subjects);
             return store;
         });
     }
@@ -122,16 +105,14 @@ function initStore() {
     return {
         subscribe,
         set,
-        update,
-        addSem,
+        addSemester,
         addSubject,
         getSem,
-        computeGWA,
-        computeUnits,
     };
 }
 
 type Store = ReturnType<typeof initStore>;
+const SEMESTER = Symbol('semester');
 
 export function init() {
     setContext(SEMESTER, initStore() satisfies Store);

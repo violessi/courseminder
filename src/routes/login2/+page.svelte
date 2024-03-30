@@ -1,9 +1,9 @@
 <script lang="ts">
+    import { get, getDatabase, ref } from 'firebase/database';
+    import { studentDegree, studentId } from '$lib/stores/CurriculumStores';
+    import { goto } from '$app/navigation';
     import icon2 from '$lib/assets/icon2.png';
     import { initializeApp } from 'firebase/app';
-    import { getDatabase, ref, set, get } from 'firebase/database';
-    import { goto } from '$app/navigation';
-    import { studentDegree, studentId } from '$lib/stores/CurriculumStores';
 
     const firebaseConfig = {
         apiKey: 'AIzaSyCmwpRzGyoeD-Xuh6Cuh1Agbsxw31Uekhk',
@@ -25,7 +25,7 @@
     let errorMessage = '';
 
     async function checkLogin(studentnumber: string, password: string) {
-        const reference = ref(db, 'students/' + studentnumber);
+        const reference = ref(db, `students${studentnumber}`);
         const snapshot = await get(reference);
 
         // Store student data in global variable
@@ -34,14 +34,12 @@
         if (snapshot.child('password').val() === password) {
             goto(`../student/dashboard`);
         } else {
-            console.log(studentnumber);
-            console.log(password);
             errorMessage = 'Student Number or Password is not valid.';
         }
     }
-    const handleSubmit = () => {
+    function handleSubmit() {
         checkLogin(studentnumber, password);
-    };
+    }
 </script>
 
 <div class="container-fluid">
@@ -78,7 +76,7 @@
 
         cursor: pointer;
 
-        font-family: "Russo One", sans-serif;
+        font-family: 'Russo One', sans-serif;
         font-weight: 600;
         border-radius: 5px;
         box-shadow: none;

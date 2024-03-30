@@ -22,7 +22,7 @@ export const CourseMinder: CustomThemeConfig = {
         // primary | #DCF6E1
 
         // added new colors for the faculty side
-        "--color-primary-50":  '134 25 51',   // #861933
+        '--color-primary-50': '134 25 51', // #861933
         '--color-primary-100': '255 212 222', // #ffd4de
         '--color-primary-200': '207 163 173', // #cfa3ad
         //

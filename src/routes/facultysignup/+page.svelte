@@ -7,9 +7,8 @@
     let email = '';
     let password = '';
     let errorMessage = '';
-    let valid = true;
 
-    const handleSubmit = () => {
+    function handleSubmit() {
         // Check if all fields are filled
         if (department && name && email && password) {
             const facultyuser = {
@@ -23,10 +22,9 @@
         } else {
             // Handle the case when not all fields are filled
             // You can show an error message or do something else
-            valid = false;
             errorMessage = 'Please fill-up all fields.';
         }
-    };
+    }
 </script>
 
 <body class="background">
@@ -174,7 +172,7 @@
     }
 
     .hyperlink {
-        color: #F495AC;
+        color: #f495ac;
     }
 
     .error {
@@ -227,7 +225,7 @@
 
         cursor: pointer;
 
-        font-family: "Russo One", sans-serif;
+        font-family: 'Russo One', sans-serif;
         font-weight: 600;
         border-radius: 5px;
         box-shadow: none;
@@ -246,7 +244,7 @@
     }
 
     .CreateAccountShape {
-        background-color: #F16E8E;
+        background-color: #f16e8e;
         border-radius: 25px;
         height: 50px;
         justify-content: center;
