@@ -10,9 +10,12 @@ export function computeGWA(sems: Semester[]): number {
     let totalGrade = 0;
 
     for (const sem of sems) {
-        for (const subj of sem.subjects) {
-            totalUnits += subj.units;
-            totalGrade += subj.grade * subj.units;
+        const subjs = sem.subjects;
+        if (Array.isArray(subjs)) {
+            for (const subj of sem.subjects) {
+                totalUnits += subj.units;
+                totalGrade += subj.grade * subj.units;
+            }
         }
     }
 
@@ -30,11 +33,12 @@ export function computeUnits(sems: Semester[]): number {
 
     for (const sem of sems) {
         const subjs = sem.subjects;
-        for (const subj of subjs) {
-            totalUnits += subj.units;
+        if (Array.isArray(subjs)) {
+            for (const subj of subjs) {
+                totalUnits += subj.units;
+            }
         }
     }
-
     return totalUnits;
 }
 

@@ -25,7 +25,7 @@
     let errorMessage = '';
 
     async function checkLogin(studentnumber: string, password: string) {
-        const reference = ref(db, `students${studentnumber}`);
+        const reference = ref(db, `students/${studentnumber}`);
         const snapshot = await get(reference);
 
         // Store student data in global variable
@@ -35,6 +35,7 @@
             goto(`../student/dashboard`);
         } else {
             errorMessage = 'Student Number or Password is not valid.';
+            console.log(password)
         }
     }
     function handleSubmit() {
