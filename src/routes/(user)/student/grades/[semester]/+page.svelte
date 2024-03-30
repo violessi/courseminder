@@ -26,6 +26,13 @@
     };
 
     function getTable(subjects: Subject[]): TableSource {
+        if (!Array.isArray(subjects)) {
+            return {
+                head: [],
+                body: [],
+                meta: [],
+            };
+        }
         return {
             head: ['Class', 'Grade', 'Units'],
             body: tableMapperValues(subjects, ['className', 'grade', 'units']),
@@ -35,6 +42,9 @@
 
     function update(_: Semester[]) {
         const { details, subjects } = semStore.getSem(semId);
+        console.log($semStore)
+        console.log(details);
+        console.log(subjects);
         const table = getTable(subjects);
         return { ...details, table };
     }

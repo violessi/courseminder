@@ -80,7 +80,7 @@ function initStore() {
             }
             else {
                 update((store) => [...store, newSemester]);
-                setData(reference, obg);
+                setData(reference, newSemester);
             }
         });
     }
