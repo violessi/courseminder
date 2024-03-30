@@ -2,8 +2,11 @@
     import { Semester } from '$lib/models/types';
     // eslint-disable-next-line init-declarations
     export let data: Semester;
+    console.log(data)
     $: ({ id, details } = data);
     $: ({ sem, year, units, gwa } = details);
+    console.log(id)
+    console.log(details)
 </script>
 
 <a

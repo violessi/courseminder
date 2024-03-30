@@ -51,7 +51,7 @@ function initStore() {
             const childData = childSnapshot.val();
             data.push(childData);
         });
-        console.log(data);
+        // console.log(data);
         set(data);
     });
 
