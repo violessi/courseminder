@@ -30,12 +30,13 @@ const reference = ref(db, `semesterData/${studentnumber}`);
 
 function parseSemester(sem : string, year : string){
     const yearId = year.split('-');
-    const startYear = yearId[0].slice(2, 3);
-    const endYear = yearId[1].slice(2, 3);
+    const startYear = yearId[0].slice(2, 4);
+    const endYear = yearId[1].slice(2, 4);
     let semId = startYear + endYear;
     if (sem === '1st Semester') semId += 'A';
     else if (sem === '2nd Semester') semId += 'B';
     else semId += 'M';
+    console.log(semId)
 
     return semId;
 }
@@ -65,9 +66,8 @@ function initStore() {
             },
             subjects: [],
         } satisfies Semester;
-        update((store) => [...store, obg]);
 
-        // Update database
+        // Update database and store
         const semId = parseSemester(sem, year);
         const reference = ref(db, `semesterData/${studentnumber}/${semId}`);
         getData(reference).then(snapshot => {
@@ -75,6 +75,7 @@ function initStore() {
                 console.log('Semester already exists');
             }
             else {
+                update((store) => [...store, obg]);
                 setData(reference, obg);
             }
         });

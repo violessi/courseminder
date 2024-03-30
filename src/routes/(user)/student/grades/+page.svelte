@@ -14,10 +14,12 @@
         let totalGrade = 0;
         $semStore.forEach((sem) => {
             const subjs = sem.subjects;
-            subjs.forEach((subj) => {
-                totalUnits += subj.units;
-                totalGrade += subj.grade * subj.units;
-            });
+            if (Array.isArray(subjs)) {
+                subjs.forEach((subj) => {
+                    totalUnits += subj.units;
+                    totalGrade += subj.grade * subj.units;
+                });
+            }
         });
         if (totalUnits === 0) return 0;
         return totalGrade / totalUnits;
@@ -27,9 +29,11 @@
         let totalUnits = 0;
         $semStore.forEach((sem) => {
             const subjs = sem.subjects;
-            subjs.forEach((subj) => {
-                totalUnits += subj.units;
-            });
+            if (Array.isArray(subjs)) {
+                subjs.forEach((subj) => {
+                    totalUnits += subj.units;
+                });
+            }
         });
         return totalUnits;
     }
