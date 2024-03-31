@@ -49,14 +49,14 @@
         return { ...details, table };
     }
 
-    $: ({ gwa, units, sem, table } = update($semStore));
+    $: ({ gwa, units, sem, table, year } = update($semStore));
     $: scholarship = computeHonor(gwa ?? 0, 'sem');
 </script>
 
 <div class="h-full m-10 space-y-10">
     <div class="flex justify-between title-default">
         <div>{sem}</div>
-        <div>AY {sem}</div>
+        <div>AY {year}</div>
     </div>
 
     <div class="justify-end flex -mb-6">
@@ -64,7 +64,7 @@
     </div>
 
     <div class="bg-primary-300 justify-around card-section">
-        {#if table.body.length > 0}
+        {#if table.body.length > 1}
             <Table source={table} />
         {:else}
             <div class="title-default">No Subjects</div>

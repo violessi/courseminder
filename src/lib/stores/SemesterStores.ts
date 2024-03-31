@@ -39,8 +39,10 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 const reference = ref(db, `semesterData/${studentnumber}`);
 
-function parseSemester(sem : string, year : string){
-    const yearId = year.split('-');
+function parseSemester(id : string){
+    const semComponents = id.split(' ');
+    const sem = semComponents.length === 3 ? id.split(' ')[0] + ' ' + id.split(' ')[1] : id.split(' ')[0];
+    const yearId = semComponents[semComponents.length - 1].split('-');
     const startYear = yearId[0].slice(2, 4);
     const endYear = yearId[1].slice(2, 4);
     let semId = startYear + endYear;
@@ -62,25 +64,31 @@ function initStore() {
             const childData = childSnapshot.val();
             data.push(childData);
         });
-        // console.log(data);
+        console.log(data);
         set(data);
     });
         
     function addSemester({ sem, year }: AddSem) {
         const id = `${sem} ${year}`;
-        const details = { sem, year, gwa: null, units: null };
-        const newSemester: Semester = { id, details, subjects: [] };
+        const details = { gwa: null, sem, units: null, year };
+        const newSemester: Semester = { 
+            details, 
+            id, 
+            subjects: [
+                { className: 'Sample Subject', grade: 0.0, units: 0},
+            ] };
 
         // Update database and store
-        const semId = parseSemester(sem, year);
-        const reference = ref(db, `semesterData/${studentnumber}/${semId}`);
-        getData(reference).then(snapshot => {
+        const semId = parseSemester(id);
+        const semRef = ref(db, `semesterData/${studentnumber}/${semId}`);
+        getData(semRef).then(snapshot => {
             if (snapshot.exists()){
                 console.log('Semester already exists');
             }
             else {
                 update((store) => [...store, newSemester]);
-                setData(reference, newSemester);
+                console.log('setData from addSemester');
+                setData(semRef, newSemester);
             }
         });
     }
@@ -92,13 +100,21 @@ function initStore() {
     }
 
     function addSubject(subject: Subject, id: string) {
-        update((store) => {
-            const sem = store.find((s) => s.id === id);
-            assert(typeof sem !== 'undefined', 'Semester not found');
-            sem.subjects.push(subject);
-            sem.details.gwa = computeSemGWA(sem.subjects);
-            sem.details.units = computeSemUnits(sem.subjects);
-            return store;
+        
+        // Update database and store
+        const semId = parseSemester(id);
+        const reference = ref(db, `semesterData/${studentnumber}/${semId}`);
+        getData(reference).then(snapshot => {
+            update((store) => {
+                const sem = store.find((s) => s.id === id);
+                assert(typeof sem !== 'undefined', 'Semester not found');
+                sem.subjects.push(subject);
+                sem.details.gwa = computeSemGWA(sem.subjects);
+                sem.details.units = computeSemUnits(sem.subjects);
+                console.log('setData from addSubject');
+                setData(reference, sem);
+                return store;
+            });            
         });
     }
 

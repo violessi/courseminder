@@ -24,6 +24,7 @@
     $: totalUnits = computeUnits($semStore);
     $: GWA = parseFloat(computeGWA($semStore).toFixed(4));
     $: honor = computeHonor(GWA);
+    $: console.log($semStore);
 </script>
 
 <div class="h-full m-10 space-y-10">
