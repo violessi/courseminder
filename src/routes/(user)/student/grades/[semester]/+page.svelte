@@ -34,9 +34,10 @@
             };
         }
         return {
+            // removes Sample Subject from the table
             head: ['Class', 'Grade', 'Units'],
-            body: tableMapperValues(subjects, ['className', 'grade', 'units']),
-            meta: tableMapperValues(subjects, ['className', 'grade', 'units']),
+            body: tableMapperValues(subjects.slice(1), ['className', 'grade', 'units']),
+            meta: tableMapperValues(subjects.slice(1), ['className', 'grade', 'units']),
         };
     }
 
@@ -64,7 +65,7 @@
     </div>
 
     <div class="bg-primary-300 justify-around card-section">
-        {#if table.body.length > 1}
+        {#if table.body.length > 0}
             <Table source={table} />
         {:else}
             <div class="title-default">No Subjects</div>
