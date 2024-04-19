@@ -84,11 +84,32 @@
     </div>
 
 
-    <div class="justify-end flex -mb-6">
+    <!-- {#each $semStore as semester (semester.id)}
+        <div>
+            <h2>{semester.id}</h2>
+            <button on:click={() => semStore.removeSemester(semester.id)}>Remove</button>
+        </div>
+    {/each} -->
+    <!-- <div class="justify-end flex -mb-6">
         <div class ="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4">
-            <button on:click={() => semStore.removeSemester(semId)}>
+            <a href="/student/grades">
+                <button on:click={() => semStore.removeSemester(semId)}>
+                    Remove Semester
+                </button>
+            </a>
+        </div>
+    </div> -->
+
+    <div class="justify-end flex -mb-6">
+        <div class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4">
+            <button on:click={() => {
+                if (confirm('Are you sure you want to remove this semester?')) {
+                    semStore.removeSemester(semId);
+                    window.location.href = '/student/grades';
+                }
+            }}>
                 Remove Semester
-              </button>
+            </button>
         </div>
     </div>
 
