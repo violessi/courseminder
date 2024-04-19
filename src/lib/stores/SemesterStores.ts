@@ -2,7 +2,8 @@ import { AddSem, Semester, Subject } from '$lib/models/types';
 import { getContext, hasContext, setContext } from 'svelte';
 import { get as getStore, writable } from 'svelte/store';
 import { initializeApp } from 'firebase/app'
-import { getDatabase, ref, get as getData, set as setData } from 'firebase/database';
+// import { getDatabase, ref, get as getData, set as setData } from 'firebase/database';
+import { getDatabase, ref, get as getData, remove, set as setData } from 'firebase/database';
 import { studentId } from '$lib/stores/CurriculumStores';
 import assert from '$lib/assert';
 
@@ -93,6 +94,39 @@ function initStore() {
         });
     }
 
+    // let popupOpen = false;
+
+    // function removeSemester(){
+    //     popupOpen = true;
+    // }
+
+    // function cancel(){
+    //     popupOpen = false;
+    // }
+
+    function removeSemester(id: string) {
+        const semId = parseSemester(id);
+        const semRef = ref(db, `semesterData/${studentnumber}/${semId}`);
+
+        getData(semRef).then((snapshot) => {
+            if (snapshot.exists()) {
+                remove(semRef)
+                    .then(() => {
+                        console.log("Semester removed successfully");
+                        update((store) => store.filter(semester => semester.id !== id));
+                    })
+                    .catch(error => {
+                        console.error("Error removing semester: ", error);
+                    });
+            } else {
+                console.log("Semester does not exist or already removed");
+            }
+        }).catch(error => {
+            console.error("Error getting semester snapshot: ", error);
+        });
+    }
+ 
+
     function getSem(id: string): Semester {
         const sem = getStore(store).find((sem) => sem.id === id);
         assert(typeof sem !== 'undefined', 'Semester not found');
@@ -118,12 +152,15 @@ function initStore() {
         });
     }
 
+
+
     return {
         subscribe,
         set,
         addSemester,
         addSubject,
         getSem,
+        removeSemester,
     };
 }
 

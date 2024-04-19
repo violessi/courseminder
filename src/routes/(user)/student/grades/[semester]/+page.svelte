@@ -12,6 +12,9 @@
     import { computeHonor } from '$lib/functions/helper';
     import { page } from '$app/stores';
 
+    let semesters =[];
+    $: semesters = $semStore;
+
     const modalStore = getModalStore();
     const semStore = SemStore.get();
     const semId = $page.params.semester;
@@ -79,4 +82,15 @@
             <div>Scholarship: {scholarship}</div>
         </div>
     </div>
+
+
+    <div class="justify-end flex -mb-6">
+        <div class ="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4">
+            <button on:click={() => semStore.removeSemester(semId)}>
+                Remove Semester
+              </button>
+        </div>
+    </div>
+
+    
 </div>
