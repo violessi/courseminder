@@ -10,21 +10,36 @@
     import { type Semester, Subject } from '$lib/models/types';
     import { Button } from '$lib/components';
     import { computeHonor } from '$lib/functions/helper';
+    import Tag from '../Tag.svelte';
     import { page } from '$app/stores';
 
-    let semesters =[];
+    let semesters = [];
     $: semesters = $semStore;
 
     const modalStore = getModalStore();
     const semStore = SemStore.get();
     const semId = $page.params.semester;
+    let curr = { className: '', grade: 0, units: 0, id: '' };
 
-    const modal: ModalSettings = {
+    const addClassModal: ModalSettings = {
         type: 'component',
         component: 'addgrade',
         title: 'Add New Class',
         response: (r: Subject) => {
             semStore.addSubject(r, semId);
+        },
+    };
+
+    const editGradeModal: ModalSettings = {
+        type: 'component',
+        component: 'editgrade',
+        meta: curr,
+        response: (r) => {
+            if (r[0] == 'remove') {
+                semStore.removeSubject(r[1], semId);
+            } else if (r[0] == 'edit') {
+                semStore.editSubject(r[1], semId);
+            }
         },
     };
 
@@ -46,11 +61,20 @@
 
     function update(_: Semester[]) {
         const { details, subjects } = semStore.getSem(semId);
-        console.log($semStore)
-        console.log(details);
-        console.log(subjects);
         const table = getTable(subjects);
         return { ...details, table };
+    }
+
+    function addClass() {
+        modalStore.trigger(addClassModal);
+    }
+
+    function editGrade(deets: any) {
+        curr.className = deets.detail[0];
+        curr.grade = deets.detail[1];
+        curr.units = deets.detail[2];
+        curr.id = semId;
+        modalStore.trigger(editGradeModal);
     }
 
     $: ({ gwa, units, sem, table, year } = update($semStore));
@@ -58,60 +82,29 @@
 </script>
 
 <div class="h-full m-10 space-y-10">
-    <div class="flex justify-between title-default">
-        <div>{sem}</div>
-        <div>AY {year}</div>
-    </div>
+    <div class="title-default">{sem}, AY {year}</div>
 
-    <div class="justify-end flex -mb-6">
-        <Button on:click={() => modalStore.trigger(modal)}>Add Class</Button>
-    </div>
-
-    <div class="bg-primary-300 justify-around card-section">
-        {#if table.body.length > 0}
-            <Table source={table} />
-        {:else}
-            <div class="title-default">No Subjects</div>
-        {/if}
-    </div>
-
-    <div class="variant-filled-primary card-section">
-        <div class="flex justify-between title-default">
-            <div>GWA: {parseFloat(gwa?.toFixed(4) ?? '0')}</div>
-            <div>Units: {units ?? 0}</div>
-            <div>Scholarship: {scholarship}</div>
+    <div class="flex gap-6 items-center justify-between">
+        <div class="bg-secondary-500 rounded-xl flex card-section justify-between gap-10 px-10">
+            <Tag label="GWA" value={gwa?.toFixed(4) ?? 0} />
+            <Tag label="Units" value={units ?? 0} />
+            <Tag label="Scholarship" value={scholarship} />
         </div>
+        <Button on:click={addClass} style="bg-secondary-500 h-fit">Add Class</Button>
     </div>
 
-
-    <!-- {#each $semStore as semester (semester.id)}
-        <div>
-            <h2>{semester.id}</h2>
-            <button on:click={() => semStore.removeSemester(semester.id)}>Remove</button>
-        </div>
-    {/each} -->
-    <!-- <div class="justify-end flex -mb-6">
-        <div class ="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4">
-            <a href="/student/grades">
-                <button on:click={() => semStore.removeSemester(semId)}>
-                    Remove Semester
-                </button>
-            </a>
-        </div>
-    </div> -->
-
-    <div class="justify-end flex -mb-6">
-        <div class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4">
-            <button on:click={() => {
-                if (confirm('Are you sure you want to remove this semester?')) {
-                    semStore.removeSemester(semId);
-                    window.location.href = '/student/grades';
-                }
-            }}>
-                Remove Semester
-            </button>
-        </div>
-    </div>
-
-    
+    {#if table.body.length > 0}
+        <Table
+            regionBody="bg-secondary-300 text-xl"
+            regionCell="text-center text-tertiary-900"
+            regionHeadCell="bg-secondary-500 text-center text-xl font-bold"
+            interactive={true}
+            on:selected={(deets) => {
+                editGrade(deets);
+            }}
+            source={table}
+        ></Table>
+    {:else}
+        <div class="title-default text-center p-5 rounded-lg">No Subjects</div>
+    {/if}
 </div>
