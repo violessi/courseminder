@@ -11,7 +11,7 @@
     const modalStore = getModalStore();
     const semStore = SemStore.get();
 
-    const modal: ModalSettings = {
+    const addNewSemModal: ModalSettings = {
         type: 'component',
         component: 'addsem',
         title: 'Add New Semester',
@@ -21,19 +21,23 @@
         },
     };
 
+    function addNewSem() {
+        modalStore.trigger(addNewSemModal);
+    }
+
     $: totalUnits = computeUnits($semStore);
-    $: GWA = parseFloat(computeGWA($semStore).toFixed(4));
-    $: honor = computeHonor(GWA);
+    $: GWA = computeGWA($semStore).toFixed(4);
+    $: honor = computeHonor(parseFloat(GWA));
     $: console.log($semStore);
 </script>
 
 <div class="h-full m-10 space-y-10">
     <div class="flex justify-between">
         <div class="title-default">View Grades</div>
-        <Button on:click={() => modalStore.trigger(modal)}>Add Semester</Button>
+        <Button on:click={addNewSem} style="bg-secondary-500">Add Semester</Button>
     </div>
 
-    <div class="bg-surface-300 rounded-xl flex card-section justify-center gap-32">
+    <div class="bg-secondary-500 rounded-xl flex card-section justify-center gap-32">
         <Tag label="Total Units" value={`${totalUnits} units`} />
         <Tag label="GWA" value={GWA} />
         <Tag label="Latin Honor" value={honor} />

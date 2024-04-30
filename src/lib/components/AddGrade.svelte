@@ -11,7 +11,7 @@
 
     // Form Data
     const formData: Subject = {
-        className: 'CS 140',
+        className: '',
         grade: 0,
         units: 0,
     };
@@ -54,7 +54,7 @@
                 <label class="label flex place-items-center gap-5">
                     <div class="w-1/4">Class Name:</div>
                     <input
-                        class="input"
+                        class="input text-tertiary-900"
                         type="text"
                         bind:value={formData.className}
                         required
@@ -64,7 +64,7 @@
                 <label class="label flex place-items-center gap-5">
                     <div class="w-1/4">Grade:</div>
                     <input
-                        class="input"
+                        class="input text-tertiary-900"
                         type="number"
                         step="0.25"
                         min="1"
@@ -77,7 +77,7 @@
                 <label class="label flex place-items-center gap-5">
                     <div class="w-1/4">Units:</div>
                     <input
-                        class="input"
+                        class="input text-tertiary-900"
                         type="number"
                         min="1"
                         bind:value={formData.units}

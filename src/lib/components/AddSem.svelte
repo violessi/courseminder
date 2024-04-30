@@ -1,5 +1,6 @@
 <script lang="ts">
     import { AddSem, SemType } from '$lib/models/types';
+
     import { ListBox, ListBoxItem, getModalStore } from '@skeletonlabs/skeleton';
     import type { SvelteComponent } from 'svelte';
     import { safeParse } from 'valibot';
@@ -10,7 +11,7 @@
     // eslint-disable-next-line init-declarations
     const formData: AddSem = {
         sem: SemType.first,
-        year: '2023-2024',
+        year: '',
     };
     const modalStore = getModalStore();
     let message = '';
@@ -60,7 +61,13 @@
             <form class="modal-form">
                 <label class="label flex place-items-center gap-5">
                     <div class="w-1/4">Academic Year:</div>
-                    <input class="input" type="text" bind:value={formData.year} required placeholder="YYYY-YYYY" />
+                    <input
+                        class="input text-tertiary-900"
+                        type="text"
+                        bind:value={formData.year}
+                        required
+                        placeholder="YYYY-YYYY"
+                    />
                 </label>
             </form>
         </div>
