@@ -15,6 +15,7 @@
     let showPopup = false;
     let selectedCourse: string;
     let courseData: Course;
+    let seeCourseData = true;
 
     async function showCoursePopup(course: string) {
         selectedCourse = course;
@@ -29,20 +30,34 @@
         }
     }
 
+    function changeMode() {
+        seeCourseData = !seeCourseData
+    }
+
     // NOTE: Unused functions are found at the bottom of this file
 </script>
 
-<div>
-    <div class="flex-row grid grid-cols-4 p-2 grid-rows-5 gap-4 content-center">
+<div class="flex-row">
+    <div class="flex-row grid grid-cols-4 p-2 grid-rows-15 gap-4 content-center">
         {#if courses}
             {#each courses as course}
-                <button on:click={() => showCoursePopup(course)} class="bg-secondary-500 rounded-lg p-1.5 text-sm"
-                    >{course}</button
-                >
+                {#if seeCourseData}
+                    <button on:click={() => showCoursePopup(course)} class="bg-secondary-500 rounded-lg p-1.5 text-sm"
+                        >{course}</button
+                    >
+                {:else}
+                    <button class="bg-secondary-500 rounded-lg p-1.5 text-sm"
+                        >{course}</button
+                    >
+                {/if}
             {/each}
         {:else}
             <p>No courses found</p>
         {/if}
+    </div>
+    <div class="flex-row">
+        <button on:click={changeMode} class="bg-secondary-500 rounded-lg p-1.5 text-sm"> Edit Course Progress </button>
+
     </div>
 
     {#if showPopup}
