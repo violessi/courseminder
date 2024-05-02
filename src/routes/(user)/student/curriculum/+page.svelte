@@ -1,4 +1,4 @@
-<script lang="ts">
+<!-- <script lang="ts">
     import { getCourseData, getCourseKey } from '$lib/firebase/database';
     import { COURSES, COURSESTATUS } from '$lib/data/courses';
     import { Course } from '$lib/models/types';
@@ -138,6 +138,7 @@
     
 
 </div>
+</div> -->
 
 <!-- // NOTE: currently unused
 let studentnumber;
@@ -173,3 +174,70 @@ async function deleteCollection(collectionPath: string) {
     const courseref = ref(db, collectionPath);
     await set(courseref, null);
 } -->
+
+
+
+<script lang="ts">
+    import { writable } from 'svelte/store';
+    import { SvelteFlow, type Node, type Edge } from '@xyflow/svelte';
+ 
+    import '@xyflow/svelte/dist/style.css';
+  
+    import { initialNodes, initialEdges } from '$lib/data/nodes-and-edges';
+    import CustomNode from './CustomNode.svelte';
+
+    import { getCourseData, getCourseKey } from '$lib/firebase/database';
+    import { COURSES } from '$lib/data/courses';
+    import { Course } from '$lib/models/types';
+    import Popup from './Popup.svelte';
+    import { studentDegree } from '$lib/stores/CurriculumStores';
+
+    // FIXME: we need to initialize firebase at the root level
+    import { initFirebase } from '$lib/firebase/client';
+    initFirebase();
+  
+    const nodes = writable<Node[]>(initialNodes);
+    const edges = writable<Edge[]>(initialEdges);
+  
+    const nodeTypes = {
+      custom: CustomNode
+    };
+
+
+    // fetch the courses for the student
+    $: courses = COURSES[$studentDegree];
+
+    let showPopup = false;
+    let selectedCourse: string;
+    let courseData: Course;
+
+    async function showCoursePopup(course: string) {
+        selectedCourse = course;
+        try {
+            const courseKey = await getCourseKey(course);
+            courseData = await getCourseData(courseKey);
+            showPopup = true;
+        } catch (e) {
+            // TODO: handle errors here
+            console.error(e);
+            return;
+        }
+    }
+
+    function handleNodeClick({detail: {node}}){
+        const nodeId = node.id;
+        showCoursePopup(nodeId);
+    }
+  </script>
+
+
+  
+  <div style="height:100vh; width:100vw;">
+    <SvelteFlow {nodes} {nodeTypes} {edges} fitView class="bg-teal-50" on:nodeclick={handleNodeClick}>
+    </SvelteFlow>
+
+    {#if showPopup}
+        <Popup {selectedCourse} {courseData} bind:showPopup />
+    {/if}   
+  </div>
+  

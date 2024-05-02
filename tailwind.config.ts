@@ -6,6 +6,8 @@ import { skeleton } from '@skeletonlabs/tw-plugin';
 import typography from '@tailwindcss/typography';
 
 export default {
+
+    important: true,
     darkMode: 'class',
     content: [
         './src/**/*.{html,js,svelte,ts}',
