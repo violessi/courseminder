@@ -1,10 +1,13 @@
 <script lang="ts">
     import { getCourseData, getCourseKey } from '$lib/firebase/database';
-    import { COURSES } from '$lib/data/courses';
+    import { COURSES, COURSESTATUS } from '$lib/data/courses';
     import { Course } from '$lib/models/types';
     import LegendBox from '$lib/components/LegendBox.svelte';
     import Popup from './Popup.svelte';
-    import { studentDegree } from '$lib/stores/CurriculumStores';
+    import { studentId, studentDegree } from '$lib/stores/CurriculumStores';
+    import { db } from '$lib/firebase/client'
+    import { set, get, ref } from 'firebase/database';
+
 
     // FIXME: we need to initialize firebase at the root level
     import { initFirebase } from '$lib/firebase/client';
@@ -12,7 +15,16 @@
 
     // fetch the courses for the student
     $: courses = COURSES[$studentDegree];
+    $: status = COURSESTATUS[$studentDegree];
 
+    function updateCourseStatus(course : string){
+        const reference = ref(db, `/courseStatus/${$studentId}`)
+        console.log(`Updating course status`);
+        get(reference).then(() => {
+            set(reference, status);
+        });
+    }
+    
     let showPopup = false;
     let selectedCourse: string;
     let courseData: Course;
@@ -47,7 +59,7 @@
                         >{course}</button
                     >
                 {:else}
-                    <button class="bg-secondary-500 rounded-lg p-1.5 text-sm"
+                    <button on:click={() => updateCourseStatus(course)} class="bg-secondary-500 rounded-lg p-1.5 text-sm"
                         >{course}</button
                     >
                 {/if}
