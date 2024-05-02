@@ -8,7 +8,6 @@
     import { db } from '$lib/firebase/client'
     import { set, get, ref } from 'firebase/database';
 
-
     // FIXME: we need to initialize firebase at the root level
     import { initFirebase } from '$lib/firebase/client';
     initFirebase();
@@ -16,6 +15,15 @@
     // fetch the courses for the student
     $: courses = COURSES[$studentDegree];
     $: status = COURSESTATUS[$studentDegree];
+
+    const reference = ref(db, `/courseStatus/${$studentDegree}/${$studentId}`)
+    get(reference).then((snapshot) => {
+        if (snapshot.exists()) {
+            status = snapshot.val();
+        }
+    }).catch((e) => {
+        console.error(e);
+    });
 
     function updateCourseStatus(course : string){
         return new Promise((resolve, reject) => {
