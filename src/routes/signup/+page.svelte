@@ -4,6 +4,7 @@
     import { goto } from '$app/navigation';
     import icon2 from '$lib/assets/icon2.png';
     import { initializeApp } from 'firebase/app';
+    import { COURSESTATUS } from '$lib/data/courses';
 
     const firebaseConfig = {
         apiKey: 'AIzaSyCmwpRzGyoeD-Xuh6Cuh1Agbsxw31Uekhk',
@@ -44,6 +45,10 @@
             });
             studentId.set(studentnumber);
             studentDegree.set(degree);
+
+            const courseStatusRef = ref(db, `courseStatus/${$studentDegree}/${$studentId}`);
+            set(courseStatusRef, COURSESTATUS[$studentDegree])
+
             goto(`../student/dashboard`);
         }
     }

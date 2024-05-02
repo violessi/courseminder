@@ -18,10 +18,43 @@
     $: status = COURSESTATUS[$studentDegree];
 
     function updateCourseStatus(course : string){
-        const reference = ref(db, `/courseStatus/${$studentId}`)
-        console.log(`Updating course status`);
-        get(reference).then(() => {
-            set(reference, status);
+        return new Promise((resolve, reject) => {
+            const reference = ref(db, `/courseStatus/${$studentId}`)
+            console.log(`Updating course status`);
+            let currStatus = '';
+            get(reference).then((snapshot) => {
+                set(reference, status);
+                if (course == 'Soc Sci 1/2' || course == 'STS 1/DRMAPS'){
+                    course = course == 'Soc Sci 1/2' ? 'Soc Sci' : 'STS 1';
+                }
+                currStatus = snapshot.child(course).val()
+                if (currStatus == 'Taking') {
+                    status[course] = 'To Take';
+                    console.log('From Taking To Take');
+                }
+                else if (currStatus == 'To Take') {
+                    status[course] = 'Not Taken';
+                    console.log('From To Take To Not Taken');
+                }
+                else if (currStatus == 'Not Taken') {
+                    status[course] = 'Taken';
+                    console.log('From Not Taken To Taken');
+                }
+                else if (currStatus == 'Taken') {
+                    status[course] = 'Taking';
+                    console.log('From Taken To Taking');
+                }
+                resolve(status[course]);
+            }).catch(reject);
+        });
+    }
+
+    function handleUpdateCourseStatus(course: string) {
+        updateCourseStatus(course).then((newStatus) => {
+            console.log(`Updated status of ${course} to ${newStatus}`);
+            return newStatus;
+        }).catch((e) => {
+            console.error(e);
         });
     }
     
@@ -45,6 +78,12 @@
 
     function changeMode() {
         seeCourseData = !seeCourseData
+        console.log(`change mode to seeCourseData: ${seeCourseData}`)
+        if (seeCourseData) {
+            console.log(`Updating course status`);
+            const reference = ref(db, `/courseStatus/${$studentId}`)
+            set(reference, status);
+        }
     }
 
     // NOTE: Unused functions are found at the bottom of this file
@@ -55,13 +94,25 @@
         {#if courses}
             {#each courses as course}
                 {#if seeCourseData}
-                    <button on:click={() => showCoursePopup(course)} class="bg-secondary-500 rounded-lg p-1.5 text-sm"
-                        >{course}</button
-                    >
+                    {#if status[course] == 'Taken'}
+                        <button on:click={() => showCoursePopup(course)} class="bg-secondary-500 rounded-lg p-1.5 text-sm">{course}</button>
+                    {:else if status[course] == 'Not Taken'}
+                        <button on:click={() => showCoursePopup(course)} class="bg-primary-900 rounded-lg p-1.5 text-sm">{course}</button>
+                    {:else if status[course] == 'Taking'}
+                        <button on:click={() => showCoursePopup(course)} class="bg-secondary-700 rounded-lg p-1.5 text-sm">{course}</button>
+                    {:else if status[course] == 'To Take'}
+                        <button on:click={() => showCoursePopup(course)} class="bg-primary-50 rounded-lg p-1.5 text-sm">{course}</button>
+                    {/if}
                 {:else}
-                    <button on:click={() => updateCourseStatus(course)} class="bg-secondary-500 rounded-lg p-1.5 text-sm"
-                        >{course}</button
-                    >
+                    {#if status[course] == 'Taken'}
+                        <button on:click={() => handleUpdateCourseStatus(course)} class="bg-secondary-500 rounded-lg p-1.5 text-sm">{course}</button>
+                    {:else if status[course] == 'Not Taken'}
+                        <button on:click={() => handleUpdateCourseStatus(course)} class="bg-primary-900 rounded-lg p-1.5 text-sm">{course}</button>
+                    {:else if status[course] == 'Taking'}
+                        <button on:click={() => handleUpdateCourseStatus(course)} class="bg-secondary-700 rounded-lg p-1.5 text-sm">{course}</button>
+                    {:else if status[course] == 'To Take'}
+                        <button on:click={() => handleUpdateCourseStatus(course)} class="bg-primary-50 rounded-lg p-1.5 text-sm">{course}</button>
+                    {/if}
                 {/if}
             {/each}
         {:else}
@@ -73,7 +124,11 @@
         <Popup {selectedCourse} {courseData} bind:showPopup />
     {/if}
     <div class="flex justify-center items-center sticky bottom-5 gap-5">
-        <button on:click={changeMode} class="bg-secondary-500 rounded-lg p-1.5 text-sm"> Edit Course Progress </button>
+        {#if seeCourseData}
+            <button on:click={changeMode} class="bg-secondary-500 rounded-lg p-1.5 text-sm"> Edit Course Progress </button>
+        {:else}
+            <button on:click={changeMode} class="bg-secondary-500 rounded-lg p-1.5 text-sm"> View Course Data </button>
+        {/if}
         <LegendBox></LegendBox>
 
     </div>
