@@ -27,11 +27,9 @@
 
     function updateCourseStatus(course : string){
         return new Promise((resolve, reject) => {
-            const reference = ref(db, `/courseStatus/${$studentId}`)
             console.log(`Updating course status`);
             let currStatus = '';
             get(reference).then((snapshot) => {
-                set(reference, status);
                 if (course == 'Soc Sci 1/2' || course == 'STS 1/DRMAPS'){
                     course = course == 'Soc Sci 1/2' ? 'Soc Sci' : 'STS 1';
                 }
@@ -53,6 +51,7 @@
                     console.log('From Taken To Taking');
                 }
                 resolve(status[course]);
+                set(reference, status);
             }).catch(reject);
         });
     }
