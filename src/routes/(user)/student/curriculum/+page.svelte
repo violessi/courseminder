@@ -30,9 +30,6 @@
             console.log(`Updating course status`);
             let currStatus = '';
             get(reference).then((snapshot) => {
-                if (course == 'Soc Sci 1/2' || course == 'STS 1/DRMAPS'){
-                    course = course == 'Soc Sci 1/2' ? 'Soc Sci' : 'STS 1';
-                }
                 currStatus = snapshot.child(course).val()
                 if (currStatus == 'Taking') {
                     status[course] = 'To Take';
@@ -88,8 +85,8 @@
         console.log(`change mode to seeCourseData: ${seeCourseData}`)
         if (seeCourseData) {
             console.log(`Updating course status`);
-            const reference = ref(db, `/courseStatus/${$studentId}`)
-            set(reference, status);
+            const courseStatusRef = ref(db, `/courseStatus/${$studentDegree}/${$studentId}`)
+            set(courseStatusRef, status);
         }
     }
 
@@ -126,10 +123,6 @@
             <p>No courses found</p>
         {/if}
     </div>
-
-    {#if showPopup}
-        <Popup {selectedCourse} {courseData} bind:showPopup />
-    {/if}
     <div class="flex justify-center items-center sticky bottom-5 gap-5">
         {#if seeCourseData}
             <button on:click={changeMode} class="bg-secondary-500 rounded-lg p-1.5 text-sm"> Edit Course Progress </button>
@@ -139,6 +132,10 @@
         <LegendBox></LegendBox>
 
     </div>
+    {#if showPopup}
+        <Popup {selectedCourse} {courseData} bind:showPopup />
+    {/if}
+    
 
 </div>
 

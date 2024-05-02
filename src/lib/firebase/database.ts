@@ -11,6 +11,7 @@ import { safeParse } from 'valibot';
  * @throws {Error} Throws an error if the course is not found or its key is not found.
  */
 export async function getCourseKey(course: string): Promise<string> {
+    console.log(course);
     // get course from database
     const q = query(ref(db, 'courseMap'), orderByValue(), equalTo(course));
     const snapshot = await get(q);
