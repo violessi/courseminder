@@ -56,16 +56,15 @@
             <p>No courses found</p>
         {/if}
     </div>
-    <div class="flex-row">
-        <button on:click={changeMode} class="bg-secondary-500 rounded-lg p-1.5 text-sm"> Edit Course Progress </button>
-
-    </div>
 
     {#if showPopup}
         <Popup {selectedCourse} {courseData} bind:showPopup />
     {/if}
+    <div class="flex justify-center items-center sticky bottom-5 gap-5">
+        <button on:click={changeMode} class="bg-secondary-500 rounded-lg p-1.5 text-sm"> Edit Course Progress </button>
+        <LegendBox></LegendBox>
 
-    <LegendBox></LegendBox>
+    </div>
 
 </div>
 
