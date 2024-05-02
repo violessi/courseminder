@@ -2,6 +2,7 @@
     import { getCourseData, getCourseKey } from '$lib/firebase/database';
     import { COURSES } from '$lib/data/courses';
     import { Course } from '$lib/models/types';
+    import LegendBox from '$lib/components/LegendBox.svelte';
     import Popup from './Popup.svelte';
     import { studentDegree } from '$lib/stores/CurriculumStores';
 
@@ -63,6 +64,9 @@
     {#if showPopup}
         <Popup {selectedCourse} {courseData} bind:showPopup />
     {/if}
+
+    <LegendBox></LegendBox>
+
 </div>
 
 <!-- // NOTE: currently unused
