@@ -58,9 +58,11 @@
     "type": "module",
     "dependencies": {
         "@tabler/icons-svelte": "^2.47.0",
+        "@xyflow/svelte": "^0.0.41",
         "firebase": "^10.8.1",
         "pocketbase": "^0.21.1",
         "svelte-spa-router": "^4.0.1",
+        "svelvet": "^10.0.2",
         "userbase-js": "^2.8.0",
         "valibot": "^0.30.0",
         "zod": "^3.22.4"
