@@ -302,7 +302,7 @@ async function deleteCollection(collectionPath: string) {
     </div>
 
   <div style="height:100vh; width:100vw;">
-    <SvelteFlow {nodes} {nodeTypes} {edges} fitView class="bg-teal-50" on:nodeclick={handleNodeClick}>
+    <SvelteFlow {nodes} {nodeTypes} {edges} fitView class="bg-surface-500" on:nodeclick={handleNodeClick}>
     </SvelteFlow>
 
     {#if showPopup}
