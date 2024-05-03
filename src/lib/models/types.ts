@@ -58,3 +58,10 @@ export const Course = object({
     coreq: optional(string(), 'n/a'),
 });
 export type Course = Output<typeof Course>;
+
+export type CourseStatus = {
+    [key: string]: SpecificCourseStatus;
+}
+export type SpecificCourseStatus = {
+    [key : string] : string
+}

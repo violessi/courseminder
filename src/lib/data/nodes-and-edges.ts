@@ -117,9 +117,9 @@ export const initialNodes: Node[]= [
         draggable: false,        
     },
     {
-        id: 'Soc Sci 1/2',
+        id: 'Soc Sci 1 or 2',
         type: 'custom',
-        data: {name: 'Soc Sci 1/2', height: 40, width: 100},
+        data: {name: 'Soc Sci 1 or 2', height: 40, width: 100},
         position: {x:523, y:829},
         draggable: false,        
     },
@@ -145,9 +145,9 @@ export const initialNodes: Node[]= [
         draggable: false,        
     },
     {
-        id: 'STS 1/DRMAPS',
+        id: 'STS 1 or DRMAPS',
         type: 'custom',
-        data: {name: 'STS 1/DRMAPS', height: 40, width: 100},
+        data: {name: 'STS 1 or DRMAPS', height: 40, width: 100},
         position: {x:282, y:884},
         draggable: false,        
     },

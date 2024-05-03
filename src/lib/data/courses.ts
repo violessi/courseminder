@@ -111,10 +111,12 @@ export const COURSES: Courses = {
         'PI 100',
     ],
 };
+
 type CourseStatus = {
-    [key : string] : {
-        [key : string] : string
-    }
+    [key: string]: SpecificCourseStatus;
+}
+type SpecificCourseStatus = {
+    [key : string] : string
 }
 
 export const COURSESTATUS: CourseStatus = {

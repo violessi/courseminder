@@ -175,26 +175,75 @@ async function deleteCollection(collectionPath: string) {
     await set(courseref, null);
 } -->
 
-
-
 <script lang="ts">
     import { writable } from 'svelte/store';
     import { SvelteFlow, type Node, type Edge } from '@xyflow/svelte';
- 
     import '@xyflow/svelte/dist/style.css';
-  
     import { initialNodes, initialEdges } from '$lib/data/nodes-and-edges';
     import CustomNode from './CustomNode.svelte';
-
     import { getCourseData, getCourseKey } from '$lib/firebase/database';
-    import { COURSES } from '$lib/data/courses';
-    import { Course } from '$lib/models/types';
+    import { COURSES, COURSESTATUS } from '$lib/data/courses';
+    import { type Course, type CourseStatus, type SpecificCourseStatus } from '$lib/models/types';
     import Popup from './Popup.svelte';
-    import { studentDegree } from '$lib/stores/CurriculumStores';
+    import LegendBox from '$lib/components/LegendBox.svelte';
+    import { studentId, studentDegree, statusData } from '$lib/stores/CurriculumStores';
+    import { db } from '$lib/firebase/client'
+    import { set, get, ref } from 'firebase/database';
 
     // FIXME: we need to initialize firebase at the root level
     import { initFirebase } from '$lib/firebase/client';
     initFirebase();
+
+    // fetch the courses for the student
+    $: courses = COURSES[$studentDegree];
+    $: status = COURSESTATUS[$studentDegree];
+    $: statusData.set(status);
+
+    const reference = ref(db, `/courseStatus/${$studentDegree}/${$studentId}`)
+    get(reference).then((snapshot) => {
+        if (snapshot.exists()) {
+            status = snapshot.val();
+        }
+    }).catch((e) => {
+        console.error(e);
+    });
+
+    function updateCourseStatus(course : string){
+        return new Promise((resolve, reject) => {
+            console.log(`Updating course status`);
+            let currStatus = '';
+            get(reference).then((snapshot) => {
+                currStatus = snapshot.child(course).val()
+                if (currStatus == 'Taking') {
+                    status[course] = 'To Take';
+                    console.log('From Taking To Take');
+                }
+                else if (currStatus == 'To Take') {
+                    status[course] = 'Not Taken';
+                    console.log('From To Take To Not Taken');
+                }
+                else if (currStatus == 'Not Taken') {
+                    status[course] = 'Taken';
+                    console.log('From Not Taken To Taken');
+                }
+                else if (currStatus == 'Taken') {
+                    status[course] = 'Taking';
+                    console.log('From Taken To Taking');
+                }
+                resolve(status[course]);
+                set(reference, status);
+            }).catch(reject);
+        });
+    }
+
+    function handleUpdateCourseStatus(course: string) {
+        updateCourseStatus(course).then((newStatus) => {
+            console.log(`Updated status of ${course} to ${newStatus}`);
+            return newStatus;
+        }).catch((e) => {
+            console.error(e);
+        });
+    }
   
     const nodes = writable<Node[]>(initialNodes);
     const edges = writable<Edge[]>(initialEdges);
@@ -203,13 +252,10 @@ async function deleteCollection(collectionPath: string) {
       custom: CustomNode
     };
 
-
-    // fetch the courses for the student
-    $: courses = COURSES[$studentDegree];
-
     let showPopup = false;
     let selectedCourse: string;
     let courseData: Course;
+    let seeCourseData = true;
 
     async function showCoursePopup(course: string) {
         selectedCourse = course;
@@ -224,14 +270,37 @@ async function deleteCollection(collectionPath: string) {
         }
     }
 
+    function changeMode() {
+        seeCourseData = !seeCourseData
+        console.log(`change mode to seeCourseData: ${seeCourseData}`)
+        if (seeCourseData) {
+            console.log(`Updating course status`);
+            const courseStatusRef = ref(db, `/courseStatus/${$studentDegree}/${$studentId}`)
+            set(courseStatusRef, status);
+        }
+    }
+
     function handleNodeClick({detail: {node}}){
         const nodeId = node.id;
-        showCoursePopup(nodeId);
+        if (seeCourseData) {
+            showCoursePopup(nodeId);
+        }
+        else {
+            handleUpdateCourseStatus(nodeId);
+        }
     }
   </script>
 
+  <div class="flex justify-center items-center sticky bottom-5 gap-5">
+        {#if seeCourseData}
+            <button on:click={changeMode} class="bg-secondary-500 rounded-lg p-1.5 text-sm"> Edit Course Progress </button>
+        {:else}
+            <button on:click={changeMode} class="bg-secondary-500 rounded-lg p-1.5 text-sm"> View Course Data </button>
+        {/if}
+        <LegendBox></LegendBox>
 
-  
+    </div>
+
   <div style="height:100vh; width:100vw;">
     <SvelteFlow {nodes} {nodeTypes} {edges} fitView class="bg-teal-50" on:nodeclick={handleNodeClick}>
     </SvelteFlow>
