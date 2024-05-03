@@ -1,13 +1,14 @@
 import { type Writable, writable } from 'svelte/store';
+import { type CourseStatus, type SpecificCourseStatus } from '$lib/models/types';
 
-function persist(key : string, initialValue : string) {
+function persist(key: string, initialValue : any) {
     const isBrowser = typeof window !== 'undefined';
     const storedValue = isBrowser ? localStorage.getItem(key) : null;
     const initial = storedValue === null ? initialValue : JSON.parse(storedValue);
 
-    const store : Writable<string> = writable(initial, () => {
+    const store: Writable<any> = writable(initial, () => {
         if (isBrowser) {
-            const unsubscribe = store.subscribe(($value : string) => {
+            const unsubscribe = store.subscribe(($value: any) => {
                 localStorage.setItem(key, JSON.stringify($value));
             });
 
@@ -20,3 +21,4 @@ function persist(key : string, initialValue : string) {
 
 export const studentId = persist('studentId', '');
 export const studentDegree = persist('studentDegree', '');
+export const statusData = persist('statusData', '');

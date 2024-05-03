@@ -1,6 +1,5 @@
 <script>
     import icon2 from '$lib/assets/icon2.png';
-    // import icon from '$lib/assets/icon.png';
 </script>
 
 <div class="background">

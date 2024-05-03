@@ -1,22 +1,12 @@
 <script lang="ts">
-    import { AppBar, AppRail, AppRailAnchor, AppShell } from '@skeletonlabs/skeleton';
-    import { studentId } from '$lib/stores/CurriculumStores';
     import * as SemStore from '$lib/stores/SemesterStores';
-    import { page } from '$app/stores';
+    import { AppRail, AppRailAnchor, AppShell } from '@skeletonlabs/skeleton';
     import icon from '$lib/assets/icon.png';
+    import { page } from '$app/stores';
 
-    // initialize sem store
     SemStore.init();
-
-    // const course: string = 'BS Computer Science';
-    let studentNumber: string = '';
-
-    studentId.subscribe((value) => {
-        studentNumber = value;
-    });
 </script>
 
-<!-- Refer to the Skeleton Documentation to know what the following components are for. -->
 <AppShell class="bg-surface-500">
     <AppRail
         slot="sidebarLeft"
@@ -42,7 +32,5 @@
         </AppRailAnchor>
     </AppRail>
 
-    <!-- Router Slot -->
     <slot />
-    <!-- ---- / ---- -->
 </AppShell>

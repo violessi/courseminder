@@ -1,105 +1,110 @@
 <script lang="ts">
-    // import { IconPlus } from '@tabler/icons-svelte';
-    import { Table, tableMapperValues } from '@skeletonlabs/skeleton';
     import * as SemStore from '$lib/stores/SemesterStores';
-    import type { TableSource } from '@skeletonlabs/skeleton';
+    import {
+        type ModalSettings,
+        Table,
+        type TableSource,
+        getModalStore,
+        tableMapperValues,
+    } from '@skeletonlabs/skeleton';
+    import { type Semester, Subject } from '$lib/models/types';
+    import { Button } from '$lib/components';
+    import { computeHonor } from '$lib/functions/helper';
+    import Tag from '../Tag.svelte';
     import { page } from '$app/stores';
-    import { Modal, getModalStore } from '@skeletonlabs/skeleton';
-    import type { ModalSettings, ModalComponent, ModalStore } from '@skeletonlabs/skeleton';
-    import AddGrade from '$lib/components/AddGrade.svelte';
-    import { Subject, Semester } from '$lib/models/types';
+
+    let semesters = [];
+    $: semesters = $semStore;
 
     const modalStore = getModalStore();
     const semStore = SemStore.get();
     const semId = $page.params.semester;
+    let curr = { className: '', grade: 0, units: 0, id: '' };
 
-    function computeHonor(gwa: number) {
-        if (gwa === 0) return 'None';
-        if (details.gwa) {
-            if (details.gwa <= 1.45) {
-                return 'University';
-            } else if (details.gwa <= 1.75) {
-                return 'College';
-            } else {
-                return 'None';
+    const addClassModal: ModalSettings = {
+        type: 'component',
+        component: 'addgrade',
+        title: 'Add New Class',
+        response: (r: Subject) => {
+            semStore.addSubject(r, semId);
+        },
+    };
+
+    const editGradeModal: ModalSettings = {
+        type: 'component',
+        component: 'editgrade',
+        meta: curr,
+        response: (r) => {
+            if (r[0] == 'remove') {
+                semStore.removeSubject(r[1], semId);
+            } else if (r[0] == 'edit') {
+                semStore.editSubject(r[1], semId);
             }
-        }
-    }
-
-    $: scholarship = computeHonor(details.gwa ?? 0);
+        },
+    };
 
     function getTable(subjects: Subject[]): TableSource {
+        if (!Array.isArray(subjects)) {
+            return {
+                head: [],
+                body: [],
+                meta: [],
+            };
+        }
         return {
+            // removes Sample Subject from the table
             head: ['Class', 'Grade', 'Units'],
-            body: tableMapperValues(subjects, ['className', 'grade', 'units']),
-            meta: tableMapperValues(subjects, ['className', 'grade', 'units']),
+            body: tableMapperValues(subjects.slice(1), ['className', 'grade', 'units']),
+            meta: tableMapperValues(subjects.slice(1), ['className', 'grade', 'units']),
         };
     }
 
-    // fetch data
-    function update(_: any) {
-        const semId = $page.params.semester;
-        const sem = semStore.getSem(semId);
-        if (!sem) throw new Error('Semester not found');
-
-        const { details, subjects } = sem;
+    function update(_: Semester[]) {
+        const { details, subjects } = semStore.getSem(semId);
         const table = getTable(subjects);
-        return {
-            details,
-            table,
-        };
+        return { ...details, table };
     }
-    $: ({ details, table } = update($semStore));
 
-    function inputGrade(): void {
-        const c: ModalComponent = { ref: AddGrade };
-        const modal: ModalSettings = {
-            type: 'component',
-            component: c,
-            title: 'Add New Class',
-            response: (r: Subject) => {
-                semStore.addSubject(r, semId);
-            },
-        };
-        modalStore.trigger(modal);
+    function addClass() {
+        modalStore.trigger(addClassModal);
     }
+
+    function editGrade(deets: any) {
+        curr.className = deets.detail[0];
+        curr.grade = deets.detail[1];
+        curr.units = deets.detail[2];
+        curr.id = semId;
+        modalStore.trigger(editGradeModal);
+    }
+
+    $: ({ gwa, units, sem, table, year } = update($semStore));
+    $: scholarship = computeHonor(gwa ?? 0, 'sem');
 </script>
 
 <div class="h-full m-10 space-y-10">
-    <div class="flex justify-between">
-        <div class="text-tertiary-900 font-bold text-4xl">{details.sem}</div>
-        <div class="text-tertiary-900 font-bold text-4xl">AY {details.year}</div>
+    <div class="title-default">{sem}, AY {year}</div>
+
+    <div class="flex gap-6 items-center justify-between">
+        <div class="bg-secondary-500 rounded-xl flex card-section justify-between gap-10 px-10">
+            <Tag label="GWA" value={gwa?.toFixed(4) ?? 0} />
+            <Tag label="Units" value={units ?? 0} />
+            <Tag label="Scholarship" value={scholarship} />
+        </div>
+        <Button on:click={addClass} style="bg-secondary-500 h-fit">Add Class</Button>
     </div>
 
-    <div class="gap-10">
-        <div
-            class="bg-primary-300 px-10 py-6 space-x-7 rounded-xl font-bold border border-tertiary-300 grid grid-cols-3 gap-5"
-        >
-            <button
-                type="button"
-                class="btn bg-primary-500 text-secondary-500 rounded-xl border border-tertiary-300 col-start-3 justify-self-end"
-                on:click={() => inputGrade()}
-            >
-                <!-- <IconPlus /> -->
-                <span class="text-lg">Add Class</span>
-            </button>
-            <div class="col-span-3">
-                {#if table.body.length > 0}
-                    <Table source={table} />
-                {:else}
-                    <div class="text-tertiary-900 font-bold text-4xl">No Subjects</div>
-                {/if}
-            </div>
-        </div>
-
-        <div>
-            <div class="card variant-filled-primary *: border border-tertiary-300 px-10 py-6 space-x-7 rounded-xl">
-                <div class="flex justify-between">
-                    <div class="text-tertiary-900 font-bold text-4xl">GWA: {details.gwa?.toFixed(4) ?? 0}</div>
-                    <div class="text-tertiary-900 font-bold text-4xl">Units: {details.units ?? 0}</div>
-                    <div class="text-tertiary-900 font-bold text-4xl">Honorable <br /> Scholarship: {scholarship}</div>
-                </div>
-            </div>
-        </div>
-    </div>
+    {#if table.body.length > 0}
+        <Table
+            regionBody="bg-secondary-300 text-xl"
+            regionCell="text-center text-tertiary-900"
+            regionHeadCell="bg-secondary-500 text-center text-xl font-bold"
+            interactive={true}
+            on:selected={(deets) => {
+                editGrade(deets);
+            }}
+            source={table}
+        ></Table>
+    {:else}
+        <div class="title-default text-center p-5 rounded-lg">No Subjects</div>
+    {/if}
 </div>

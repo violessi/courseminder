@@ -1,323 +1,312 @@
-<script lang="ts">
-    import { initializeApp } from 'firebase/app';
-    import {
-        getDatabase,
-        ref,
-        push,
-        get,
-        child,
-        set,
-        query,
-        equalTo,
-        orderByValue,
-        orderByKey,
-    } from 'firebase/database';
+<!-- <script lang="ts">
+    import { getCourseData, getCourseKey } from '$lib/firebase/database';
+    import { COURSES, COURSESTATUS } from '$lib/data/courses';
+    import { Course } from '$lib/models/types';
+    import LegendBox from '$lib/components/LegendBox.svelte';
+    import Popup from './Popup.svelte';
     import { studentId, studentDegree } from '$lib/stores/CurriculumStores';
+    import { db } from '$lib/firebase/client'
+    import { set, get, ref } from 'firebase/database';
 
-    const firebaseConfig = {
-        apiKey: 'AIzaSyCmwpRzGyoeD-Xuh6Cuh1Agbsxw31Uekhk',
-        authDomain: 'courseminder-dev.firebaseapp.com',
-        databaseURL: 'https://courseminder-dev-default-rtdb.asia-southeast1.firebasedatabase.app',
-        projectId: 'courseminder-dev',
-        storageBucket: 'courseminder-dev.appspot.com',
-        messagingSenderId: '274860730108',
-        appId: '1:274860730108:web:b7f706a51ee7a79dbd1979',
-        measurementId: 'G-1T6H3BFHRR',
-    };
+    // FIXME: we need to initialize firebase at the root level
+    import { initFirebase } from '$lib/firebase/client';
+    initFirebase();
 
-    // Initialize Firebase and get database
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
+    // fetch the courses for the student
+    $: courses = COURSES[$studentDegree];
+    $: status = COURSESTATUS[$studentDegree];
 
-    let studentnumber;
-    studentId.subscribe((value) => {
-        studentnumber = value;
+    const reference = ref(db, `/courseStatus/${$studentDegree}/${$studentId}`)
+    get(reference).then((snapshot) => {
+        if (snapshot.exists()) {
+            status = snapshot.val();
+        }
+    }).catch((e) => {
+        console.error(e);
     });
 
-    let degree;
-    studentDegree.subscribe((value) => {
-        degree = value;
-    });
-
-    let courses: string[] = [];
-    if (degree === 'Computer Science') {
-        courses = [
-            'CS 10',
-            'CS 11',
-            'CS 12',
-            'CS 30',
-            'CS 31',
-            'CS 32',
-            'CS 33',
-            'CS 20',
-            'CS 21',
-            'CS 140',
-            'CS 145',
-            ' CS 165',
-            'CS 132',
-            'CS 136',
-            'CS 138',
-            'CS 150',
-            'CS 153',
-            'CS 155',
-            'CS 191',
-            'CS 192',
-            'CS 133',
-            'CS 180',
-            'CS Elective',
-            'CS 194',
-            'CS 195',
-            'CS 196',
-            'CS 198',
-            'CS 199',
-            'Math 21',
-            'Math 22',
-            'Math 23',
-            'Math 40',
-            'Physics 71',
-            'Physics 72',
-            'Kas 1',
-            'Philo 1',
-            'Soc Sci 1/2',
-            'Eng 13',
-            'Eng 30',
-            'Speech 30',
-            'Fil 40',
-            'Engg 150',
-            'Free Elective',
-            'GE Elective',
-            'STS 1/DRMAPS',
-            'PI 100',
-            'Arts 1',
-            'NSTP 1',
-            'NSTP 2',
-        ];
-    } else if (degree === 'Civil Engineering') {
-        courses = [
-            'Physics 71',
-            'Physics 71.1',
-            'Chem 16',
-            'Chem 16.1',
-            'Math 21',
-            'Eng 13',
-            'Speech 30',
-            'Physics 72',
-            'Physics 72.1',
-            'ES 1',
-            'CE 29',
-            'Math 22',
-            'GE 10',
-            'CE 1',
-            'CE 41',
-            'CE 11',
-            'Math 23',
-            'CE 24',
-            'GE 12',
-            'ES 101',
-            'NSTP 1',
-            'CE 22',
-            'CE 31',
-            'CE 130',
-            'CE 17',
-            'CE 25',
-            'ES 102',
-            'NSTP 2',
-            'CE 123',
-            'CE 115',
-            'CE 141',
-            'CE 18',
-            'CE 151',
-            'CE 162',
-            'CE 124',
-            'CE 132',
-            'CE 116',
-            'CE 142',
-            'CE 152',
-            'CE 163',
-            'CE 190',
-            'CE 195',
-            'CE 199',
-            'CE Elective 1',
-            'Kas 1',
-            'Fil 40',
-            'DRMAPS',
-            'GE Elective',
-            'CE 196',
-            'CE Elective 2',
-            'Arts 1',
-            'Philo 1',
-            'Soc Sci 2',
-            'PI 100',
-        ];
-    } else if (degree === 'Civil Engineering') {
-        courses = [
-            'Physics 71',
-            'Physics 71.1',
-            'Chem 16',
-            'Chem 16.1',
-            'Math 21',
-            'Eng 13',
-            'Speech 30',
-            'Physics 72',
-            'Physics 72.1',
-            'ES 1',
-            'CE 29',
-            'Math 22',
-            'GE 10',
-            'CE 1',
-            'CE 41',
-            'CE 11',
-            'Math 23',
-            'CE 24',
-            'GE 12',
-            'ES 101',
-            'NSTP 1',
-            'CE 22',
-            'CE 31',
-            'CE 130',
-            'CE 17',
-            'CE 25',
-            'ES 102',
-            'NSTP 2',
-            'CE 123',
-            'CE 115',
-            'CE 141',
-            'CE 18',
-            'CE 151',
-            'CE 162',
-            'CE 124',
-            'CE 132',
-            'CE 116',
-            'CE 142',
-            'CE 152',
-            'CE 163',
-            'CE 190',
-            'CE 195',
-            'CE 199',
-            'CE Elective 1',
-            'Kas 1',
-            'Fil 40',
-            'DRMAPS',
-            'GE Elective',
-            'CE 196',
-            'CE Elective 2',
-            'Arts 1',
-            'Philo 1',
-            'Soc Sci 2',
-            'PI 100',
-        ];
+    function updateCourseStatus(course : string){
+        return new Promise((resolve, reject) => {
+            console.log(`Updating course status`);
+            let currStatus = '';
+            get(reference).then((snapshot) => {
+                currStatus = snapshot.child(course).val()
+                if (currStatus == 'Taking') {
+                    status[course] = 'To Take';
+                    console.log('From Taking To Take');
+                }
+                else if (currStatus == 'To Take') {
+                    status[course] = 'Not Taken';
+                    console.log('From To Take To Not Taken');
+                }
+                else if (currStatus == 'Not Taken') {
+                    status[course] = 'Taken';
+                    console.log('From Not Taken To Taken');
+                }
+                else if (currStatus == 'Taken') {
+                    status[course] = 'Taking';
+                    console.log('From Taken To Taking');
+                }
+                resolve(status[course]);
+                set(reference, status);
+            }).catch(reject);
+        });
     }
 
+    function handleUpdateCourseStatus(course: string) {
+        updateCourseStatus(course).then((newStatus) => {
+            console.log(`Updated status of ${course} to ${newStatus}`);
+            return newStatus;
+        }).catch((e) => {
+            console.error(e);
+        });
+    }
+    
     let showPopup = false;
-    let selectedCourse = '';
-    let courseTitle = '';
-    let courseDescription = '';
-    let numUnits = '';
-    let prerequisites = '';
-    let corequisites = '';
-
-    async function getCourseKey(course: string) {
-        console.log(course);
-        const q = query(ref(db, 'courseMap'), orderByValue(), equalTo(course));
-        const snapshot = await get(q);
-        if (snapshot.exists()) {
-            let courseKey;
-            snapshot.forEach((childSnapshot) => {
-                console.log('Child found');
-                courseKey = childSnapshot.key;
-            });
-            console.log(courseKey);
-            return courseKey;
-        } else {
-            console.log('No matching courses.');
-        }
-    }
-
-    async function getCourseData(courseKey: string | undefined) {
-        if (courseKey === null) {
-            console.log('courseKey is null');
-            return;
-        }
-        const courseRef = ref(db, 'courses/' + courseKey);
-        const snapshot = await get(courseRef);
-        if (snapshot.exists()) {
-            let courseData = snapshot.val();
-            selectedCourse = courseData.course;
-            courseTitle = courseData.title;
-            courseDescription = courseData.desc;
-            numUnits = courseData.numUnits;
-            prerequisites = courseData.prereq;
-            corequisites = courseData.coreq;
-        } else {
-            console.log('No data available');
-        }
-    }
+    let selectedCourse: string;
+    let courseData: Course;
+    let seeCourseData = true;
 
     async function showCoursePopup(course: string) {
         selectedCourse = course;
-        showPopup = true;
-        let courseKey: string | undefined = await getCourseKey(course);
-        getCourseData(courseKey);
-    }
-
-    function closePopup() {
-        showPopup = false;
-    }
-
-    async function makeCourseDirectory() {
-        const courseRef = ref(db, `courses`);
-        for (let i = 0; i < courses.length; i++) {
-            const snapshot = await get(child(courseRef, courses[i]));
-            let courseKey;
-            if (!snapshot.exists()) {
-                let courseData = {
-                    course: courses[i],
-                    title: courseTitle,
-                    desc: courseDescription,
-                    numUnits: numUnits,
-                    prereq: prerequisites,
-                    coreq: corequisites,
-                };
-                const newCourseRef = push(courseRef, courseData);
-                courseKey = newCourseRef.key;
-                const mapRef = ref(db, 'courseMap/' + courseKey);
-                set(mapRef, courses[i]);
-            }
+        try {
+            const courseKey = await getCourseKey(course);
+            courseData = await getCourseData(courseKey);
+            showPopup = true;
+        } catch (e) {
+            // TODO: handle errors here
+            console.error(e);
+            return;
         }
     }
 
-    // makeCourseDirectory();
-
-    async function deleteCollection(collectionPath: string) {
-        const courseref = ref(db, collectionPath);
-        await set(courseref, null);
+    function changeMode() {
+        seeCourseData = !seeCourseData
+        console.log(`change mode to seeCourseData: ${seeCourseData}`)
+        if (seeCourseData) {
+            console.log(`Updating course status`);
+            const courseStatusRef = ref(db, `/courseStatus/${$studentDegree}/${$studentId}`)
+            set(courseStatusRef, status);
+        }
     }
 
-    // deleteCollection('courses');
-    // deleteCollection('courseMap')
+    // NOTE: Unused functions are found at the bottom of this file
 </script>
-<div>
-    <div class="flex-row grid grid-cols-4 p-2 grid-rows-5 gap-4 content-center">
-        {#each courses as course (course)}
-            <button on:click={() => showCoursePopup(course)} class="bg-secondary-500 rounded-lg p-1.5 text-sm"
-                >{course}</button
-            >
-        {/each}
+
+<div class="flex-row">
+    <div class="flex-row grid grid-cols-4 p-2 grid-rows-15 gap-4 content-center">
+        {#if courses}
+            {#each courses as course}
+                {#if seeCourseData}
+                    {#if status[course] == 'Taken'}
+                        <button on:click={() => showCoursePopup(course)} class="bg-secondary-500 rounded-lg p-1.5 text-sm">{course}</button>
+                    {:else if status[course] == 'Not Taken'}
+                        <button on:click={() => showCoursePopup(course)} class="bg-primary-900 rounded-lg p-1.5 text-sm">{course}</button>
+                    {:else if status[course] == 'Taking'}
+                        <button on:click={() => showCoursePopup(course)} class="bg-secondary-700 rounded-lg p-1.5 text-sm">{course}</button>
+                    {:else if status[course] == 'To Take'}
+                        <button on:click={() => showCoursePopup(course)} class="bg-primary-50 rounded-lg p-1.5 text-sm">{course}</button>
+                    {/if}
+                {:else}
+                    {#if status[course] == 'Taken'}
+                        <button on:click={() => handleUpdateCourseStatus(course)} class="bg-secondary-500 rounded-lg p-1.5 text-sm">{course}</button>
+                    {:else if status[course] == 'Not Taken'}
+                        <button on:click={() => handleUpdateCourseStatus(course)} class="bg-primary-900 rounded-lg p-1.5 text-sm">{course}</button>
+                    {:else if status[course] == 'Taking'}
+                        <button on:click={() => handleUpdateCourseStatus(course)} class="bg-secondary-700 rounded-lg p-1.5 text-sm">{course}</button>
+                    {:else if status[course] == 'To Take'}
+                        <button on:click={() => handleUpdateCourseStatus(course)} class="bg-primary-50 rounded-lg p-1.5 text-sm">{course}</button>
+                    {/if}
+                {/if}
+            {/each}
+        {:else}
+            <p>No courses found</p>
+        {/if}
+    </div>
+    <div class="flex justify-center items-center sticky bottom-5 gap-5">
+        {#if seeCourseData}
+            <button on:click={changeMode} class="bg-secondary-500 rounded-lg p-1.5 text-sm"> Edit Course Progress </button>
+        {:else}
+            <button on:click={changeMode} class="bg-secondary-500 rounded-lg p-1.5 text-sm"> View Course Data </button>
+        {/if}
+        <LegendBox></LegendBox>
+
+    </div>
+    {#if showPopup}
+        <Popup {selectedCourse} {courseData} bind:showPopup />
+    {/if}
+    
+
+</div>
+</div> -->
+
+<!-- // NOTE: currently unused
+let studentnumber;
+studentId.subscribe((value) => {
+    studentnumber = value;
+});
+
+// NOTE: currently unused
+async function makeCourseDirectory() {
+    const courseRef = ref(db, `courses`);
+    for (let i = 0; i < courses.length; i++) {
+        const snapshot = await get(child(courseRef, courses[i]));
+        let courseKey;
+        if (!snapshot.exists()) {
+            let courseData = {
+                course: courses[i],
+                title: courseTitle,
+                desc: courseDescription,
+                numUnits: numUnits,
+                prereq: prerequisites,
+                coreq: corequisites,
+            };
+            const newCourseRef = push(courseRef, courseData);
+            courseKey = newCourseRef.key;
+            const mapRef = ref(db, 'courseMap/' + courseKey);
+            set(mapRef, courses[i]);
+        }
+    }
+}
+
+// NOTE: currently unused
+async function deleteCollection(collectionPath: string) {
+    const courseref = ref(db, collectionPath);
+    await set(courseref, null);
+} -->
+
+<script lang="ts">
+    import { writable } from 'svelte/store';
+    import { SvelteFlow, type Node, type Edge } from '@xyflow/svelte';
+    import '@xyflow/svelte/dist/style.css';
+    import { initialNodes, initialEdges } from '$lib/data/nodes-and-edges';
+    import CustomNode from './CustomNode.svelte';
+    import { getCourseData, getCourseKey } from '$lib/firebase/database';
+    import { COURSES, COURSESTATUS } from '$lib/data/courses';
+    import { type Course, type CourseStatus, type SpecificCourseStatus } from '$lib/models/types';
+    import Popup from './Popup.svelte';
+    import LegendBox from '$lib/components/LegendBox.svelte';
+    import { studentId, studentDegree, statusData } from '$lib/stores/CurriculumStores';
+    import { db } from '$lib/firebase/client'
+    import { set, get, ref } from 'firebase/database';
+
+    // FIXME: we need to initialize firebase at the root level
+    import { initFirebase } from '$lib/firebase/client';
+    initFirebase();
+
+    // fetch the courses for the student
+    $: courses = COURSES[$studentDegree];
+    $: status = COURSESTATUS[$studentDegree];
+    $: statusData.set(status);
+
+    const reference = ref(db, `/courseStatus/${$studentDegree}/${$studentId}`)
+    get(reference).then((snapshot) => {
+        if (snapshot.exists()) {
+            status = snapshot.val();
+        }
+    }).catch((e) => {
+        console.error(e);
+    });
+
+    function updateCourseStatus(course : string){
+        return new Promise((resolve, reject) => {
+            console.log(`Updating course status`);
+            let currStatus = '';
+            get(reference).then((snapshot) => {
+                currStatus = snapshot.child(course).val()
+                if (currStatus == 'Taking') {
+                    status[course] = 'To Take';
+                    console.log('From Taking To Take');
+                }
+                else if (currStatus == 'To Take') {
+                    status[course] = 'Not Taken';
+                    console.log('From To Take To Not Taken');
+                }
+                else if (currStatus == 'Not Taken') {
+                    status[course] = 'Taken';
+                    console.log('From Not Taken To Taken');
+                }
+                else if (currStatus == 'Taken') {
+                    status[course] = 'Taking';
+                    console.log('From Taken To Taking');
+                }
+                resolve(status[course]);
+                set(reference, status);
+            }).catch(reject);
+        });
+    }
+
+    function handleUpdateCourseStatus(course: string) {
+        updateCourseStatus(course).then((newStatus) => {
+            console.log(`Updated status of ${course} to ${newStatus}`);
+            return newStatus;
+        }).catch((e) => {
+            console.error(e);
+        });
+    }
+  
+    const nodes = writable<Node[]>(initialNodes);
+    const edges = writable<Edge[]>(initialEdges);
+  
+    const nodeTypes = {
+      custom: CustomNode
+    };
+
+    let showPopup = false;
+    let selectedCourse: string;
+    let courseData: Course;
+    let seeCourseData = true;
+
+    async function showCoursePopup(course: string) {
+        selectedCourse = course;
+        try {
+            const courseKey = await getCourseKey(course);
+            courseData = await getCourseData(courseKey);
+            showPopup = true;
+        } catch (e) {
+            // TODO: handle errors here
+            console.error(e);
+            return;
+        }
+    }
+
+    function changeMode() {
+        seeCourseData = !seeCourseData
+        console.log(`change mode to seeCourseData: ${seeCourseData}`)
+        if (seeCourseData) {
+            console.log(`Updating course status`);
+            const courseStatusRef = ref(db, `/courseStatus/${$studentDegree}/${$studentId}`)
+            set(courseStatusRef, status);
+        }
+    }
+
+    function handleNodeClick({detail: {node}}){
+        const nodeId = node.id;
+        if (seeCourseData) {
+            showCoursePopup(nodeId);
+        }
+        else {
+            handleUpdateCourseStatus(nodeId);
+        }
+    }
+  </script>
+
+  <div class="flex justify-center items-center sticky bottom-5 gap-5">
+        {#if seeCourseData}
+            <button on:click={changeMode} class="bg-secondary-500 rounded-lg p-1.5 text-sm"> Edit Course Progress </button>
+        {:else}
+            <button on:click={changeMode} class="bg-secondary-500 rounded-lg p-1.5 text-sm"> View Course Data </button>
+        {/if}
+        <LegendBox></LegendBox>
+
     </div>
 
+  <div style="height:100vh; width:100vw;">
+    <SvelteFlow {nodes} {nodeTypes} {edges} fitView class="bg-surface-500" on:nodeclick={handleNodeClick}>
+    </SvelteFlow>
+
     {#if showPopup}
-        <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-            <div class="bg-white p-4 rounded left-7 w-1/2 items-center justify-center">
-                <h2 class="text-emerald-900 text-xl font-bold mb-2">{selectedCourse}</h2>
-                <div class="flex-column">
-                    <p class="text-emerald-900"><strong>Course Title:</strong> {courseTitle}</p>
-                    <p class="text-emerald-900"><strong>Course Description:</strong> {courseDescription}</p>
-                    <p class="text-emerald-900"><strong>Number of Units:</strong> {numUnits}</p>
-                    <p class="text-emerald-900"><strong>Prerequisites:</strong> {prerequisites}</p>
-                    <p class="text-emerald-900"><strong>Corequisites:</strong> {corequisites}</p>
-                </div>
-                <button on:click={closePopup} class="bg-red-500 text-white rounded px-2 py-1">Close</button>
-            </div>
-        </div>
-    {/if}
-</div>
+        <Popup {selectedCourse} {courseData} bind:showPopup />
+    {/if}   
+  </div>
+  

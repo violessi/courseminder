@@ -1,34 +1,41 @@
 <script lang="ts">
-    import { Subject } from '$lib/models/types';
-    import type { SvelteComponent } from 'svelte';
+    import { focusTrap } from '@skeletonlabs/skeleton';
     import { getModalStore } from '@skeletonlabs/skeleton';
     import { safeParse } from 'valibot';
+    import { Subject } from '$lib/models/types';
+    import type { SvelteComponent } from 'svelte';
 
     // eslint-disable-next-line init-declarations
     export let parent: SvelteComponent;
 
     const modalStore = getModalStore();
+    let isFocused: boolean = false;
 
     // Form Data
     const formData: Subject = {
-        className: '',
-        grade: 0,
-        units: 0,
+        className: $modalStore[0].meta.className ?? '',
+        grade: $modalStore[0].meta.grade ?? 0,
+        units: $modalStore[0].meta.units ?? 0,
     };
 
     let message = '';
     const gradesArray = [1.0, 1.25, 1.5, 1.75, 2.0, 2.25, 2.5, 2.75, 3.0, 4.0, 5.0];
 
-    function handleSubmit(e: Event) {
+    function clickedRemove(e: Event) {
+        if ($modalStore[0].response) $modalStore[0].response(['remove', formData]);
+        modalStore.close();
+    }
+
+    function clickedEdit(e: Event) {
         const res = safeParse(Subject, formData);
-        if (!formData.className || !formData.grade || !formData.units) {
+        if (!formData.grade || !formData.units) {
             e.preventDefault();
             message = 'Please fill out all fields.';
         } else if (!gradesArray.includes(formData.grade)) {
             e.preventDefault();
             message = 'Invalid grade. Please follow the UP Grading System format.';
         } else if (res.success) {
-            if ($modalStore[0].response) $modalStore[0].response(formData);
+            if ($modalStore[0].response) $modalStore[0].response(['edit', formData]);
             modalStore.close();
         } else {
             e.preventDefault();
@@ -43,24 +50,12 @@
     const cForm = 'border border-tertiary-900 p-4 space-y-4 rounded-container-token';
 </script>
 
-<!-- @component This example creates a simple form modal. -->
-
 {#if $modalStore[0]}
     <div class="modal-example-form {cBase}">
-        <header class={cHeader}>{$modalStore[0].title ?? '(title missing)'}</header>
+        <header class={cHeader}>Edit {$modalStore[0].meta.className}'s Grade</header>
         <!-- Enable for debugging: -->
         <div class={cForm}>
-            <form class="modal-form">
-                <label class="label flex place-items-center gap-5">
-                    <div class="w-1/4">Class Name:</div>
-                    <input
-                        class="input text-tertiary-900"
-                        type="text"
-                        bind:value={formData.className}
-                        required
-                        placeholder="Enter class name..."
-                    />
-                </label>
+            <form class="modal-form" use:focusTrap={false}>
                 <label class="label flex place-items-center gap-5">
                     <div class="w-1/4">Grade:</div>
                     <input
@@ -88,13 +83,14 @@
             </form>
         </div>
         {#if message}
-            <div class="text-error-200 text-center">{message}</div>
+            <div class="text-error-400 text-center">{message}</div>
         {/if}
 
         <!-- prettier-ignore -->
         <footer class="modal-footer {parent.regionFooter}">
+            <button class="btn {parent.buttonNegative}" on:click={(e) => clickedRemove(e)}>Remove</button>
 			<button class="btn {parent.buttonNeutral}" on:click={modalStore.close}>{parent.buttonTextCancel}</button>
-			<button class="btn {parent.buttonPositive}" on:click={(e) => handleSubmit(e)}>Done</button>
+			<button class="btn {parent.buttonPositive}" on:click={(e) => clickedEdit(e)}>Done</button>
 		</footer>
     </div>
 {/if}
