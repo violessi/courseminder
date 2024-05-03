@@ -21,7 +21,7 @@
         status[data.name] === 'Taking' ? 'bg-secondary-700' : 
         status[data.name] === 'To Take' ? 'bg-primary-50' : 'bg-secondary-500'}"
     style="height: {data.height}px; width: {data.width}px;">
-        <div class="text-2xs font-bold">{data.name}</div>
+        <div class="text-fsize font-bold">{data.name}</div>
     {#if data.isSource}
         <Handle type="source" position={Position.Bottom} />
         <!-- style= "background: green" -->
@@ -33,14 +33,14 @@
 
 
 <style>
-    .text-2xs{
-        font-size: 13px;
+    .text-fsize{
+        font-size: 18px;
     }
 
     .node{
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: 10px;
+        /* padding: 10px; */
     }
 </style>
