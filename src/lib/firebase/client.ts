@@ -2,7 +2,7 @@ import { type Database, getDatabase } from 'firebase/database';
 import { type FirebaseApp, initializeApp } from 'firebase/app';
 
 // TODO: move this to .env file
-const firebaseConfig = {
+export const firebaseConfig = {
     apiKey: 'AIzaSyCmwpRzGyoeD-Xuh6Cuh1Agbsxw31Uekhk',
     authDomain: 'courseminder-dev.firebaseapp.com',
     databaseURL: 'https://courseminder-dev-default-rtdb.asia-southeast1.firebasedatabase.app',

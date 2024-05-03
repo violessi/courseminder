@@ -53,7 +53,6 @@ function parseSemester(id: string) {
     if (sem === '1st Semester') semId += 'A';
     else if (sem === '2nd Semester') semId += 'B';
     else semId += 'M';
-    console.log(semId);
 
     return semId;
 }
@@ -68,7 +67,6 @@ function initStore() {
             const childData = childSnapshot.val();
             data.push(childData);
         });
-        console.log(data);
         set(data);
     });
 
