@@ -1,7 +1,7 @@
 <script lang="ts">
     import * as SemStore from '$lib/stores/SemesterStores';
     import { AppRail, AppRailAnchor, AppShell } from '@skeletonlabs/skeleton';
-    import icon from '$lib/assets/icon.png';
+    import icon from '$lib/assets/icon.webp';
     import { page } from '$app/stores';
 
     SemStore.init();
