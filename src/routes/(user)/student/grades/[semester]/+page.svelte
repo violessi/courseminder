@@ -11,6 +11,7 @@
     import { Button } from '$lib/components';
     import { computeHonor } from '$lib/functions/helper';
     import Tag from '../Tag.svelte';
+    import Plus from '~icons/tabler/plus';
     import { page } from '$app/stores';
 
     let semesters = [];
@@ -90,7 +91,10 @@
             <Tag label="Units" value={units ?? 0} />
             <Tag label="Scholarship" value={scholarship} />
         </div>
-        <Button on:click={addClass} style="bg-secondary-500 h-fit">Add Class</Button>
+        <Button on:click={addClass} style="bg-secondary-500 h-fit gap-2">
+            <Plus />
+            Add Class
+        </Button>
     </div>
 
     {#if table.body.length > 0}
