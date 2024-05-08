@@ -1,7 +1,6 @@
 <script lang="ts">
     import Card from '$lib/components/Card.svelte';
     import table from '$lib/assets/sampletable.png';
-
 </script>
 
 <div class="h-full flex flex-col p-10 gap-10">
@@ -17,7 +16,7 @@
             id="degree"
             class="bg-pink-50 text-black-900 text-sm w-72 rounded-lg block dark:bg-pink-100 dark:border-pink-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-pink-500 dark:focus:border-pink-500"
         >
-            <option disabled selected value="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Department</option>
+            <option disabled selected value="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Choose Semester</option>
             <option>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2023-2024 2nd Semester</option>
             <option>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2023-2024 1st Semester</option>
             <option>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2022-2023 2nd Semester</option>
