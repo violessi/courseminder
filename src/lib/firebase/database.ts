@@ -17,6 +17,10 @@ export async function getCourseKey(course: string): Promise<string> {
     const snapshot = await get(q);
 
     // throw error if course not found
+    if (!snapshot.exists()){
+        console.log('Course not found')
+        return '0';
+    }
     assert(snapshot.exists(), 'course');
 
     // get course key
@@ -24,7 +28,8 @@ export async function getCourseKey(course: string): Promise<string> {
 
     // throw error if course key not found
     assert(typeof key !== 'undefined', 'course key not found');
-
+    console.log(`Course: ${course}`)
+    console.log(`Key: ${key}`)
     // return course key
     return key;
 }

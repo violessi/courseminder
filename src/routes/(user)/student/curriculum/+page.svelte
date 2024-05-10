@@ -188,7 +188,7 @@ async function deleteCollection(collectionPath: string) {
     import LegendBox from '$lib/components/LegendBox.svelte';
     import { studentId, studentDegree, statusData } from '$lib/stores/CurriculumStores';
     import { db } from '$lib/firebase/client'
-    import { set, get, ref } from 'firebase/database';
+    import { set, get, ref, child, push } from 'firebase/database';
 
     // FIXME: we need to initialize firebase at the root level
     import { initFirebase } from '$lib/firebase/client';
@@ -208,6 +208,41 @@ async function deleteCollection(collectionPath: string) {
         console.error(e);
     });
 
+    // let courseTitle = 'blank';
+    // let courseDescription = 'blank';
+    // let numUnits = 'blank';
+    // let prerequisites = 'blank';
+    // let corequisites = 'blank';
+    
+    // console.log(courses);
+    // async function makeCourseDirectory() {
+    //     for (let i = 0; i < courses.length; i++) {
+    //         let MyCourseKey = await getCourseKey(courses[i]);
+    //         console.log(MyCourseKey);
+    //         const courseRef = ref(db, `courses/${MyCourseKey}`);
+    //         const snapshot = await get(courseRef);
+    //         if (!snapshot.exists()) {
+    //             let courseData = {
+    //                 course: courses[i],
+    //                 title: courseTitle,
+    //                 desc: courseDescription,
+    //                 numUnits: numUnits,
+    //                 prereq: prerequisites,
+    //                 coreq: corequisites,
+    //             };
+    //             let courseKey;
+    //             const newCourseRef = push(ref(db, `courses`), courseData);
+    //             courseKey = newCourseRef.key;
+    //             const mapRef = ref(db, 'courseMap/' + courseKey);
+    //             set(mapRef, courses[i]);
+    //         }
+    //     }
+    // }
+    // $: {
+    //     if (courses) {
+    //         makeCourseDirectory();
+    //     }
+    // }
     function updateCourseStatus(course : string){
         return new Promise((resolve, reject) => {
             console.log(`Updating course status`);
