@@ -199,6 +199,8 @@ async function deleteCollection(collectionPath: string) {
     $: status = COURSESTATUS[$studentDegree];
     $: statusData.set(status);
 
+    $: console.log(courses)
+
     const reference = ref(db, `/courseStatus/${$studentDegree}/${$studentId}`)
     get(reference).then((snapshot) => {
         if (snapshot.exists()) {
@@ -352,23 +354,23 @@ async function deleteCollection(collectionPath: string) {
             {#each courses as course}
                 {#if seeCourseData}
                     {#if status[course] == 'Taken'}
-                        <button on:click={() => showCoursePopup(course)} class="bg-secondary-500 rounded-lg p-1.5 text-sm">{course == 'Physics 711' ? 'Physics 71.1' : course}</button>
+                        <button on:click={() => showCoursePopup(course)} class="bg-secondary-500 rounded-lg p-1.5 text-sm">{course == 'Physics 711' ? 'Physics 71.1' : course == 'Physics 721' ? 'Physics 72.1' : course == 'Chem 161' ? 'Chem 16.1' : course }</button>
                     {:else if status[course] == 'Not Taken'}
-                        <button on:click={() => showCoursePopup(course)} class="bg-primary-900 rounded-lg p-1.5 text-sm">{course}</button>
+                        <button on:click={() => showCoursePopup(course)} class="bg-primary-900 rounded-lg p-1.5 text-sm">{course == 'Physics 711' ? 'Physics 71.1' : course == 'Physics 721' ? 'Physics 72.1' : course == 'Chem 161' ? 'Chem 16.1' : course }</button>
                     {:else if status[course] == 'Taking'}
-                        <button on:click={() => showCoursePopup(course)} class="bg-secondary-700 rounded-lg p-1.5 text-sm">{course}</button>
+                        <button on:click={() => showCoursePopup(course)} class="bg-secondary-700 rounded-lg p-1.5 text-sm">{course == 'Physics 711' ? 'Physics 71.1' : course == 'Physics 721' ? 'Physics 72.1' : course == 'Chem 161' ? 'Chem 16.1' : course }</button>
                     {:else if status[course] == 'To Take'}
-                        <button on:click={() => showCoursePopup(course)} class="bg-primary-50 rounded-lg p-1.5 text-sm">{course}</button>
+                        <button on:click={() => showCoursePopup(course)} class="bg-primary-50 rounded-lg p-1.5 text-sm">{course == 'Physics 711' ? 'Physics 71.1' : course == 'Physics 721' ? 'Physics 72.1' : course == 'Chem 161' ? 'Chem 16.1' : course }</button>
                     {/if}
                 {:else}
                     {#if status[course] == 'Taken'}
-                        <button on:click={() => handleUpdateCourseStatus(course)} class="bg-secondary-500 rounded-lg p-1.5 text-sm">{course}</button>
+                        <button on:click={() => handleUpdateCourseStatus(course)} class="bg-secondary-500 rounded-lg p-1.5 text-sm">{course == 'Physics 711' ? 'Physics 71.1' : course == 'Physics 721' ? 'Physics 72.1' : course == 'Chem 161' ? 'Chem 16.1' : course }</button>
                     {:else if status[course] == 'Not Taken'}
-                        <button on:click={() => handleUpdateCourseStatus(course)} class="bg-primary-900 rounded-lg p-1.5 text-sm">{course}</button>
+                        <button on:click={() => handleUpdateCourseStatus(course)} class="bg-primary-900 rounded-lg p-1.5 text-sm">{course == 'Physics 711' ? 'Physics 71.1' : course == 'Physics 721' ? 'Physics 72.1' : course == 'Chem 161' ? 'Chem 16.1' : course }</button>
                     {:else if status[course] == 'Taking'}
-                        <button on:click={() => handleUpdateCourseStatus(course)} class="bg-secondary-700 rounded-lg p-1.5 text-sm">{course}</button>
+                        <button on:click={() => handleUpdateCourseStatus(course)} class="bg-secondary-700 rounded-lg p-1.5 text-sm">{course == 'Physics 711' ? 'Physics 71.1' : course == 'Physics 721' ? 'Physics 72.1' : course == 'Chem 161' ? 'Chem 16.1' : course }</button>
                     {:else if status[course] == 'To Take'}
-                        <button on:click={() => handleUpdateCourseStatus(course)} class="bg-primary-50 rounded-lg p-1.5 text-sm">{course}</button>
+                        <button on:click={() => handleUpdateCourseStatus(course)} class="bg-primary-50 rounded-lg p-1.5 text-sm">{course == 'Physics 711' ? 'Physics 71.1' : course == 'Physics 721' ? 'Physics 72.1' : course == 'Chem 161' ? 'Chem 16.1' : course }</button>
                     {/if}
                 {/if}
             {/each}
