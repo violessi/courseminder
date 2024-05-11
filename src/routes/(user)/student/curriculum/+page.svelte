@@ -326,7 +326,7 @@ async function deleteCollection(collectionPath: string) {
     }
   </script>
 
-  <div class="flex justify-center items-center sticky bottom-5 gap-5">
+  <!-- <div class="flex justify-center items-center sticky bottom-5 gap-5">
         {#if seeCourseData}
             <button on:click={changeMode} class="bg-secondary-500 rounded-lg p-1.5 text-sm"> Edit Course Progress </button>
         {:else}
@@ -343,5 +343,51 @@ async function deleteCollection(collectionPath: string) {
     {#if showPopup}
         <Popup {selectedCourse} {courseData} bind:showPopup />
     {/if}   
-  </div>
-  
+  </div> -->
+
+  <!-- Temporary display of CE Courses -->
+  <div class="flex-row">
+    <div class="flex-row grid grid-cols-4 p-2 grid-rows-15 gap-4 content-center">
+        {#if courses}
+            {#each courses as course}
+                {#if seeCourseData}
+                    {#if status[course] == 'Taken'}
+                        <button on:click={() => showCoursePopup(course)} class="bg-secondary-500 rounded-lg p-1.5 text-sm">{course == 'Physics 711' ? 'Physics 71.1' : course}</button>
+                    {:else if status[course] == 'Not Taken'}
+                        <button on:click={() => showCoursePopup(course)} class="bg-primary-900 rounded-lg p-1.5 text-sm">{course}</button>
+                    {:else if status[course] == 'Taking'}
+                        <button on:click={() => showCoursePopup(course)} class="bg-secondary-700 rounded-lg p-1.5 text-sm">{course}</button>
+                    {:else if status[course] == 'To Take'}
+                        <button on:click={() => showCoursePopup(course)} class="bg-primary-50 rounded-lg p-1.5 text-sm">{course}</button>
+                    {/if}
+                {:else}
+                    {#if status[course] == 'Taken'}
+                        <button on:click={() => handleUpdateCourseStatus(course)} class="bg-secondary-500 rounded-lg p-1.5 text-sm">{course}</button>
+                    {:else if status[course] == 'Not Taken'}
+                        <button on:click={() => handleUpdateCourseStatus(course)} class="bg-primary-900 rounded-lg p-1.5 text-sm">{course}</button>
+                    {:else if status[course] == 'Taking'}
+                        <button on:click={() => handleUpdateCourseStatus(course)} class="bg-secondary-700 rounded-lg p-1.5 text-sm">{course}</button>
+                    {:else if status[course] == 'To Take'}
+                        <button on:click={() => handleUpdateCourseStatus(course)} class="bg-primary-50 rounded-lg p-1.5 text-sm">{course}</button>
+                    {/if}
+                {/if}
+            {/each}
+        {:else}
+            <p>No courses found</p>
+        {/if}
+    </div>
+    <div class="flex justify-center items-center sticky bottom-5 gap-5">
+        {#if seeCourseData}
+            <button on:click={changeMode} class="bg-secondary-500 rounded-lg p-1.5 text-sm"> Edit Course Progress </button>
+        {:else}
+            <button on:click={changeMode} class="bg-secondary-500 rounded-lg p-1.5 text-sm"> View Course Data </button>
+        {/if}
+        <LegendBox></LegendBox>
+
+    </div>
+    {#if showPopup}
+        <Popup {selectedCourse} {courseData} bind:showPopup />
+    {/if}
+    
+
+</div>

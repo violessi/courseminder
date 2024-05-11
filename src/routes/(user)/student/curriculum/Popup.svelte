@@ -6,6 +6,17 @@
     export let showPopup: boolean;
 
     $: ({ title, desc, numUnits, prereq, coreq } = courseData);
+
+    if (selectedCourse == 'Physics 711'){
+        selectedCourse = 'Physics 71.1';
+    }
+    else if (selectedCourse == 'Physics 721'){
+        selectedCourse = 'Physics 72.1';
+    }
+    else if (selectedCourse == 'Chem 161'){
+        selectedCourse =  'Chem 16.1';
+    }
+
 </script>
 
 <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
