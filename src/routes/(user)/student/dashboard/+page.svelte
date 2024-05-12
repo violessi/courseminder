@@ -80,7 +80,7 @@
                 <div class="font-bold uppercase text-xl">Your Course Progress</div>
                 <div class="relative w-72 h-72 mx-auto">
                     <ProgressRadial
-                        value={progress}
+                        value={progress ?? 0}
                         stroke={100}
                         meter="stroke-secondary-500"
                         track="stroke-surface-800/30"

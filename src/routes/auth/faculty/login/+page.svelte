@@ -40,16 +40,17 @@
 
         cursor: pointer;
 
-        font-family: 'Russo One', sans-serif;
+        font-family: Arial Bold;
         font-weight: 600;
         border-radius: 5px;
         box-shadow: none;
         color: #f8fafc;
         line-height: 20px;
         height: 54px;
+
         border: 1px solid transparent;
-        width: 75%;
-        font-size: 40px;
+        width: 50%;
+        font-size: 25px;
         text-align: center;
         display: block;
         margin: 0 auto;
@@ -75,7 +76,10 @@
     }
     .loginform {
         padding: 1rem;
-        background: #f16889;
+        border: 4px solid #861933;
+        border-radius: 25px;
+        background: #ffffff 50%;
+
         height: 425px;
         width: 600px;
         margin-top: 50px;
@@ -94,7 +98,7 @@
         height: 125px;
         border-radius: 50%;
         background-image: url('$lib/assets/user-icon.webp');
-        background-color: #861933;
+        background-color: #f16e8e;
         background-size: contain;
         background-repeat: no-repeat;
     }

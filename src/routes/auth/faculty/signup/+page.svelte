@@ -161,7 +161,7 @@
 
 <style>
     .background {
-        background-image: url('$lib/assets/bg-faculty.jpg');
+        background-image: url('$lib/assets/bg-faculty.webp');
         background-size: cover;
         background-repeat: no-repeat;
         height: 100%;
@@ -225,7 +225,8 @@
 
         cursor: pointer;
 
-        font-family: 'Russo One', sans-serif;
+        font-family: Arial Bold;
+
         font-weight: 600;
         border-radius: 5px;
         box-shadow: none;

@@ -187,7 +187,7 @@
                 </div>
             </form>
             <div class="SignUpRightContainer">
-                <p class="TTCommons-Regular-14">
+                <p class="TTCommons-Regular-14 text-xl">
                     <br />
                     WELCOME TO COURSEMINDER!
                 </p>
@@ -224,7 +224,6 @@
 
     .TTCommons-Regular-14 {
         font-family: Arial;
-        font-size: 14px;
         color: black;
         letter-spacing: -0.04em;
     }
