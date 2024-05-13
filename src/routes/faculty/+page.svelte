@@ -1,30 +1,35 @@
 <script lang="ts">
     import icon2 from '$lib/assets/icon2.png';
-    import { initFirebase } from '$lib/firebase/client';
-    import { facultyDegree, facultyName, facultyEmail } from '$lib/stores/CurriculumStores';
-
+    import { initFirebase, db } from '$lib/firebase/client';
+    import { facultyDegree, facultyName, facultyId } from '$lib/stores/CurriculumStores';
+    import { goto } from '$app/navigation';
+    import { ref, get } from 'firebase/database';
 
     export let form;
 
     initFirebase();
 
-    async function checkLogin(email: string, password: string) {
-        const reference = ref(db, `faculty/${email}`);
+    let errorMessage = '';
+    let id = '';
+    let password = '';
+
+    async function checkLogin(id: string, password: string) {
+        const reference = ref(db, `faculty/${id}`);
         const snapshot = await get(reference);
 
         // Store student data in global variable
-        facultyEmail.set(email);
+        facultyId.set(id);
         facultyDegree.set(snapshot.child('department').val());
         facultyName.set(snapshot.child('name').val());
         if (snapshot.child('password').val() === password) {
             goto(`../faculty/dashboard`);
         } else {
-            errorMessage = 'Email or Password is not valid.';
+            errorMessage = 'Faculty ID or Password is not valid.';
             console.log(password)
         }
     }
     function handleSubmit() {
-        checkLogin(email, password);
+        checkLogin(id, password);
     }
 
 </script>
@@ -43,7 +48,7 @@
             {/if}
             <form method="POST" class="inputform">
                 <div>
-                    <input class="form1" type="email" name="email" placeholder="Email" value={form?.email || ''} />
+                    <input class="form1" type="text" name="id" placeholder="Faculty ID" value={form?.id || ''} />
                 </div>
                 <br />
                 <div>

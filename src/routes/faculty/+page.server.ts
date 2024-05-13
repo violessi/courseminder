@@ -1,19 +1,32 @@
 import { redirect } from '@sveltejs/kit';
+import { initFirebase, db } from '$lib/firebase/client';
+import { facultyDegree, facultyName, facultyId } from '$lib/stores/CurriculumStores';
+import { ref, get } from 'firebase/database';
+
+initFirebase();
 
 export const actions = {
     default: async ({ cookies, request }) => {
         const formData = await request.formData();
-        const email = formData.get('email');
+        const id = formData.get('id');
         const password = formData.get('password');
 
-        if (email === 'faculty@gmail.com' && password === 'password') {
-            cookies.set('access', 'true', { path: '/', sameSite: 'strict' });
-            throw redirect(302, '/faculty/dashboard');
-        }
+        const reference = ref(db, `faculty/${id}`);
+        const snapshot = await get(reference);
 
+        // Store faculty data in global variable
+        if (snapshot.child('password').val() === password) {
+            cookies.set('access', 'true', { path: '/', sameSite: 'strict' });
+            facultyId.set(id);
+            facultyDegree.set(snapshot.child('department').val());
+            facultyName.set(snapshot.child('name').val());
+            throw redirect(302, '/faculty/dashboard');
+        } 
+        console.log('Invalid Password');
+        console.log(id);
         return {
-            email,
-            message: 'Email or Password is not valid',
+            id,
+            message: 'Faculty ID or Password is not valid.'
         };
     },
 };

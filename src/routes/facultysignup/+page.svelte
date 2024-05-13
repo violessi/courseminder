@@ -2,52 +2,73 @@
     import { goto } from '$app/navigation';
     import icon2 from '$lib/assets/icon2.png';
     import { db, initFirebase } from '$lib/firebase/client';
-    import { getDatabase } from 'firebase/database';
-    import { facultyDegree, facultyName } from '$lib/stores/CurriculumStores';
-    import { ref, get, set as setDatabase } from 'firebase/database'
-    import { parseEmail } from '$lib/functions/helper'
+    import { facultyDegree, facultyName, facultyId } from '$lib/stores/CurriculumStores';
+    import { ref, get, set } from 'firebase/database'
     initFirebase();
 
     let department = '';
     let name = '';
-    let email = '';
+    let id = '';
     let password = '';
     let errorMessage = '';
 
+    async function checkFacultyID(id : string){
+        const reference = ref(db, `facultyList/${id}`);
+        const snapshot = await get(reference);
+        if (snapshot.val() == true) {
+            errorMessage = 'A faculty with this Faculty ID already exists.';
+            console.log('Faculty already exists');
+            return false
+        }
+        else if (snapshot.exists() == false) {
+            errorMessage = 'Please enter a valid Faculty ID.';
+            console.log('Faculty ID is invalid');
+            return false;
+        }
+        return true;
+    }
 
-    async function writeFacultyData(department : string, name : string, email : string, password : string) {
-        const parsedEmail = parseEmail(email);
-        const reference = ref(db, `faculty/${parsedEmail}`);
+
+    async function writeFacultyData(department : string, name : string, id : string, password : string) {
+        const reference = ref(db, `faculty/${id}`);
+        const refFacultyList = ref(db, `facultyList/${id}`)
         // Check if the faculty already exists
         const snapshot = await get(reference);
         if (snapshot.exists()) {
             // The faculty already exists, handle this case as needed
-            errorMessage = 'A faculty with this email already exists.';
+            errorMessage = 'A faculty with this Faculty ID already exists.';
+            console.log('Faculty already exists');
         } else {
             // The faculty doesn't exist, write the data
-            setDatabase(reference, {
+            set(reference, {
                 department: department,
                 name: name,
-                email: email,
+                id: id,
                 password: password,
             });
+            set(refFacultyList, true);
             facultyDegree.set(department);
             facultyName.set(name);
+            facultyId.set(id);
         }
     }
 
-    function handleSubmit() {
+    async function handleSubmit() {
         // Check if all fields are filled
-        if (department && name && email && password) {
-            const facultyuser = {
-                department,
-                name,
-                email,
-                password,
-            };
-            // localStorage.setItem('facultyuser', JSON.stringify(facultyuser));
-            writeFacultyData(department, name, email, password);
-            goto('../faculty/dashboard');
+        if (department && name && id && password) {
+            // Check if the faculty ID is valid
+            const isValid = await checkFacultyID(id);
+            if (isValid){
+                const facultyuser = {
+                    department,
+                    name,
+                    id,
+                    password,
+                };
+                // localStorage.setItem('facultyuser', JSON.stringify(facultyuser));
+                writeFacultyData(department, name, id, password);
+                goto('../faculty/dashboard');
+            }
         } else {
             // Handle the case when not all fields are filled
             // You can show an error message or do something else
@@ -138,8 +159,8 @@
                         type="text"
                         id="email-address-icon"
                         class="bg-pink-50 border border-pink-300 text-pink-900 text-sm rounded-lg focus:ring-pink-500 focus:border-pink-500 block w-full ps-10 p-2.5 dark:bg-pink-100 dark:border-pink-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-pink-500 dark:focus:border-pink-500"
-                        placeholder="Email"
-                        bind:value={email}
+                        placeholder="Faculty ID"
+                        bind:value={id}
                     />
                 </div>
                 <br />
