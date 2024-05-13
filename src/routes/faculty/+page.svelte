@@ -1,6 +1,32 @@
-<script>
+<script lang="ts">
     import icon2 from '$lib/assets/icon2.png';
+    import { initFirebase } from '$lib/firebase/client';
+    import { facultyDegree, facultyName, facultyEmail } from '$lib/stores/CurriculumStores';
+
+
     export let form;
+
+    initFirebase();
+
+    async function checkLogin(email: string, password: string) {
+        const reference = ref(db, `faculty/${email}`);
+        const snapshot = await get(reference);
+
+        // Store student data in global variable
+        facultyEmail.set(email);
+        facultyDegree.set(snapshot.child('department').val());
+        facultyName.set(snapshot.child('name').val());
+        if (snapshot.child('password').val() === password) {
+            goto(`../faculty/dashboard`);
+        } else {
+            errorMessage = 'Email or Password is not valid.';
+            console.log(password)
+        }
+    }
+    function handleSubmit() {
+        checkLogin(email, password);
+    }
+
 </script>
 
 <body class="container-fluid">

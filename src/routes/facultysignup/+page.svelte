@@ -1,11 +1,11 @@
 <script lang="ts">
     import { goto } from '$app/navigation';
     import icon2 from '$lib/assets/icon2.png';
-    import { initFirebase } from '$lib/firebase/client';
+    import { db, initFirebase } from '$lib/firebase/client';
     import { getDatabase } from 'firebase/database';
     import { facultyDegree, facultyName } from '$lib/stores/CurriculumStores';
-    import { ref, get, set } from 'firebase/database'
-
+    import { ref, get, set as setDatabase } from 'firebase/database'
+    import { parseEmail } from '$lib/functions/helper'
     initFirebase();
 
     let department = '';
@@ -14,8 +14,10 @@
     let password = '';
     let errorMessage = '';
 
+
     async function writeFacultyData(department : string, name : string, email : string, password : string) {
-        const reference = ref(db, `faculty/${email}`);
+        const parsedEmail = parseEmail(email);
+        const reference = ref(db, `faculty/${parsedEmail}`);
         // Check if the faculty already exists
         const snapshot = await get(reference);
         if (snapshot.exists()) {
@@ -23,7 +25,7 @@
             errorMessage = 'A faculty with this email already exists.';
         } else {
             // The faculty doesn't exist, write the data
-            set(reference, {
+            setDatabase(reference, {
                 department: department,
                 name: name,
                 email: email,
@@ -43,7 +45,7 @@
                 email,
                 password,
             };
-            localStorage.setItem('facultyuser', JSON.stringify(facultyuser));
+            // localStorage.setItem('facultyuser', JSON.stringify(facultyuser));
             writeFacultyData(department, name, email, password);
             goto('../faculty/dashboard');
         } else {

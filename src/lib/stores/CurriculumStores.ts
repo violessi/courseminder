@@ -24,3 +24,4 @@ export const studentDegree = persist('studentDegree', '');
 export const statusData = persist('statusData', '');
 export const facultyDegree = persist('facultyDegree', '');
 export const facultyName = persist('facultyName', '');
+export const facultyEmail = persist('facultyEmail', '')
