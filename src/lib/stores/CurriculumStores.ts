@@ -22,3 +22,5 @@ function persist(key: string, initialValue : any) {
 export const studentId = persist('studentId', '');
 export const studentDegree = persist('studentDegree', '');
 export const statusData = persist('statusData', '');
+export const facultyDegree = persist('facultyDegree', '');
+export const facultyName = persist('facultyName', '');

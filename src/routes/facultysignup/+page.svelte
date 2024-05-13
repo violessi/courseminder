@@ -1,12 +1,38 @@
-<script>
+<script lang="ts">
     import { goto } from '$app/navigation';
     import icon2 from '$lib/assets/icon2.png';
+    import { initFirebase } from '$lib/firebase/client';
+    import { getDatabase } from 'firebase/database';
+    import { facultyDegree, facultyName } from '$lib/stores/CurriculumStores';
+    import { ref, get, set } from 'firebase/database'
+
+    initFirebase();
 
     let department = '';
     let name = '';
     let email = '';
     let password = '';
     let errorMessage = '';
+
+    async function writeFacultyData(department : string, name : string, email : string, password : string) {
+        const reference = ref(db, `faculty/${email}`);
+        // Check if the faculty already exists
+        const snapshot = await get(reference);
+        if (snapshot.exists()) {
+            // The faculty already exists, handle this case as needed
+            errorMessage = 'A faculty with this email already exists.';
+        } else {
+            // The faculty doesn't exist, write the data
+            set(reference, {
+                department: department,
+                name: name,
+                email: email,
+                password: password,
+            });
+            facultyDegree.set(department);
+            facultyName.set(name);
+        }
+    }
 
     function handleSubmit() {
         // Check if all fields are filled
@@ -18,6 +44,7 @@
                 password,
             };
             localStorage.setItem('facultyuser', JSON.stringify(facultyuser));
+            writeFacultyData(department, name, email, password);
             goto('../faculty/dashboard');
         } else {
             // Handle the case when not all fields are filled
