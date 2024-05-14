@@ -11,6 +11,7 @@
     import Calendar from '~icons/tabler/calendar-month';
     import { initFirebase, db } from '$lib/firebase/client';
     import { ref, get, onValue } from 'firebase/database';
+    import { Subject } from '$lib/models/types';
 
     initFirebase();
 
@@ -65,22 +66,35 @@
         return semId;
     }
     let semID : string;
+    let subjects : any[] = [];
     $: if (comboboxValue){
         semID = parseSemester(comboboxValue);
-    }
-    $: get(semesterDataRef).then((snapshot) => {
-        const data = snapshot.val();
-        for (let studentNumber in data) {
-            if (data[studentNumber][semID]) {
-            let subjects = data[studentNumber][semID]["subjects"];
-            console.log(`Student Number: ${studentNumber}`);
-            console.log(`Semester: ${semID}`);
-            console.log(subjects);
+        subjects = [];
+        get(semesterDataRef).then((snapshot) => {
+            const data = snapshot.val();
+            for (let studentNumber in data) {
+                if (data[studentNumber][semID]) {
+                    let courses = data[studentNumber][semID]["subjects"];
+                    for (let course in courses) {
+                        console.log(courses[course].className);
+                        let data = {
+                            className: courses[course].className,
+                            passRate: 0,
+                            totalTakers: 0,
+                        }
+                        if (!subjects.some(subject => subject.className === data.className)) {
+                            subjects.push(data);
+                        }                    }
+                    console.log(`Student Number: ${studentNumber}`);
+                    console.log(`Semester: ${semID}`);
+                    console.log(courses);
+                }
             }
-        }
-    });
+            console.log(subjects);
+        });
+    }
 
-
+    
     // need to compute passRate and totalTakers per subject
     let subjectPassRates = [
         { className: 'CS 21', passRate: '65%', totalTakers: 100 },
