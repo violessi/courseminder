@@ -16,6 +16,20 @@
 
     let comboboxValue: string;
 
+    function convertSemID(semester: string): string {
+        const startYear : string = '20' + semester.slice(0, 2);
+        const endYear : string = '20' + semester.slice(2, 4);
+        if (semester.slice(4, 5) === 'A'){
+            return `1st Semester, AY ${startYear}-${endYear}`;
+        } else if (semester.slice(4, 5) === 'B'){
+            return `2nd Semester, AY ${startYear}-${endYear}`;
+        } else {
+            return `Midyear, AY ${startYear}-${endYear}`;
+        
+        }
+    }
+    console.log(convertSemID('2223B'));
+
     // update with list of semesters present in database
     // let semesters: string[] = ['1st Semester, AY 2021-2022', '2nd Semester, AY 2021-2022', 'Midyear, AY 2021-2022'];
     let semesters : string[] = [];
@@ -26,15 +40,13 @@
             // console.log(`Student Number: ${studentNumber}`);
             for (let semester in data[studentNumber]) {
                 if (!semesters.includes(semester)){
-                    semesters.push(semester);
+                    semesters.push(convertSemID(semester));
                 }
             }
         }
     });
     $: console.log(semesters);
-    async function getListOfSem(){
-
-    }
+    
     // update with list of subjects present in a semester
     // need to compute passRate and totalTakers per subject
     let subjectPassRates = [
