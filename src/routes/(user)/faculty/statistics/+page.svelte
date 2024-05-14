@@ -20,11 +20,11 @@
         const startYear : string = '20' + semester.slice(0, 2);
         const endYear : string = '20' + semester.slice(2, 4);
         if (semester.slice(4, 5) === 'A'){
-            return `1st Semester, AY ${startYear}-${endYear}`;
+            return `1st Semester ${startYear}-${endYear}`;
         } else if (semester.slice(4, 5) === 'B'){
-            return `2nd Semester, AY ${startYear}-${endYear}`;
+            return `2nd Semester ${startYear}-${endYear}`;
         } else {
-            return `Midyear, AY ${startYear}-${endYear}`;
+            return `Midyear ${startYear}-${endYear}`;
         
         }
     }
@@ -48,6 +48,39 @@
     $: console.log(semesters);
     
     // update with list of subjects present in a semester
+
+    function parseSemester(id: string) {
+        console.log(id);
+        const semComponents = id.split(' ');
+        // eslint-disable-next-line prefer-template
+        const sem = semComponents.length === 3 ? id.split(' ')[0] + ' ' + id.split(' ')[1] : id.split(' ')[0];
+        const yearId = semComponents[semComponents.length - 1].split('-');
+        const startYear = yearId[0].slice(2, 4);
+        const endYear = yearId[1].slice(2, 4);
+        let semId = startYear + endYear;
+        if (sem === '1st Semester') semId += 'A';
+        else if (sem === '2nd Semester') semId += 'B';
+        else semId += 'M';
+
+        return semId;
+    }
+    let semID : string;
+    $: if (comboboxValue){
+        semID = parseSemester(comboboxValue);
+    }
+    $: get(semesterDataRef).then((snapshot) => {
+        const data = snapshot.val();
+        for (let studentNumber in data) {
+            if (data[studentNumber][semID]) {
+            let subjects = data[studentNumber][semID]["subjects"];
+            console.log(`Student Number: ${studentNumber}`);
+            console.log(`Semester: ${semID}`);
+            console.log(subjects);
+            }
+        }
+    });
+
+
     // need to compute passRate and totalTakers per subject
     let subjectPassRates = [
         { className: 'CS 21', passRate: '65%', totalTakers: 100 },

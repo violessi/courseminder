@@ -43,6 +43,7 @@ const db = getDatabase(app);
 const reference = ref(db, `semesterData/${studentnumber}`);
 
 function parseSemester(id: string) {
+    console.log(id);
     const semComponents = id.split(' ');
     // eslint-disable-next-line prefer-template
     const sem = semComponents.length === 3 ? id.split(' ')[0] + ' ' + id.split(' ')[1] : id.split(' ')[0];
