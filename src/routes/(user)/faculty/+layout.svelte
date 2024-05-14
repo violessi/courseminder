@@ -1,7 +1,7 @@
 <script lang="ts">
     import { AppRail, AppRailAnchor, AppShell } from '@skeletonlabs/skeleton';
     import Dashboard from '~icons/tabler/layout-dashboard';
-    import Stats from '~icons/tabler/chart-bar';
+    import Stats from '~icons/tabler/square-rounded-percentage';
     import Logout from '~icons/tabler/logout-2';
     import icon from '$lib/assets/icon.webp';
     import { page } from '$app/stores';
@@ -22,11 +22,11 @@
         <img src={icon} alt="Icon" slot="lead" class="size-24" />
         <AppRailAnchor href="/faculty/dashboard" selected={$page.url.pathname === '/faculty/dashboard'}>
             <Dashboard slot="lead" class="size-10" />
-            <span class="text-sm">Dashboard</span>
+            <span class="text-sm">Demand</span>
         </AppRailAnchor>
         <AppRailAnchor href="/faculty/statistics" selected={$page.url.pathname === '/faculty/statistics'}>
             <Stats slot="lead" class="size-10" />
-            <span class="text-sm">Statistics</span>
+            <span class="text-sm">Rates</span>
         </AppRailAnchor>
 
         <AppRailAnchor href="../../" slot="trail">

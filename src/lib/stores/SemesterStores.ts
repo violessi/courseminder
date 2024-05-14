@@ -116,6 +116,8 @@ function initStore() {
         return sem;
     }
 
+    // iterate through database to get the list of semesters and corresponding subjects
+
     function addSubject(subject: Subject, id: string) {
         // Update database and store
         const semId = parseSemester(id);
