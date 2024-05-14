@@ -10,27 +10,31 @@
     } from '@skeletonlabs/skeleton';
     import Calendar from '~icons/tabler/calendar-month';
     import { initFirebase, db } from '$lib/firebase/client';
-    import { ref, get } from 'firebase/database';
+    import { ref, get, onValue } from 'firebase/database';
 
     initFirebase();
 
     let comboboxValue: string;
 
     // update with list of semesters present in database
+    // let semesters: string[] = ['1st Semester, AY 2021-2022', '2nd Semester, AY 2021-2022', 'Midyear, AY 2021-2022'];
+    let semesters : string[] = [];
+    const semesterDataRef = ref(db, `semesterData/`);
+    onValue(semesterDataRef, (snapshot : any) => {
+        const data = snapshot.val();
+        for (let studentNumber in data) {
+            // console.log(`Student Number: ${studentNumber}`);
+            for (let semester in data[studentNumber]) {
+                if (!semesters.includes(semester)){
+                    semesters.push(semester);
+                }
+            }
+        }
+    });
+    $: console.log(semesters);
     async function getListOfSem(){
-        const semesterDataRef = ref(db, `semesterData/`);
-        let semesters = [];
-        await get(semesterDataRef).then((snapshot) => {
-            snapshot.forEach((childSnapshot) => {
-                semesters.push(childSnapshot.key);
-            });
-        });
 
     }
-
-
-    let semesters: string[] = ['1st Semester, AY 2021-2022', '2nd Semester, AY 2021-2022', 'Midyear, AY 2021-2022'];
-
     // update with list of subjects present in a semester
     // need to compute passRate and totalTakers per subject
     let subjectPassRates = [
