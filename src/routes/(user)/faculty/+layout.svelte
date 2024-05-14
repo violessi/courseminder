@@ -1,7 +1,9 @@
 <script lang="ts">
     import { AppRail, AppRailAnchor, AppShell } from '@skeletonlabs/skeleton';
-    import { IconChartBar, IconLayoutDashboard, IconLogout2 } from '@tabler/icons-svelte';
-    import icon from '$lib/assets/icon.png';
+    import Dashboard from '~icons/tabler/layout-dashboard';
+    import Stats from '~icons/tabler/chart-bar';
+    import Logout from '~icons/tabler/logout-2';
+    import icon from '$lib/assets/icon.webp';
     import { page } from '$app/stores';
 
     // const course: string = 'BS Computer Science';
@@ -19,16 +21,16 @@
     >
         <img src={icon} alt="Icon" slot="lead" class="size-24" />
         <AppRailAnchor href="/faculty/dashboard" selected={$page.url.pathname === '/faculty/dashboard'}>
-            <IconLayoutDashboard slot="lead" size={36} />
+            <Dashboard slot="lead" class="size-10" />
             <span class="text-sm">Dashboard</span>
         </AppRailAnchor>
         <AppRailAnchor href="/faculty/statistics" selected={$page.url.pathname === '/faculty/statistics'}>
-            <IconChartBar slot="lead" size={36} />
+            <Stats slot="lead" class="size-10" />
             <span class="text-sm">Statistics</span>
         </AppRailAnchor>
 
         <AppRailAnchor href="../../" slot="trail">
-            <IconLogout2 slot="lead" size={36} />
+            <Logout slot="lead" class="size-10" />
             <span class="text-sm">Log-out</span>
         </AppRailAnchor>
     </AppRail>

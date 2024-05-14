@@ -20,6 +20,7 @@
     "devDependencies": {
         "@floating-ui/dom": "^1.6.5",
         "@linthtml/linthtml": "^0.9.6",
+        "@iconify/json": "^2.2.207",
         "@linthtml/linthtml-config-recommended": "^0.1.0",
         "@playwright/test": "^1.44.0",
         "@skeletonlabs/skeleton": "2.8.0",
@@ -52,6 +53,7 @@
         "tslib": "^2.6.2",
         "typescript": "^5.4.5",
         "vite": "^5.2.11",
+        "unplugin-icons": "^0.19.0",
         "vite-plugin-tailwind-purgecss": "0.2.0",
         "vitest": "^1.6.0"
     },
