@@ -28,7 +28,6 @@
         
         }
     }
-    console.log(convertSemID('2223B'));
 
     // update with list of semesters present in database
     // let semesters: string[] = ['1st Semester, AY 2021-2022', '2nd Semester, AY 2021-2022', 'Midyear, AY 2021-2022'];
@@ -39,11 +38,12 @@
         for (let studentNumber in data) {
             // console.log(`Student Number: ${studentNumber}`);
             for (let semester in data[studentNumber]) {
-                if (!semesters.includes(semester)){
-                    semesters.push(convertSemID(semester));
-                }
+                semesters.push(convertSemID(semester));
             }
         }
+        semesters = semesters.filter((value, index, self) => {
+            return self.indexOf(value) === index;
+        }); // remove duplicates
     });
     $: console.log(semesters);
     
