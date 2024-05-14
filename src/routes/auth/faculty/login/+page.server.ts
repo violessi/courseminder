@@ -1,7 +1,7 @@
+import { db, initFirebase } from '$lib/firebase/client';
+import { facultyDegree, facultyId, facultyName } from '$lib/stores/CurriculumStores';
+import { get, ref } from 'firebase/database';
 import { redirect } from '@sveltejs/kit';
-import { initFirebase, db } from '$lib/firebase/client';
-import { facultyDegree, facultyName, facultyId } from '$lib/stores/CurriculumStores';
-import { ref, get } from 'firebase/database';
 
 initFirebase();
 
@@ -21,12 +21,12 @@ export const actions = {
             facultyDegree.set(snapshot.child('department').val());
             facultyName.set(snapshot.child('name').val());
             throw redirect(302, '/faculty/dashboard');
-        } 
+        }
         console.log('Invalid Password');
         console.log(id);
         return {
             id,
-            message: 'Faculty ID or Password is not valid.'
+            message: 'Faculty ID or Password is not valid.',
         };
     },
 };

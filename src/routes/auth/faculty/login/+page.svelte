@@ -95,7 +95,7 @@
         background-color: rgba(0, 0, 0, 0.5);
     }
     .container-fluid {
-        background-image: url('$lib/assets/bg-faculty.jpg');
+        background-image: url('$lib/assets/bg-faculty.webp');
         background-size: cover;
         background-repeat: no-repeat;
         height: 100%;

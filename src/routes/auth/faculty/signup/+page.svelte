@@ -1,9 +1,9 @@
 <script lang="ts">
     import { goto } from '$app/navigation';
-    import icon2 from '$lib/assets/icon2.png';
+    import icon2 from '$lib/assets/icon2.webp';
     import { db, initFirebase } from '$lib/firebase/client';
     import { facultyDegree, facultyName, facultyId } from '$lib/stores/CurriculumStores';
-    import { ref, get, set } from 'firebase/database'
+    import { ref, get, set } from 'firebase/database';
     initFirebase();
 
     let department = '';
@@ -12,15 +12,14 @@
     let password = '';
     let errorMessage = '';
 
-    async function checkFacultyID(id : string){
+    async function checkFacultyID(id: string) {
         const reference = ref(db, `facultyList/${id}`);
         const snapshot = await get(reference);
         if (snapshot.val() == true) {
             errorMessage = 'A faculty with this Faculty ID already exists.';
             console.log('Faculty already exists');
-            return false
-        }
-        else if (snapshot.exists() == false) {
+            return false;
+        } else if (snapshot.exists() == false) {
             errorMessage = 'Please enter a valid Faculty ID.';
             console.log('Faculty ID is invalid');
             return false;
@@ -28,10 +27,9 @@
         return true;
     }
 
-
-    async function writeFacultyData(department : string, name : string, id : string, password : string) {
+    async function writeFacultyData(department: string, name: string, id: string, password: string) {
         const reference = ref(db, `faculty/${id}`);
-        const refFacultyList = ref(db, `facultyList/${id}`)
+        const refFacultyList = ref(db, `facultyList/${id}`);
         // Check if the faculty already exists
         const snapshot = await get(reference);
         if (snapshot.exists()) {
@@ -58,7 +56,7 @@
         if (department && name && id && password) {
             // Check if the faculty ID is valid
             const isValid = await checkFacultyID(id);
-            if (isValid){
+            if (isValid) {
                 const facultyuser = {
                     department,
                     name,
