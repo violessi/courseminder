@@ -67,11 +67,13 @@
     }
     let semID : string;
     let subjects : any[] = [];
+    let subjectsLoaded : boolean = false;
     $: if (comboboxValue){
         semID = parseSemester(comboboxValue);
         subjects = [];
-        get(semesterDataRef).then((snapshot) => {
+        get(semesterDataRef).then((snapshot : any) => {
             const data = snapshot.val();
+            // get all subjects in a semester
             for (let studentNumber in data) {
                 if (data[studentNumber][semID]) {
                     let courses = data[studentNumber][semID]["subjects"];
@@ -84,16 +86,51 @@
                         }
                         if (!subjects.some(subject => subject.className === data.className)) {
                             subjects.push(data);
-                        }                    }
-                    console.log(`Student Number: ${studentNumber}`);
-                    console.log(`Semester: ${semID}`);
-                    console.log(courses);
+                        }                    
+                    }
+                    // console.log(`Student Number: ${studentNumber}`);
+                    // console.log(`Semester: ${semID}`);
+                    // console.log(courses);
                 }
             }
-            console.log(subjects);
+            // console.log(subjects);
+            subjectsLoaded = true;
         });
     }
-
+    $: if (subjectsLoaded && subjects) {
+        // input passRate and totalTakers to subjects
+        console.log(subjects);
+        let tempSubjects = [...subjects];
+        console.log(tempSubjects);
+        get(semesterDataRef).then((snapshot : any) => {
+            const data = snapshot.val();
+            for (let studentNumber in data) {
+                if (data[studentNumber][semID]) {
+                    let courses = data[studentNumber][semID]["subjects"];
+                    for (let course in courses) {
+                        for (let subject in tempSubjects) {
+                            if (tempSubjects[subject].className === courses[course].className) {
+                                tempSubjects[subject].totalTakers += 1;
+                                if (courses[course].grade <= 3.0) {
+                                    tempSubjects[subject].passRate += 1;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            for (let subject in tempSubjects) {
+                console.log(subjects[subject].passRate);
+                console.log(subjects[subject].totalTakers);
+                tempSubjects[subject].passRate = (subjects[subject].passRate / subjects[subject].totalTakers) * 100;
+                console.log(tempSubjects[subject].passRate);
+            }
+        });
+        
+        subjects = tempSubjects;
+        console.log(subjects);
+        subjectsLoaded = false;
+    }
     
     // need to compute passRate and totalTakers per subject
     let subjectPassRates = [
