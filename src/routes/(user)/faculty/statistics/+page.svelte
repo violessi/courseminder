@@ -11,49 +11,40 @@
     import Calendar from '~icons/tabler/calendar-month';
     import { initFirebase, db } from '$lib/firebase/client';
     import { ref, get, onValue } from 'firebase/database';
-    import { Subject } from '$lib/models/types';
+    import { tick } from 'svelte';
 
     initFirebase();
 
     let comboboxValue: string;
 
     function convertSemID(semester: string): string {
-        const startYear : string = '20' + semester.slice(0, 2);
-        const endYear : string = '20' + semester.slice(2, 4);
-        if (semester.slice(4, 5) === 'A'){
+        const startYear: string = '20' + semester.slice(0, 2);
+        const endYear: string = '20' + semester.slice(2, 4);
+        if (semester.slice(4, 5) === 'A') {
             return `1st Semester ${startYear}-${endYear}`;
-        } else if (semester.slice(4, 5) === 'B'){
+        } else if (semester.slice(4, 5) === 'B') {
             return `2nd Semester ${startYear}-${endYear}`;
         } else {
             return `Midyear ${startYear}-${endYear}`;
-        
         }
     }
 
-    // update with list of semesters present in database
-    // let semesters: string[] = ['1st Semester, AY 2021-2022', '2nd Semester, AY 2021-2022', 'Midyear, AY 2021-2022'];
-    let semesters : string[] = [];
+    let semesters: string[] = [];
     const semesterDataRef = ref(db, `semesterData/`);
-    onValue(semesterDataRef, (snapshot : any) => {
+    onValue(semesterDataRef, (snapshot: any) => {
         const data = snapshot.val();
         for (let studentNumber in data) {
-            // console.log(`Student Number: ${studentNumber}`);
             for (let semester in data[studentNumber]) {
                 semesters.push(convertSemID(semester));
             }
         }
         semesters = semesters.filter((value, index, self) => {
             return self.indexOf(value) === index;
-        }); // remove duplicates
+        });
     });
-    $: console.log(semesters);
-    
-    // update with list of subjects present in a semester
 
     function parseSemester(id: string) {
-        console.log(id);
         const semComponents = id.split(' ');
-        // eslint-disable-next-line prefer-template
         const sem = semComponents.length === 3 ? id.split(' ')[0] + ' ' + id.split(' ')[1] : id.split(' ')[0];
         const yearId = semComponents[semComponents.length - 1].split('-');
         const startYear = yearId[0].slice(2, 4);
@@ -65,79 +56,72 @@
 
         return semId;
     }
-    let semID : string;
-    let subjects : any[] = [];
-    let subjectsLoaded : boolean = false;
-    $: if (comboboxValue){
+
+    let semID: string;
+    let subjects: any[] = [];
+    let subjectsLoaded: boolean = false;
+
+    async function loadSubjects() {
         semID = parseSemester(comboboxValue);
         subjects = [];
-        get(semesterDataRef).then((snapshot : any) => {
-            const data = snapshot.val();
-            // get all subjects in a semester
-            for (let studentNumber in data) {
-                if (data[studentNumber][semID]) {
-                    let courses = data[studentNumber][semID]["subjects"];
-                    for (let course in courses) {
-                        console.log(courses[course].className);
-                        let data = {
-                            className: courses[course].className,
-                            passRate: 0,
-                            totalTakers: 0,
-                        }
-                        if (!subjects.some(subject => subject.className === data.className)) {
-                            subjects.push(data);
-                        }                    
+        const snapshot = await get(semesterDataRef);
+        const data = snapshot.val();
+
+        let subjectsMap = new Map();
+
+        for (let studentNumber in data) {
+            if (data[studentNumber][semID]) {
+                let courses = data[studentNumber][semID]['subjects'];
+                for (let course in courses) {
+                    let className = courses[course].className;
+                    if (!subjectsMap.has(className)) {
+                        subjectsMap.set(className, { className: className, passRate: 0, totalTakers: 0 });
                     }
-                    // console.log(`Student Number: ${studentNumber}`);
-                    // console.log(`Semester: ${semID}`);
-                    // console.log(courses);
                 }
             }
-            // console.log(subjects);
-            subjectsLoaded = true;
-        });
+        }
+
+        subjects = Array.from(subjectsMap.values());
+        subjectsLoaded = true;
     }
-    $: if (subjectsLoaded && subjects) {
-        // input passRate and totalTakers to subjects
-        console.log(subjects);
+
+    async function calculatePassRates() {
+        const snapshot = await get(semesterDataRef);
+        const data = snapshot.val();
+
         let tempSubjects = [...subjects];
-        console.log(tempSubjects);
-        get(semesterDataRef).then((snapshot : any) => {
-            const data = snapshot.val();
-            for (let studentNumber in data) {
-                if (data[studentNumber][semID]) {
-                    let courses = data[studentNumber][semID]["subjects"];
-                    for (let course in courses) {
-                        for (let subject in tempSubjects) {
-                            if (tempSubjects[subject].className === courses[course].className) {
-                                tempSubjects[subject].totalTakers += 1;
-                                if (courses[course].grade <= 3.0) {
-                                    tempSubjects[subject].passRate += 1;
-                                }
-                            }
+
+        for (let studentNumber in data) {
+            if (data[studentNumber][semID]) {
+                let courses = data[studentNumber][semID]['subjects'];
+                for (let course in courses) {
+                    let courseData = courses[course];
+                    let subject = tempSubjects.find((s) => s.className === courseData.className);
+                    if (subject) {
+                        subject.totalTakers += 1;
+                        if (courseData.grade <= 3.0) {
+                            subject.passRate += 1;
                         }
                     }
                 }
             }
-            for (let subject in tempSubjects) {
-                console.log(subjects[subject].passRate);
-                console.log(subjects[subject].totalTakers);
-                tempSubjects[subject].passRate = (subjects[subject].passRate / subjects[subject].totalTakers) * 100;
-                console.log(tempSubjects[subject].passRate);
-            }
+        }
+
+        tempSubjects.forEach((subject) => {
+            subject.passRate =
+                subject.totalTakers > 0 ? ((subject.passRate / subject.totalTakers) * 100).toFixed(2) + '%' : '0%';
         });
-        
+
         subjects = tempSubjects;
-        console.log(subjects);
         subjectsLoaded = false;
+        await tick();
     }
-    
-    // need to compute passRate and totalTakers per subject
-    let subjectPassRates = [
-        { className: 'CS 21', passRate: '65%', totalTakers: 100 },
-        { className: 'CS 150', passRate: '70%', totalTakers: 50 },
-        { className: 'CS 153', passRate: '75%', totalTakers: 75 },
-    ];
+
+    $: if (comboboxValue) {
+        loadSubjects().then(() => {
+            calculatePassRates();
+        });
+    }
 
     const popupCombobox: PopupSettings = {
         event: 'click',
@@ -146,8 +130,8 @@
         closeQuery: '.listbox-item',
     };
 
-    function getTable(): TableSource {
-        if (!Array.isArray(subjectPassRates)) {
+    function getTable(subjects: any[]): TableSource {
+        if (!Array.isArray(subjects)) {
             return {
                 head: [],
                 body: [],
@@ -156,18 +140,22 @@
         }
         return {
             head: ['Class', 'Total Takers', 'Passing Rate'],
-            body: tableMapperValues(subjectPassRates, ['className', 'totalTakers', 'passRate']),
-            meta: tableMapperValues(subjectPassRates, ['className', 'totalTakers', 'passRate']),
+            body: tableMapperValues(subjects, ['className', 'totalTakers', 'passRate']),
+            meta: tableMapperValues(subjects, ['className', 'totalTakers', 'passRate']),
         };
     }
 
-    $: table = getTable();
+    function update(_: string[]) {
+        const table = getTable(subjects.slice(1));
+        return { table };
+    }
+
+    $: ({ table } = update(subjects));
 </script>
 
 <div class="h-full flex flex-col p-10 gap-10">
-    <div class="text-error-900">
-        <div class="font-bold text-4xl">Pass Rate</div>
-    </div>
+    <div class="title-default-faculty">Passing Rates</div>
+
     <button class="btn w-1/4 text-lg bg-primary-50 text-white justify-between" use:popup={popupCombobox}>
         <span class="capitalize flex gap-2 items-center"><Calendar />{comboboxValue ?? 'Select Semester'}</span>
         <span>▼</span>
@@ -193,7 +181,11 @@
             regionHeadCell="bg-primary-50 text-center text-xl font-bold"
             source={table}
         ></Table>
+    {:else if !comboboxValue}
+        <div class="subtitle-default-faculty text-center">
+            Please select a semester to see the passing rate of each subject.
+        </div>
     {:else}
-        <div></div>
+        <div class="subtitle-default-faculty text-center font-bold">No data available.</div>
     {/if}
 </div>
