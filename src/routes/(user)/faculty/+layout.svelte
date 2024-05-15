@@ -26,7 +26,7 @@
         </AppRailAnchor>
         <AppRailAnchor href="/faculty/statistics" selected={$page.url.pathname === '/faculty/statistics'}>
             <Stats slot="lead" class="size-10" />
-            <span class="text-sm">Rates</span>
+            <span class="text-sm">Rate</span>
         </AppRailAnchor>
 
         <AppRailAnchor href="../../" slot="trail">
