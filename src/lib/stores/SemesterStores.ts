@@ -127,6 +127,11 @@ function initStore() {
             update((store) => {
                 const sem = store.find((s) => s.id === id);
                 assert(typeof sem !== 'undefined', 'Semester not found');
+                // if subject already exists, do not add
+                if (sem.subjects.find((subj) => subj.className === subject.className)) {
+                    console.log('Subject already exists');
+                    return store;
+                }
                 sem.subjects.push(subject);
                 sem.details.gwa = computeSemGWA(sem.subjects);
                 sem.details.units = computeSemUnits(sem.subjects);
