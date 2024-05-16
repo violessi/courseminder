@@ -7,6 +7,7 @@
     import GradeCard from '$lib/components/GradeCard.svelte';
     import Tag from './Tag.svelte';
     import { safeParse } from 'valibot';
+    import Plus from '~icons/tabler/plus';
 
     const modalStore = getModalStore();
     const semStore = SemStore.get();
@@ -34,7 +35,10 @@
 <div class="h-full m-10 space-y-10">
     <div class="flex justify-between">
         <div class="title-default">View Grades</div>
-        <Button on:click={addNewSem} style="bg-secondary-500">Add Semester</Button>
+        <Button on:click={addNewSem} style="bg-secondary-500 gap-2">
+            <Plus />
+            Add Semester
+        </Button>
     </div>
 
     <div class="bg-secondary-500 rounded-xl flex card-section justify-center gap-32">

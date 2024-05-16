@@ -1,5 +1,5 @@
 <script>
-    import icon2 from '$lib/assets/icon2.png';
+    import icon2 from '$lib/assets/icon2.webp';
 </script>
 
 <div class="background">
@@ -8,9 +8,9 @@
         <h1 class="text-2xl font-michroma">CourseMinder</h1>
         <h2 class="text-lg mb-6 font-noto">"Stay Ahead. &nbsp Stay Focused."</h2>
         <div class="flex space-x-4">
-            <a href="./choice/login" class="text-white text-xl font-noto">Login</a>
+            <a href="./auth/choice/login" class="text-white text-xl font-noto">Login</a>
             <div class="border border-white ml-4 mt-3"></div>
-            <a href="./choice/signup" class="text-white text-xl font-noto">Sign Up</a>
+            <a href="./auth/choice/signup" class="text-white text-xl font-noto">Sign Up</a>
         </div>
         <!-- <a href="/student/dashboard" class="btn text-black variant-filled-primary">Student Dashboard</a> -->
     </div>
@@ -29,7 +29,7 @@
         font-style: normal;
     }
     .background {
-        background-image: url('$lib/assets/bg.png');
+        background-image: url('$lib/assets/bg.webp');
         background-repeat: no-repeat;
         background-size: cover;
         background-attachment: fixed;

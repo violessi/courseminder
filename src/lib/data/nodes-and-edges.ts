@@ -257,9 +257,9 @@ export const initialNodes: Node[]= [
         draggable: false,        
     },
     {
-        id: ' CS 165',
+        id: 'CS 165',
         type: 'custom',
-        data: {name: ' CS 165', height: 40, width: 100},
+        data: {name: 'CS 165', height: 40, width: 100},
         position: {x:990, y:426},
         draggable: false,        
     },
