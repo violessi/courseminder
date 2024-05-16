@@ -65,7 +65,7 @@
                 };
                 // localStorage.setItem('facultyuser', JSON.stringify(facultyuser));
                 writeFacultyData(department, name, id, password);
-                goto('../faculty/dashboard');
+                goto(`../../../../faculty/dashboard`);
             }
         } else {
             // Handle the case when not all fields are filled

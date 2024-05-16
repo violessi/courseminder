@@ -5,12 +5,21 @@
     import { initFirebase, db } from '$lib/firebase/client';
     import { ref, get, onValue } from 'firebase/database';
     import { facultyDegree, facultyName } from '$lib/stores/CurriculumStores';
+
+    initFirebase();
     
-    let degree : string;
+    let degree : string = '';
     facultyDegree.subscribe((value : string) => {
         degree = value.split(' ').slice(2, 4).join(' ');
         console.log(degree);
     });
+
+    let courseStatusRef = ref(db, `courseStatus/${degree}`);
+    onValue(courseStatusRef, (snapshot: any) => {
+        const data = snapshot.val();
+        console.log(data);
+    });
+    
 
 
 </script>

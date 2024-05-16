@@ -5,8 +5,6 @@
     import { goto } from '$app/navigation';
     import { ref, get } from 'firebase/database';
 
-    export let form;
-
     initFirebase();
 
     let errorMessage = '';
@@ -22,7 +20,7 @@
         facultyDegree.set(snapshot.child('department').val());
         facultyName.set(snapshot.child('name').val());
         if (snapshot.child('password').val() === password) {
-            goto(`../faculty/dashboard`);
+            goto(`../../../../faculty/dashboard`);
         } else {
             errorMessage = 'Faculty ID or Password is not valid.';
             console.log(password)
@@ -42,17 +40,17 @@
         <div class="loginform">
             <div class="logo"></div>
             <br />
-            {#if form?.message}
-                <p class="white">{form.message}</p>
+            {#if errorMessage}
+                <p class="white">{errorMessage}</p>
                 <br />
             {/if}
-            <form method="POST" class="inputform">
+            <form method="POST" class="inputform" on:submit|preventDefault={handleSubmit}>
                 <div>
-                    <input class="form1" type="text" name="id" placeholder="Faculty ID" value={form?.id || ''} />
+                    <input class="form1" type="text" name="id" placeholder="Faculty ID" bind:value={id}/>
                 </div>
                 <br />
                 <div>
-                    <input class="form2" type="password" name="password" placeholder="Password" />
+                    <input class="form2" type="password" name="password" placeholder="Password" bind:value={password}/>
                 </div>
                 <br />
                 <p class="TTCommons-Regular-14">
