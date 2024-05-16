@@ -35,6 +35,10 @@
 </body>
 
 <style>
+    ::placeholder{
+        color: rgb(151, 149, 149);
+    }
+    
     .LoginButton {
         background-color: #861933;
 
@@ -106,19 +110,23 @@
         font-family: Arial;
         color: black;
         background: url('$lib/assets/user-icon.png');
-        background-color: gray;
+        background-color:#eba5cc;
         background-size: contain;
         background-repeat: no-repeat;
         padding-left: 45px;
+        border-color: #DB2777;
+        border-radius: 8px;
     }
     .form2 {
         font-family: Arial;
         color: black;
         background: url('$lib/assets/lock-icon.png');
-        background-color: gray;
+        background-color:#eba5cc;
         background-size: contain;
         background-repeat: no-repeat;
         padding-left: 45px;
+        border-color: #DB2777;
+        border-radius: 8px;
     }
     .white {
         color: white;

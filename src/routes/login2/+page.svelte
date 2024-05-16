@@ -53,7 +53,8 @@
             <br />
             <form method="POST" class="inputform" on:submit|preventDefault={handleSubmit}>
                 <div>
-                    <input class="form1" type="text" placeholder="Student Number" bind:value={studentnumber} />
+                    <input 
+                    class="form1" type="text" placeholder="Student Number" bind:value={studentnumber} />
                 </div>
                 <br />
                 <div>
@@ -72,6 +73,10 @@
 </div>
 
 <style>
+    ::placeholder{
+        color: gray;
+    }
+
     .LoginButton {
         background-color: #507858;
 
@@ -132,6 +137,7 @@
         width: 125px;
         height: 125px;
         border-radius: 50%;
+       
         background-image: url('$lib/assets/user-icon.png');
         background-color: #507858;
         background-size: contain;
@@ -147,20 +153,24 @@
         font-family: Arial;
         color: black;
         background: url('$lib/assets/user-icon.png');
-        background-color: gray;
+        background-color:#dCFCE7;
         background-size: contain;
         background-repeat: no-repeat;
         padding-left: 45px;
+        border-color: #16A34A;
+        border-radius: 8px;
     }
 
     .form2 {
         font-family: Arial;
         color: black;
         background: url('$lib/assets/lock-icon.png');
-        background-color: gray;
+        background-color:#dCFCE7;
         background-size: contain;
         background-repeat: no-repeat;
         padding-left: 45px;
+        border-color: #16A34A;
+        border-radius: 8px;
     }
 
     .error {
