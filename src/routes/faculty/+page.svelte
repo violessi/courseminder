@@ -6,7 +6,9 @@
 <body class="container-fluid">
     <div class="black-film h-full">
         <p>&nbsp</p>
-        <img src={icon2} alt="Icon" class="w-20 h-11 ml-4" />
+        <a href="/">
+            <img src={icon2} alt="Icon" class="w-20 h-11 ml-4" />
+        </a>
         <p class="font-michroma mt-0 text-[9px] ml-4">CourseMinder</p>
         <div class="loginform">
             <div class="logo"></div>

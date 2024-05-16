@@ -5,7 +5,9 @@
 <body class="background">
     <div class="black-film">
         <p>&nbsp</p>
-        <img src={icon2} alt="Icon" class="w-20 h-11 ml-4 mb-0" />
+        <a href="/">
+            <img src={icon2} alt="Icon" class="w-20 h-11 ml-4 mb-0" />
+        </a>
         <p class="font-michroma mt-0 text-[9px] ml-4">CourseMinder</p>
         <div class="flex flex-col items-center justify-center h-screen">
             <p class="text-6xl font-moul mb-10">Are you a</p>
