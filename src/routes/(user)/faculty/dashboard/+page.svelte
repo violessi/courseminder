@@ -1,6 +1,18 @@
 <script lang="ts">
     import Card from '$lib/components/Card.svelte';
     import graph from '$lib/assets/samplegraph.png';
+
+    import { initFirebase, db } from '$lib/firebase/client';
+    import { ref, get, onValue } from 'firebase/database';
+    import { facultyDegree, facultyName } from '$lib/stores/CurriculumStores';
+    
+    let degree : string;
+    facultyDegree.subscribe((value : string) => {
+        degree = value.split(' ').slice(2, 4).join(' ');
+        console.log(degree);
+    });
+
+
 </script>
 
 <div class="h-full flex flex-col p-10 gap-10">
