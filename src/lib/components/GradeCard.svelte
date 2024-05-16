@@ -2,13 +2,11 @@
     import * as SemStore from '$lib/stores/SemesterStores';
     import { Semester } from '$lib/models/types';
     import { type ModalSettings, getModalStore } from '@skeletonlabs/skeleton';
-    import TablerX from '~icons/tabler/x';
     // eslint-disable-next-line init-declarations
 
     const modalStore = getModalStore();
     const semStore = SemStore.get();
     let ifHover = false;
-    let ref = '';
 
     const removeSemModal: ModalSettings = {
         type: 'confirm',
@@ -19,9 +17,8 @@
         // TRUE if confirm pressed, FALSE if cancel pressed
         response: (r: boolean) => {
             if (r) {
+                console.log(id);
                 semStore.removeSemester(id);
-                window.location.href = '/student/grades';
-            } else {
                 window.location.href = '/student/grades';
             }
         },
@@ -49,7 +46,7 @@
                 modalStore.trigger(removeSemModal);
             }}
         >
-            <TablerX />
+            X
         </button>
     {/if}
     <div class="">{sem ?? '--'}, AY {year ?? '----'}</div>

@@ -1,31 +1,12 @@
 import { type Writable, writable } from 'svelte/store';
+import { type CourseStatus, type SpecificCourseStatus } from '$lib/models/types';
 
-function persist(key: string, initialValue: any) {
+function persist(key: string, initialValue : any) {
     const isBrowser = typeof window !== 'undefined';
-    console.log('isBrowser:', isBrowser);
+    const storedValue = isBrowser ? localStorage.getItem(key) : null;
+    const initial = storedValue === null ? initialValue : JSON.parse(storedValue);
 
-    let storedValue = null;
-    if (isBrowser) {
-        storedValue = localStorage.getItem(key);
-        console.log('storedValue:', storedValue);
-
-        // Handle case where storedValue is null (key not present) or invalid JSON
-        if (storedValue === null) {
-            storedValue = initialValue;
-        } else {
-            try {
-                storedValue = JSON.parse(storedValue);
-            } catch (e) {
-                console.error('Error parsing stored value for key ' + key + ' ' + e);
-                storedValue = initialValue;
-            }
-        }
-    } else {
-        storedValue = initialValue;
-    }
-    console.log('initial:', storedValue);
-
-    const store: Writable<any> = writable(storedValue, () => {
+    const store: Writable<any> = writable(initial, () => {
         if (isBrowser) {
             const unsubscribe = store.subscribe(($value: any) => {
                 localStorage.setItem(key, JSON.stringify($value));
@@ -41,6 +22,3 @@ function persist(key: string, initialValue: any) {
 export const studentId = persist('studentId', '');
 export const studentDegree = persist('studentDegree', '');
 export const statusData = persist('statusData', '');
-export const facultyDegree = persist('facultyDegree', '');
-export const facultyName = persist('facultyName', '');
-export const facultyId = persist('facultyId', '');

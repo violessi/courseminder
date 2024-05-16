@@ -43,7 +43,6 @@ const db = getDatabase(app);
 const reference = ref(db, `semesterData/${studentnumber}`);
 
 function parseSemester(id: string) {
-    console.log(id);
     const semComponents = id.split(' ');
     // eslint-disable-next-line prefer-template
     const sem = semComponents.length === 3 ? id.split(' ')[0] + ' ' + id.split(' ')[1] : id.split(' ')[0];
@@ -117,8 +116,6 @@ function initStore() {
         return sem;
     }
 
-    // iterate through database to get the list of semesters and corresponding subjects
-
     function addSubject(subject: Subject, id: string) {
         // Update database and store
         const semId = parseSemester(id);
@@ -127,11 +124,6 @@ function initStore() {
             update((store) => {
                 const sem = store.find((s) => s.id === id);
                 assert(typeof sem !== 'undefined', 'Semester not found');
-                // if subject already exists, do not add
-                if (sem.subjects.find((subj) => subj.className === subject.className)) {
-                    console.log('Subject already exists');
-                    return store;
-                }
                 sem.subjects.push(subject);
                 sem.details.gwa = computeSemGWA(sem.subjects);
                 sem.details.units = computeSemUnits(sem.subjects);

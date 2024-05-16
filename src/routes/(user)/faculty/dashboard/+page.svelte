@@ -4,17 +4,17 @@
 </script>
 
 <div class="h-full flex flex-col p-10 gap-10">
-    <div>
-        <div class="title-default-faculty">Welcome, Dr. Masayuki!</div>
-        <div class="subtitle-default-faculty pt-2">Department of Computer Science</div>
+    <div class="text-error-900">
+        <div class="font-bold text-4xl">Welcome, Dr. Masayuki!</div>
+        <div class="text-2xl pt-2">A.Y. 2023-2024, First Semester</div>
     </div>
     <!-- Cards (see Skeleton for more information) -->
     <section class="grid grid-cols-1 grid-rows-4 gap-5 h-full">
         <!-- Card for Your Classes -->
-        <Card background="bg-primary-300" height="row-span-4" flex="flex flex-col" items="items-center" padding="p-4">
+        <Card background= bg-primary-300 height="row-span-4" flex="flex flex-col" items="items-center" padding="p-4" >
             <div class="font-bold text-error-900 text-xl uppercase">Demand</div>
             <!-- insert graph function here-->
-            <img src={graph} alt="yeah" />
+            <img src={graph} alt="yeah"/>
         </Card>
     </section>
 </div>

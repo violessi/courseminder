@@ -10,7 +10,7 @@
     import { studentId } from '$lib/stores/CurriculumStores';
 
     const semStore = SemStore.get();
-    let progress: number = 0;
+    let progress: number;
 
     let studentnumber = '';
     studentId.subscribe((value) => {
@@ -80,7 +80,7 @@
                 <div class="font-bold uppercase text-xl">Your Course Progress</div>
                 <div class="relative w-72 h-72 mx-auto">
                     <ProgressRadial
-                        value={progress ?? 0}
+                        value={progress}
                         stroke={100}
                         meter="stroke-secondary-500"
                         track="stroke-surface-800/30"

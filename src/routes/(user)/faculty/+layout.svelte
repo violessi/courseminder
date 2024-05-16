@@ -1,9 +1,7 @@
 <script lang="ts">
     import { AppRail, AppRailAnchor, AppShell } from '@skeletonlabs/skeleton';
-    import Dashboard from '~icons/tabler/layout-dashboard';
-    import Stats from '~icons/tabler/square-rounded-percentage';
-    import Logout from '~icons/tabler/logout-2';
-    import icon from '$lib/assets/icon.webp';
+    import { IconChartBar, IconLayoutDashboard, IconLogout2 } from '@tabler/icons-svelte';
+    import icon from '$lib/assets/icon.png';
     import { page } from '$app/stores';
 
     // const course: string = 'BS Computer Science';
@@ -21,16 +19,16 @@
     >
         <img src={icon} alt="Icon" slot="lead" class="size-24" />
         <AppRailAnchor href="/faculty/dashboard" selected={$page.url.pathname === '/faculty/dashboard'}>
-            <Dashboard slot="lead" class="size-10" />
-            <span class="text-sm">Demand</span>
+            <IconLayoutDashboard slot="lead" size={36} />
+            <span class="text-sm">Dashboard</span>
         </AppRailAnchor>
         <AppRailAnchor href="/faculty/statistics" selected={$page.url.pathname === '/faculty/statistics'}>
-            <Stats slot="lead" class="size-10" />
-            <span class="text-sm">Rate</span>
+            <IconChartBar slot="lead" size={36} />
+            <span class="text-sm">Statistics</span>
         </AppRailAnchor>
 
         <AppRailAnchor href="../../" slot="trail">
-            <Logout slot="lead" class="size-10" />
+            <IconLogout2 slot="lead" size={36} />
             <span class="text-sm">Log-out</span>
         </AppRailAnchor>
     </AppRail>

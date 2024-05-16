@@ -61,7 +61,3 @@ export function computeHonor(gwa: number, string = ''): string {
     else if (gwa <= 1.75) return 'Cum Laude';
     return 'None';
 }
-
-export function parseEmail(email : string): string {
-    return email.split(".")[0]
-}

@@ -60,9 +60,8 @@ export const Course = object({
 export type Course = Output<typeof Course>;
 
 export type CourseStatus = {
-    // eslint-disable-next-line no-use-before-define
     [key: string]: SpecificCourseStatus;
-};
+}
 export type SpecificCourseStatus = {
-    [key: string]: string;
-};
+    [key : string] : string
+}
