@@ -12,22 +12,11 @@
     import { initFirebase, db } from '$lib/firebase/client';
     import { ref, get, onValue } from 'firebase/database';
     import { tick } from 'svelte';
+    import { convertSemID } from '$lib/functions/helper';
 
     initFirebase();
 
     let comboboxValue: string;
-
-    function convertSemID(semester: string): string {
-        const startYear: string = '20' + semester.slice(0, 2);
-        const endYear: string = '20' + semester.slice(2, 4);
-        if (semester.slice(4, 5) === 'A') {
-            return `1st Semester ${startYear}-${endYear}`;
-        } else if (semester.slice(4, 5) === 'B') {
-            return `2nd Semester ${startYear}-${endYear}`;
-        } else {
-            return `Midyear ${startYear}-${endYear}`;
-        }
-    }
 
     let semesters: string[] = [];
     const semesterDataRef = ref(db, `semesterData/`);
@@ -156,7 +145,7 @@
 <div class="h-full flex flex-col p-10 gap-10">
     <div class="title-default-faculty">Passing Rates</div>
 
-    <button class="btn w-1/4 text-lg bg-primary-50 text-white justify-between" use:popup={popupCombobox}>
+    <button class="btn w-2/5 text-lg bg-primary-50 text-white justify-between" use:popup={popupCombobox}>
         <span class="capitalize flex gap-2 items-center"><Calendar />{comboboxValue ?? 'Select Semester'}</span>
         <span>▼</span>
     </button>

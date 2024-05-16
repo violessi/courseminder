@@ -65,3 +65,31 @@ export function computeHonor(gwa: number, string = ''): string {
 export function parseEmail(email : string): string {
     return email.split(".")[0]
 }
+
+export function convertSemID(semester: string): string {
+    const startYear: string = '20' + semester.slice(0, 2);
+    const endYear: string = '20' + semester.slice(2, 4);
+    if (semester.slice(4, 5) === 'A') {
+        return `1st Semester ${startYear}-${endYear}`;
+    } else if (semester.slice(4, 5) === 'B') {
+        return `2nd Semester ${startYear}-${endYear}`;
+    } else {
+        return `Midyear ${startYear}-${endYear}`;
+    }
+}
+
+export function parseSemester(id: string) {
+    console.log(id);
+    const semComponents = id.split(' ');
+    // eslint-disable-next-line prefer-template
+    const sem = semComponents.length === 3 ? id.split(' ')[0] + ' ' + id.split(' ')[1] : id.split(' ')[0];
+    const yearId = semComponents[semComponents.length - 1].split('-');
+    const startYear = yearId[0].slice(2, 4);
+    const endYear = yearId[1].slice(2, 4);
+    let semId = startYear + endYear;
+    if (sem === '1st Semester') semId += 'A';
+    else if (sem === '2nd Semester') semId += 'B';
+    else semId += 'M';
+
+    return semId;
+}
