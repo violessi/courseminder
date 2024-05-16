@@ -230,6 +230,8 @@
     }
 
     .SignUpContainer {
+ 
+        width: 1000px;
         border: 4px solid #284c3b;
         border-radius: 25px;
         background: linear-gradient(to right, #ffffff 50%, rgba(177, 226, 197, 0.4) 0%);
@@ -243,10 +245,11 @@
     }
 
     .SignUpRightContainer {
-        width: auto;
+
+        width: 500px;
         height: 500px;
         display: flex;
-        margin: 0 auto;
+        float: right;
         align-items: top;
         text-align: center;
         background-image: url('$lib/assets/girl.png');
