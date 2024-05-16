@@ -3,7 +3,7 @@
     import graph from '$lib/assets/samplegraph.png';
 
     import { initFirebase, db } from '$lib/firebase/client';
-    import { ref, get, onValue } from 'firebase/database';
+    import { ref, get, onValue, set } from 'firebase/database';
     import { facultyDegree, facultyName } from '$lib/stores/CurriculumStores';
 
     initFirebase();
@@ -11,16 +11,54 @@
     let degree : string = '';
     facultyDegree.subscribe((value : string) => {
         degree = value.split(' ').slice(2, 4).join(' ');
-        console.log(degree);
     });
 
-    let courseStatusRef = ref(db, `courseStatus/${degree}`);
+    let nextSemester = '';
+    const nextSemesterRef = ref(db, `courseDemand/${nextSemester}`);
+    let courseDemand : Record<string, number> = {};
+
+    onValue(nextSemesterRef, (snapshot: any) => {
+        if (snapshot.exists()) {
+            nextSemester = snapshot.val()['nextSemester'];
+        } else {
+            console.log('nextSemesterRef does not exist');
+        }
+
+        // Create courseDemandRef and fetch courseDemand here
+        let courseDemandRef = ref(db, `courseDemand/${degree}/${nextSemester}`);
+        get(courseDemandRef).then((snapshot: any) => {
+            if (snapshot.exists()) {
+                courseDemand = snapshot.val();
+            } else {
+                console.log('courseDemandRef does not exist');
+                courseDemand = {};  // or set a default value
+            }    
+        });
+    });
+
+    // if there are changes in demand, push data to database
+    function pushCourseDemandData(nextSemester : string){
+        let courseDemandRef = ref(db, `courseDemand/${degree}/${nextSemester}`);
+        set(courseDemandRef, courseDemand);
+    }
+
+    const courseStatusRef = ref(db, `courseStatus/${degree}`);
     onValue(courseStatusRef, (snapshot: any) => {
+        courseDemand = {};
         const data = snapshot.val();
-        console.log(data);
+        for (let studentnumber in data){
+            for (let course in data[studentnumber]){
+                if (data[studentnumber][course] == 'To Take'){
+                    courseDemand[course] = courseDemand[course] ? courseDemand[course] + 1 : 1;
+                }
+            }
+        }
+        if (nextSemester != ''){
+            pushCourseDemandData(nextSemester);
+        }
     });
-    
 
+    $: console.log(courseDemand);
 
 </script>
 
