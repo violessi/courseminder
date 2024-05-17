@@ -18,14 +18,14 @@ export const ceInitialNodes: Node[]= [
     {
         id: 'Physics 711',
         type: 'custom',
-        data: {name: 'Physics 711', height: 40, width: 115},
+        data: {name: 'Physics 71.1', height: 40, width: 115},
         position: {x:385, y:133},
         draggable: false,
     },
     {
         id: 'Physics 721',
         type: 'custom',
-        data: {name: 'Physics 721', height: 40, width: 115},
+        data: {name: 'Physics 72.1', height: 40, width: 115},
         position: {x:385, y:212},
         draggable: false,
     },
@@ -67,7 +67,7 @@ export const ceInitialNodes: Node[]= [
     {
         id: 'ES 1',
         type: 'custom',
-        data: {name: 'ES 21', height: 40, width: 115},
+        data: {name: 'ES 1', height: 40, width: 115},
         position: {x:537, y:212},
         draggable: false,
     },
@@ -193,7 +193,7 @@ export const ceInitialNodes: Node[]= [
     {
         id: 'Chem 161',
         type: 'custom',
-        data: {name: 'Chem 161', height: 40, width: 115},
+        data: {name: 'Chem 16.1', height: 40, width: 115},
         position: {x:1176, y:133},
         draggable: false,
     },
@@ -310,9 +310,9 @@ export const ceInitialNodes: Node[]= [
         draggable: false,        
     },
     {
-        id: 'Soc Sci 1 or 2',
+        id: 'Soc Sci 2',
         type: 'custom',
-        data: {name: 'Soc Sci 1 or 2', height: 40, width: 135},
+        data: {name: 'Soc Sci 2', height: 40, width: 135},
         position: {x:780, y:829},
         draggable: false,        
     },
@@ -356,13 +356,6 @@ export const ceInitialNodes: Node[]= [
         type: 'custom',
         data: {name: 'PI 100', height: 40, width: 100},
         position: {x:920, y:884},
-        draggable: false,        
-    },
-    {
-        id: 'Free Elective',
-        type: 'custom',
-        data: {name: 'Free Elective', height: 40, width: 130},
-        position: {x:1050, y:884},
         draggable: false,        
     },
     {
