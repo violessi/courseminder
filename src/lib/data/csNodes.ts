@@ -1,6 +1,6 @@
 import { type Edge, type Node } from '@xyflow/svelte';
 
-export const initialNodes: Node[]= [
+export const csInitialNodes: Node[]= [
     {
         id: 'Physics 71',
         type: 'custom',
@@ -380,7 +380,7 @@ export const initialNodes: Node[]= [
 
 
 ]
-export const initialEdges: Edge[]=[
+export const csInitialEdges: Edge[]=[
     {
         id: 'eP71-P72',
         type: 'default',
@@ -569,7 +569,7 @@ export const initialEdges: Edge[]=[
         id: 'eC33-C165',
         type: 'default',
         source:'CS 33',
-        target: ' CS 165',
+        target: 'CS 165',
         animated: true,
         style: 'stroke: #000000;'
     },
@@ -664,7 +664,7 @@ export const initialEdges: Edge[]=[
 
 ];
 
-for (const node of initialNodes) {
-    node.data.isSource = initialEdges.some(edge => edge.source === node.id);
-    node.data.isTarget = initialEdges.some(edge => edge.target === node.id);
+for (const node of csInitialNodes) {
+    node.data.isSource = csInitialEdges.some(edge => edge.source === node.id);
+    node.data.isTarget = csInitialEdges.some(edge => edge.target === node.id);
   }

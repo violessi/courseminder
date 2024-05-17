@@ -10,15 +10,20 @@
 
     function handleSubmit() {
         // Check if all fields are filled
-        if (department && name && email && password) {
-            const facultyuser = {
-                department,
-                name,
-                email,
-                password,
-            };
-            localStorage.setItem('facultyuser', JSON.stringify(facultyuser));
-            goto('../faculty/dashboard');
+        if (department && name && id && password) {
+            // Check if the faculty ID is valid
+            const isValid = await checkFacultyID(id);
+            if (isValid) {
+                const facultyuser = {
+                    department,
+                    name,
+                    id,
+                    password,
+                };
+                // localStorage.setItem('facultyuser', JSON.stringify(facultyuser));
+                writeFacultyData(department, name, id, password);
+                goto(`../../../../faculty/dashboard`);
+            }
         } else {
             // Handle the case when not all fields are filled
             // You can show an error message or do something else

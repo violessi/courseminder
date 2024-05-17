@@ -10,7 +10,7 @@
     import { studentId } from '$lib/stores/CurriculumStores';
 
     const semStore = SemStore.get();
-    let progress: number;
+    let progress: number = 0;
 
     let studentnumber = '';
     studentId.subscribe((value) => {

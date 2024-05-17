@@ -8,6 +8,7 @@ import { initializeApp } from 'firebase/app';
 import { get as getData, getDatabase, ref, remove, set as setData } from 'firebase/database';
 import assert from '$lib/assert';
 import { studentId } from '$lib/stores/CurriculumStores';
+import { parseSemester } from '$lib/functions/helper';
 
 function computeSemGWA(subjects: Subject[]): number {
     const totalUnits = subjects.reduce((acc, subj) => acc + subj.units, 0);
@@ -41,21 +42,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 const reference = ref(db, `semesterData/${studentnumber}`);
-
-function parseSemester(id: string) {
-    const semComponents = id.split(' ');
-    // eslint-disable-next-line prefer-template
-    const sem = semComponents.length === 3 ? id.split(' ')[0] + ' ' + id.split(' ')[1] : id.split(' ')[0];
-    const yearId = semComponents[semComponents.length - 1].split('-');
-    const startYear = yearId[0].slice(2, 4);
-    const endYear = yearId[1].slice(2, 4);
-    let semId = startYear + endYear;
-    if (sem === '1st Semester') semId += 'A';
-    else if (sem === '2nd Semester') semId += 'B';
-    else semId += 'M';
-
-    return semId;
-}
 
 function initStore() {
     const store = writable<Semester[]>([]);

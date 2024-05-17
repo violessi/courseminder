@@ -1,27 +1,178 @@
 <script lang="ts">
-    import Card from '$lib/components/Card.svelte';
-    import table from '$lib/assets/sampletable.png';
+    import {
+        ListBox,
+        ListBoxItem,
+        popup,
+        type PopupSettings,
+        Table,
+        type TableSource,
+        tableMapperValues,
+    } from '@skeletonlabs/skeleton';
+    import Calendar from '~icons/tabler/calendar-month';
+    import { initFirebase, db } from '$lib/firebase/client';
+    import { ref, get, onValue } from 'firebase/database';
+    import { tick } from 'svelte';
+    import { convertSemID } from '$lib/functions/helper';
+
+    initFirebase();
+
+    let comboboxValue: string;
+
+    let semesters: string[] = [];
+    const semesterDataRef = ref(db, `semesterData/`);
+    onValue(semesterDataRef, (snapshot: any) => {
+        const data = snapshot.val();
+        for (let studentNumber in data) {
+            for (let semester in data[studentNumber]) {
+                semesters.push(convertSemID(semester));
+            }
+        }
+        semesters = semesters.filter((value, index, self) => {
+            return self.indexOf(value) === index;
+        });
+    });
+
+    function parseSemester(id: string) {
+        const semComponents = id.split(' ');
+        const sem = semComponents.length === 3 ? id.split(' ')[0] + ' ' + id.split(' ')[1] : id.split(' ')[0];
+        const yearId = semComponents[semComponents.length - 1].split('-');
+        const startYear = yearId[0].slice(2, 4);
+        const endYear = yearId[1].slice(2, 4);
+        let semId = startYear + endYear;
+        if (sem === '1st Semester') semId += 'A';
+        else if (sem === '2nd Semester') semId += 'B';
+        else semId += 'M';
+
+        return semId;
+    }
+
+    let semID: string;
+    let subjects: any[] = [];
+    let subjectsLoaded: boolean = false;
+
+    async function loadSubjects() {
+        semID = parseSemester(comboboxValue);
+        subjects = [];
+        const snapshot = await get(semesterDataRef);
+        const data = snapshot.val();
+
+        let subjectsMap = new Map();
+
+        for (let studentNumber in data) {
+            if (data[studentNumber][semID]) {
+                let courses = data[studentNumber][semID]['subjects'];
+                for (let course in courses) {
+                    let className = courses[course].className;
+                    if (!subjectsMap.has(className)) {
+                        subjectsMap.set(className, { className: className, passRate: 0, totalTakers: 0 });
+                    }
+                }
+            }
+        }
+
+        subjects = Array.from(subjectsMap.values());
+        subjectsLoaded = true;
+    }
+
+    async function calculatePassRates() {
+        const snapshot = await get(semesterDataRef);
+        const data = snapshot.val();
+
+        let tempSubjects = [...subjects];
+
+        for (let studentNumber in data) {
+            if (data[studentNumber][semID]) {
+                let courses = data[studentNumber][semID]['subjects'];
+                for (let course in courses) {
+                    let courseData = courses[course];
+                    let subject = tempSubjects.find((s) => s.className === courseData.className);
+                    if (subject) {
+                        subject.totalTakers += 1;
+                        if (courseData.grade <= 3.0) {
+                            subject.passRate += 1;
+                        }
+                    }
+                }
+            }
+        }
+
+        tempSubjects.forEach((subject) => {
+            subject.passRate =
+                subject.totalTakers > 0 ? ((subject.passRate / subject.totalTakers) * 100).toFixed(2) + '%' : '0%';
+        });
+
+        subjects = tempSubjects;
+        subjectsLoaded = false;
+        await tick();
+    }
+
+    $: if (comboboxValue) {
+        loadSubjects().then(() => {
+            calculatePassRates();
+        });
+    }
+
+    const popupCombobox: PopupSettings = {
+        event: 'click',
+        target: 'popupCombobox',
+        placement: 'bottom-start',
+        closeQuery: '.listbox-item',
+    };
+
+    function getTable(subjects: any[]): TableSource {
+        if (!Array.isArray(subjects)) {
+            return {
+                head: [],
+                body: [],
+                meta: [],
+            };
+        }
+        return {
+            head: ['Class', 'Total Takers', 'Passing Rate'],
+            body: tableMapperValues(subjects, ['className', 'totalTakers', 'passRate']),
+            meta: tableMapperValues(subjects, ['className', 'totalTakers', 'passRate']),
+        };
+    }
+
+    function update(_: string[]) {
+        const table = getTable(subjects.slice(1));
+        return { table };
+    }
+
+    $: ({ table } = update(subjects));
 </script>
 
 <div class="h-full flex flex-col p-10 gap-10">
-    <div class="text-error-900">
-        <div class="font-bold text-4xl">Semester</div>
-        <div class="relative">
-            <div class="absolute inset-y-11 start-0 flex items-center ps-3.5 pointer-events-none">
-                <svg class="w-6 h-6 text-gray-800 dark:text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                    <path fill-rule="evenodd" d="M5 5a1 1 0 0 0 1-1 1 1 0 1 1 2 0 1 1 0 0 0 1 1h1a1 1 0 0 0 1-1 1 1 0 1 1 2 0 1 1 0 0 0 1 1h1a1 1 0 0 0 1-1 1 1 0 1 1 2 0 1 1 0 0 0 1 1 2 2 0 0 1 2 2v1a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7a2 2 0 0 1 2-2ZM3 19v-7a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Zm6.01-6a1 1 0 1 0-2 0 1 1 0 0 0 2 0Zm2 0a1 1 0 1 1 2 0 1 1 0 0 1-2 0Zm6 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0Zm-10 4a1 1 0 1 1 2 0 1 1 0 0 1-2 0Zm6 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0Zm2 0a1 1 0 1 1 2 0 1 1 0 0 1-2 0Z" clip-rule="evenodd"/>
-            </div>
-        <br>
-            <select
-            id="degree"
-            class="bg-pink-50 text-black-900 text-sm w-72 rounded-lg block dark:bg-pink-100 dark:border-pink-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-pink-500 dark:focus:border-pink-500"
-        >
-            <option disabled selected value="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Choose Semester</option>
-            <option>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2023-2024 2nd Semester</option>
-            <option>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2023-2024 1st Semester</option>
-            <option>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2022-2023 2nd Semester</option>
-            <option>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2022-2023 1st Semester</option>
-            </select>
+    <div class="title-default-faculty">Passing Rates</div>
+
+    <button class="btn w-2/5 text-lg bg-primary-50 text-white justify-between" use:popup={popupCombobox}>
+        <span class="capitalize flex gap-2 items-center"><Calendar />{comboboxValue ?? 'Select Semester'}</span>
+        <span>▼</span>
+    </button>
+
+    <div class="card shadow-xl py-2 bg-pink-50 text-black overflow-auto max-h-40" data-popup="popupCombobox">
+        <ListBox rounded="rounded-full m-1">
+            {#each semesters as semester}
+                <ListBoxItem
+                    bind:group={comboboxValue}
+                    name="semester"
+                    value={semester}
+                    hover="hover:bg-rose-100"
+                    active="bg-rose-200 border-pink-600">{semester}</ListBoxItem
+                >
+            {/each}
+        </ListBox>
+    </div>
+    {#if table.body.length > 0}
+        <Table
+            regionBody="bg-rose-100 text-xl"
+            regionCell="text-center text-tertiary-900"
+            regionHeadCell="bg-primary-50 text-center text-xl font-bold"
+            source={table}
+        ></Table>
+    {:else if !comboboxValue}
+        <div class="subtitle-default-faculty text-center">
+            Please select a semester to see the passing rate of each subject.
         </div>
         
     </div>

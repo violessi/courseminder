@@ -1,6 +1,35 @@
-<script>
-    import icon2 from '$lib/assets/icon2.png';
-    export let form;
+<script lang="ts">
+    import icon2 from '$lib/assets/icon2.webp';
+    import { initFirebase, db } from '$lib/firebase/client';
+    import { facultyDegree, facultyName, facultyId } from '$lib/stores/CurriculumStores';
+    import { goto } from '$app/navigation';
+    import { ref, get } from 'firebase/database';
+
+    initFirebase();
+
+    let errorMessage = '';
+    let id = '';
+    let password = '';
+
+    async function checkLogin(id: string, password: string) {
+        const reference = ref(db, `faculty/${id}`);
+        const snapshot = await get(reference);
+
+        // Store student data in global variable
+        facultyId.set(id);
+        facultyDegree.set(snapshot.child('department').val());
+        facultyName.set(snapshot.child('name').val());
+        if (snapshot.child('password').val() === password) {
+            goto(`../../../../faculty/dashboard`);
+        } else {
+            errorMessage = 'Faculty ID or Password is not valid.';
+            console.log(password)
+        }
+    }
+    function handleSubmit() {
+        checkLogin(id, password);
+    }
+
 </script>
 
 <body class="container-fluid">
@@ -13,17 +42,17 @@
         <div class="loginform">
             <div class="logo"></div>
             <br />
-            {#if form?.message}
-                <p class="white">{form.message}</p>
+            {#if errorMessage}
+                <p class="white">{errorMessage}</p>
                 <br />
             {/if}
-            <form method="POST" class="inputform">
+            <form method="POST" class="inputform" on:submit|preventDefault={handleSubmit}>
                 <div>
-                    <input class="form1" type="email" name="email" placeholder="Email" value={form?.email || ''} />
+                    <input class="form1" type="text" name="id" placeholder="Faculty ID" bind:value={id}/>
                 </div>
                 <br />
                 <div>
-                    <input class="form2" type="password" name="password" placeholder="Password" />
+                    <input class="form2" type="password" name="password" placeholder="Password" bind:value={password}/>
                 </div>
                 <br />
                 <p class="TTCommons-Regular-14">

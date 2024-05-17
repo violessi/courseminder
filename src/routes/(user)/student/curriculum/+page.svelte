@@ -179,7 +179,8 @@ async function deleteCollection(collectionPath: string) {
     import { writable } from 'svelte/store';
     import { SvelteFlow, type Node, type Edge } from '@xyflow/svelte';
     import '@xyflow/svelte/dist/style.css';
-    import { initialNodes, initialEdges } from '$lib/data/nodes-and-edges';
+    import { csInitialNodes, csInitialEdges } from '$lib/data/csNodes';
+    import { ceInitialNodes, ceInitialEdges } from '$lib/data/ceNodes';
     import CustomNode from './CustomNode.svelte';
     import { getCourseData, getCourseKey } from '$lib/firebase/database';
     import { COURSES, COURSESTATUS } from '$lib/data/courses';
@@ -244,10 +245,20 @@ async function deleteCollection(collectionPath: string) {
             console.error(e);
         });
     }
-  
-    const nodes = writable<Node[]>(initialNodes);
-    const edges = writable<Edge[]>(initialEdges);
-  
+
+    const nodes = writable([]);
+    const edges = writable([]);
+
+    $: {
+        if ($studentDegree === 'Computer Science') {
+            nodes.set(csInitialNodes);
+            edges.set(csInitialEdges);
+        } else if ($studentDegree === 'Civil Engineering') {
+            nodes.set(ceInitialNodes);
+            edges.set(ceInitialEdges);
+        }
+    }
+
     const nodeTypes = {
       custom: CustomNode
     };
