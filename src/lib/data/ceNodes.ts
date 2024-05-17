@@ -18,14 +18,14 @@ export const ceInitialNodes: Node[]= [
     {
         id: 'Physics 711',
         type: 'custom',
-        data: {name: 'Physics 71.1', height: 40, width: 115},
+        data: {name: 'Physics 711', height: 40, width: 115},
         position: {x:385, y:133},
         draggable: false,
     },
     {
         id: 'Physics 721',
         type: 'custom',
-        data: {name: 'Physics 72.1', height: 40, width: 115},
+        data: {name: 'Physics 721', height: 40, width: 115},
         position: {x:385, y:212},
         draggable: false,
     },
@@ -193,7 +193,7 @@ export const ceInitialNodes: Node[]= [
     {
         id: 'Chem 161',
         type: 'custom',
-        data: {name: 'Chem 16.1', height: 40, width: 115},
+        data: {name: 'Chem 161', height: 40, width: 115},
         position: {x:1176, y:133},
         draggable: false,
     },
