@@ -35,7 +35,9 @@
 <body class="container-fluid">
     <div class="black-film h-full">
         <p>&nbsp</p>
-        <img src={icon2} alt="Icon" class="w-20 h-11 ml-4" />
+        <a href="/">
+            <img src={icon2} alt="Icon" class="w-20 h-11 ml-4 mb-0" />
+        </a>        
         <p class="font-michroma mt-0 text-[9px] ml-4">CourseMinder</p>
         <div class="loginform">
             <div class="logo"></div>
@@ -139,19 +141,23 @@
         font-family: Arial;
         color: black;
         background: url('$lib/assets/user-icon.webp');
-        background-color: gray;
+        background-color:#eba5cc;
         background-size: contain;
         background-repeat: no-repeat;
         padding-left: 45px;
+        border-color: #DB2777;
+        border-radius: 8px;
     }
     .form2 {
         font-family: Arial;
         color: black;
         background: url('$lib/assets/lock-icon.webp');
-        background-color: gray;
+        background-color:#eba5cc;
         background-size: contain;
         background-repeat: no-repeat;
         padding-left: 45px;
+        border-color: #DB2777;
+        border-radius: 8px;
     }
     .white {
         color: white;
