@@ -86,7 +86,7 @@
 
     // load course demand data 
     let courseDemandList : any[] = [];
-    async function loadCourseDemandData(semester : string){
+    export async function loadCourseDemandData(semester : string){
         semester = parseSemester(semester);
         console.log(semester);
         console.log(degree);
@@ -101,6 +101,8 @@
                 console.log('courseDemandRef does not exist');
             }
         });
+        console.log(courseDemandList);
+        return courseDemandList;
     }
     
     let comboboxValue: string;
