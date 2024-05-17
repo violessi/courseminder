@@ -3,6 +3,10 @@
     import { AppRail, AppRailAnchor, AppShell } from '@skeletonlabs/skeleton';
     import icon from '$lib/assets/icon.webp';
     import { page } from '$app/stores';
+    import DashboardIcon from '~icons/tabler/layout-dashboard';
+    import CurriculumIcon from '~icons/tabler/calendar-user';
+    import GradesIcon from '~icons/tabler/report-analytics';
+    import LogoutIcon from '~icons/tabler/logout-2';
 
     SemStore.init();
 </script>
@@ -18,17 +22,21 @@
     >
         <img src={icon} alt="Icon" slot="lead" class="size-24" />
         <AppRailAnchor href="/student/dashboard" selected={$page.url.pathname === '/student/dashboard'}>
-            <span class="text-sm">Dashboard</span>
+            <DashboardIcon slot="lead" class="size-10" />
+            <span class="text-base">Dashboard</span>
         </AppRailAnchor>
         <AppRailAnchor href="/student/curriculum" selected={$page.url.pathname === '/student/curriculum'}>
-            <span class="text-sm">Curriculum</span>
+            <CurriculumIcon slot="lead" class="size-10" />
+            <span class="text-base">Curriculum</span>
         </AppRailAnchor>
         <AppRailAnchor href="/student/grades" selected={$page.url.pathname === '/student/grades'}>
-            <span class="text-sm">Grades</span>
+            <GradesIcon slot="lead" class="size-10" />
+            <span class="text-base">Grades</span>
         </AppRailAnchor>
 
         <AppRailAnchor href="../../" slot="trail">
-            <span class="text-sm">Log-out</span>
+            <LogoutIcon slot="lead" class="size-10" />
+            <span class="text-base">Log-out</span>
         </AppRailAnchor>
     </AppRail>
 

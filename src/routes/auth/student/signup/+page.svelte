@@ -67,7 +67,9 @@
 <div class="background">
     <div class="black-film h-full">
         <p>&nbsp</p>
-        <img src={icon2} alt="Icon" class="w-20 h-11 ml-4" />
+        <a href="/">
+            <img src={icon2} alt="Icon" class="w-20 h-11 ml-4 mb-0" />
+        </a>        
         <p class="font-michroma mt-0 text-[9px] ml-4">CourseMinder</p>
         <div class="SignUpContainer">
             <form class="max-w-sm mx-auto" on:submit|preventDefault={handleSubmit}>
@@ -187,7 +189,7 @@
                 </div>
             </form>
             <div class="SignUpRightContainer">
-                <p class="TTCommons-Regular-14">
+                <p class="TTCommons-Regular-14 text-xl">
                     <br />
                     WELCOME TO COURSEMINDER!
                 </p>
@@ -224,7 +226,6 @@
 
     .TTCommons-Regular-14 {
         font-family: Arial;
-        font-size: 14px;
         color: black;
         letter-spacing: -0.04em;
     }

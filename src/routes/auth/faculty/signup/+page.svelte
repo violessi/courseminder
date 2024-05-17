@@ -1,24 +1,72 @@
-<script>
+<script lang="ts">
     import { goto } from '$app/navigation';
     import icon2 from '$lib/assets/icon2.webp';
+    import { db, initFirebase } from '$lib/firebase/client';
+    import { facultyDegree, facultyName, facultyId } from '$lib/stores/CurriculumStores';
+    import { ref, get, set } from 'firebase/database';
+    initFirebase();
 
     let department = '';
     let name = '';
-    let email = '';
+    let id = '';
     let password = '';
     let errorMessage = '';
 
-    function handleSubmit() {
+    async function checkFacultyID(id: string) {
+        const reference = ref(db, `facultyList/${id}`);
+        const snapshot = await get(reference);
+        if (snapshot.val() == true) {
+            errorMessage = 'A faculty with this Faculty ID already exists.';
+            console.log('Faculty already exists');
+            return false;
+        } else if (snapshot.exists() == false) {
+            errorMessage = 'Please enter a valid Faculty ID.';
+            console.log('Faculty ID is invalid');
+            return false;
+        }
+        return true;
+    }
+
+    async function writeFacultyData(department: string, name: string, id: string, password: string) {
+        const reference = ref(db, `faculty/${id}`);
+        const refFacultyList = ref(db, `facultyList/${id}`);
+        // Check if the faculty already exists
+        const snapshot = await get(reference);
+        if (snapshot.exists()) {
+            // The faculty already exists, handle this case as needed
+            errorMessage = 'A faculty with this Faculty ID already exists.';
+            console.log('Faculty already exists');
+        } else {
+            // The faculty doesn't exist, write the data
+            set(reference, {
+                department: department,
+                name: name,
+                id: id,
+                password: password,
+            });
+            set(refFacultyList, true);
+            facultyDegree.set(department);
+            facultyName.set(name);
+            facultyId.set(id);
+        }
+    }
+
+    async function handleSubmit() {
         // Check if all fields are filled
-        if (department && name && email && password) {
-            const facultyuser = {
-                department,
-                name,
-                email,
-                password,
-            };
-            localStorage.setItem('facultyuser', JSON.stringify(facultyuser));
-            goto('../../faculty/dashboard');
+        if (department && name && id && password) {
+            // Check if the faculty ID is valid
+            const isValid = await checkFacultyID(id);
+            if (isValid) {
+                const facultyuser = {
+                    department,
+                    name,
+                    id,
+                    password,
+                };
+                // localStorage.setItem('facultyuser', JSON.stringify(facultyuser));
+                writeFacultyData(department, name, id, password);
+                goto(`../../../../faculty/dashboard`);
+            }
         } else {
             // Handle the case when not all fields are filled
             // You can show an error message or do something else
@@ -30,7 +78,9 @@
 <body class="background">
     <div class="black-film h-full">
         <p>&nbsp</p>
-        <img src={icon2} alt="Icon" class="w-20 h-11 ml-4" />
+        <a href="/">
+            <img src={icon2} alt="Icon" class="w-20 h-11 ml-4 mb-0" />
+        </a>        
         <p class="font-michroma mt-0 text-[9px] ml-4">CourseMinder</p>
         <div class="SignUpContainer">
             <form class="max-w-sm mx-auto" on:submit|preventDefault={handleSubmit}>
@@ -109,8 +159,8 @@
                         type="text"
                         id="email-address-icon"
                         class="bg-pink-50 border border-pink-300 text-pink-900 text-sm rounded-lg focus:ring-pink-500 focus:border-pink-500 block w-full ps-10 p-2.5 dark:bg-pink-100 dark:border-pink-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-pink-500 dark:focus:border-pink-500"
-                        placeholder="Email"
-                        bind:value={email}
+                        placeholder="Faculty ID"
+                        bind:value={id}
                     />
                 </div>
                 <br />
@@ -161,7 +211,7 @@
 
 <style>
     .background {
-        background-image: url('$lib/assets/bg-faculty.jpg');
+        background-image: url('$lib/assets/bg-faculty.webp');
         background-size: cover;
         background-repeat: no-repeat;
         height: 100%;
@@ -225,7 +275,8 @@
 
         cursor: pointer;
 
-        font-family: 'Russo One', sans-serif;
+        font-family: Arial Bold;
+
         font-weight: 600;
         border-radius: 5px;
         box-shadow: none;

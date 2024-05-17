@@ -25,12 +25,13 @@ export const CourseMinder: CustomThemeConfig = {
         '--color-primary-50': '134 25 51', // #861933
         '--color-primary-100': '255 212 222', // #ffd4de
         '--color-primary-200': '207 163 173', // #cfa3ad
+        '--color-primary-300': '255 182 199', // #FFB6C7
         //
 
         // '--color-primary-50': '250 254 251', // #fafefb
         // '--color-primary-100': '248 253 249', // #f8fdf9
         // '--color-primary-200': '246 253 248', // #f6fdf8
-        '--color-primary-300': '241 251 243', // #f1fbf3
+        
         '--color-primary-400': '231 249 234', // #e7f9ea
         '--color-primary-500': '220 246 225', // #DCF6E1
         '--color-primary-600': '198 221 203', // #c6ddcb
