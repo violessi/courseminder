@@ -4,6 +4,7 @@
     import { goto } from '$app/navigation';
     import icon2 from '$lib/assets/icon2.webp';
     import { initializeApp } from 'firebase/app';
+    import { onMount } from 'svelte';
 
     const firebaseConfig = {
         apiKey: 'AIzaSyCmwpRzGyoeD-Xuh6Cuh1Agbsxw31Uekhk',
@@ -16,6 +17,13 @@
         measurementId: 'G-1T6H3BFHRR',
     };
 
+    // Check if student is already logged in
+    onMount(() => {
+        if ($studentId) {
+            goto('../../student/dashboard');
+        }
+    });
+
     // Initialize Firebase and get database
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
@@ -25,6 +33,8 @@
     let errorMessage = '';
 
     async function checkLogin(studentnumber: string, password: string) {
+
+
         const reference = ref(db, `students/${studentnumber}`);
         const snapshot = await get(reference);
 
@@ -41,6 +51,7 @@
     function handleSubmit() {
         checkLogin(studentnumber, password);
     }
+
 </script>
 
 <div class="container-fluid">

@@ -63,6 +63,7 @@
         "@xyflow/svelte": "^0.0.41",
         "firebase": "^10.12.0",
         "pocketbase": "^0.21.2",
+        "svelte-routing": "^2.13.0",
         "svelte-spa-router": "^4.0.1",
         "svelvet": "^10.0.2",
         "userbase-js": "^2.8.0",

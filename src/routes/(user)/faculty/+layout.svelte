@@ -5,9 +5,18 @@
     import Logout from '~icons/tabler/logout-2';
     import icon from '$lib/assets/icon.webp';
     import { page } from '$app/stores';
+    import { facultyDegree, facultyId } from '$lib/stores/CurriculumStores';
+    import { navigate } from 'svelte-routing';
+
+    function logout() {
+        facultyId.set('');
+        facultyDegree.set('');
+        navigate('../../');
+    }   
 
     // const course: string = 'BS Computer Science';
     // const studentNumber: string = '2020-12345';
+
 </script>
 
 <AppShell class="bg-primary-100">
@@ -29,7 +38,7 @@
             <span class="text-sm">Rate</span>
         </AppRailAnchor>
 
-        <AppRailAnchor href="../../" slot="trail">
+        <AppRailAnchor on:click={logout} href="../../" slot="trail">
             <Logout slot="lead" class="size-10" />
             <span class="text-sm">Log-out</span>
         </AppRailAnchor>

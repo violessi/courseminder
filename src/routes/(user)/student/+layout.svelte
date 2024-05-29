@@ -7,6 +7,14 @@
     import CurriculumIcon from '~icons/tabler/calendar-user';
     import GradesIcon from '~icons/tabler/report-analytics';
     import LogoutIcon from '~icons/tabler/logout-2';
+    import { studentId, studentDegree } from '$lib/stores/CurriculumStores';
+    import { navigate } from 'svelte-routing';
+
+    function logout() {
+        studentId.set('');
+        studentDegree.set('');
+        navigate('../../');
+    }   
 
     SemStore.init();
 </script>
@@ -34,7 +42,7 @@
             <span class="text-base">Grades</span>
         </AppRailAnchor>
 
-        <AppRailAnchor href="../../" slot="trail">
+        <AppRailAnchor on:click={logout} href="../../" slot="trail">
             <LogoutIcon slot="lead" class="size-10" />
             <span class="text-base">Log-out</span>
         </AppRailAnchor>
