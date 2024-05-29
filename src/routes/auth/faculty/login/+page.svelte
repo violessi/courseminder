@@ -4,8 +4,15 @@
     import { facultyDegree, facultyName, facultyId } from '$lib/stores/CurriculumStores';
     import { goto } from '$app/navigation';
     import { ref, get } from 'firebase/database';
+    import { onMount } from 'svelte';
 
     initFirebase();
+
+    onMount(() => {
+        if ($facultyId) {
+            goto('../../faculty/dashboard');
+        }
+    });
 
     let errorMessage = '';
     let id = '';

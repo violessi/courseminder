@@ -17,6 +17,9 @@ dependencies:
   pocketbase:
     specifier: ^0.21.2
     version: 0.21.2
+  svelte-routing:
+    specifier: ^2.13.0
+    version: 2.13.0
   svelte-spa-router:
     specifier: ^4.0.1
     version: 4.0.1
@@ -4880,6 +4883,10 @@ packages:
       strip-indent: 3.0.0
       svelte: 4.2.17
       typescript: 5.4.5
+
+  /svelte-routing@2.13.0:
+    resolution: {integrity: sha512-/NTxqTwLc7Dq306hARJrH2HLXOBtKd7hu8nxgoFDlK0AC4SOKnzisiX/9m8Uksei1QAWtlAEdF91YphNM8iDMg==}
+    dev: false
 
   /svelte-spa-router@4.0.1:
     resolution: {integrity: sha512-2JkmUQ2f9jRluijL58LtdQBIpynSbem2eBGp4zXdi7aDY1znbR6yjw0KsonD0aq2QLwf4Yx4tBJQjxIjgjXHKg==}
