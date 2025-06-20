@@ -2,8 +2,9 @@
 This is a course requirement for CS 191/192 Software Engineering Courses of the Department of Computer Science, College of Engineering, University of the Philippines, Diliman under the guidance of Ma. Rowena C. Solamo for A.Y. 2023-2024.
 
 ## 🚀 Overview
-**CourseMinder** is a 2-in-1 web application designed to support both students and faculty in managing academic progress and planning.  
-It enables students to clearly visualize their curriculum, track grades, and plan upcoming semesters. At the same time, it provides faculty members with insightful data on course demand and performance—assisting in semester planning and continuous improvement of the learning environment.
+**CourseMinder** is a 2-in-1 web application designed to support both students and faculty in managing academic progress and planning. It enables students to clearly visualize their curriculum, track grades, and plan upcoming semesters. At the same time, it provides faculty members with insightful data on course demand and performance—assisting in semester planning and continuous improvement of the learning environment.
+
+🔗 Access the live application here: [courseminder.vercel.app](https://courseminder.vercel.app)
 
 ---
 
@@ -23,8 +24,9 @@ It enables students to clearly visualize their curriculum, track grades, and pla
 
 ## 🛠️ Technology Stack
 
-- **Frontend:** Svelte  
-- **Backend & Database:** Firebase
+- **Frontend:** [SvelteKit](https://svelte.dev/)
+- **Backend & Database:** [Firebase](https://firebase.google.com/)
+- **Package Manager:** [pnpm](https://pnpm.io/)
 
 ---
 
